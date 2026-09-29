@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Lint, types and tests
+    runs-on: ubuntu-latest
+
+    env:
+      # Neon branch reserved for CI. Set it in:
+      # Settings > Secrets and variables > Actions > New repository secret
+      # Pooled connection, used by the application at runtime.
+      DATABASE_URL: ${{ secrets.DATABASE_URL_CI }}
+      # Direct connection (no pooler), required by Prisma migrations.
+      DIRECT_URL: ${{ secrets.DIRECT_URL_CI }}
+      AUTH_SECRET: ci-placeholder-not-a-real-secret
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Prisma client
+        run: npx prisma generate
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Type check
+        run: npx tsc --noEmit
+
+      - name: Tests
+        run: npm run test -- --run
+
+      - name: Build
+        run: npm run build

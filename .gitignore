@@ -1,0 +1,42 @@
+# dependencies
+node_modules/
+.pnp
+.pnp.*
+
+# next.js
+.next/
+out/
+build/
+next-env.d.ts
+
+# production
+dist/
+
+# environment — never commit real credentials
+.env
+.env*.local
+!.env.example
+
+# prisma
+prisma/*.db
+prisma/*.db-journal
+
+# testing
+coverage/
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+
+# os / editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# logs
+*.log
+npm-debug.log*
