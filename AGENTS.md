@@ -28,10 +28,10 @@ branch names, and commit messages in English. Never use real customer data.
 1. Start a ticket branch from an up-to-date `main` with:
 
    ```bash
-   ./scripts/git-start-ticket.sh <ticket-number> <short-description>
+   node scripts/ticket-start.mjs <ticket-number> <short-description>
    ```
 
-   Example: `./scripts/git-start-ticket.sh 42 product list page`. The script
+   Example: `node scripts/ticket-start.mjs 42 product list page`. The script
    creates and pushes the feature branch; it does not push to `main`.
 
 2. Write a short implementation plan and wait for Mauricio's approval before
@@ -39,13 +39,13 @@ branch names, and commit messages in English. Never use real customer data.
 3. Keep the branch up to date with:
 
    ```bash
-   ./scripts/git-sync.sh
+   node scripts/git-sync.mjs
    ```
 
 4. Open the pull request with:
 
    ```bash
-   ./scripts/git-open-pr.sh
+   node scripts/git-open-pr.mjs
    ```
 
    Do not push to `main` or bypass the pull request and review workflow.
@@ -63,14 +63,12 @@ branch names, and commit messages in English. Never use real customer data.
 
 ## Before opening a pull request
 
-Run these commands from the repository root and fix failures before asking for
+Run this command from the repository root (it runs the same checks as CI: Prisma
+client, lint, type check, tests and build) and fix failures before asking for
 review:
 
 ```bash
-npm run lint
-npx tsc --noEmit
-npm run test -- --run
-npm run build
+node scripts/check.mjs
 ```
 
 Use `CONTRIBUTING.md` for the complete team workflow and ticket expectations.
