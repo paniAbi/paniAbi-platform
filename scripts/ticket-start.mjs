@@ -46,6 +46,10 @@ if (changes) {
     changes,
     "",
     "Commit or discard them before starting a new ticket.",
+    "",
+    "To save them in a commit:",
+    "    git add .",
+    '    git commit -m "your message"',
   );
 }
 

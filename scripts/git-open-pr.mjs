@@ -42,6 +42,10 @@ if (changes) {
     changes,
     "",
     "Commit them first, then run this script again.",
+    "",
+    "To save them in a commit:",
+    "    git add .",
+    '    git commit -m "your message"',
   );
 }
 

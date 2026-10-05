@@ -23,5 +23,5 @@ English, and all sample bakery data must be invented.
 - Juan reviews every pull request. Do not bypass review or CI.
 
 Before finishing code changes, run `node scripts/check.mjs` and
-report their actual results. Never expose, commit, or replace private `.env`
+report the PASS/FAIL summary it prints. Never expose, commit, or replace private `.env`
 credentials.
