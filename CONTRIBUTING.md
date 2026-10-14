@@ -31,8 +31,8 @@ Solved with a connector or a skill. No branch, no pull request: show the result 
 ### 1. Start
 
 ```bash
-./scripts/git-start-ticket.sh <ticket-number> <short description>
-# example: ./scripts/git-start-ticket.sh 42 product list page
+node scripts/ticket-start.mjs <ticket-number> <short description>
+# example: node scripts/ticket-start.mjs 42 product list page
 ```
 
 This updates `main`, creates your branch (`feat/42-product-list-page`) and pushes it.
@@ -64,13 +64,13 @@ docs: explain the database setup
 If you have been working for a while, or the pull request shows conflicts:
 
 ```bash
-./scripts/git-sync.sh
+node scripts/git-sync.mjs
 ```
 
 ### 5. Open the pull request
 
 ```bash
-./scripts/git-open-pr.sh
+node scripts/git-open-pr.mjs
 ```
 
 Fill in the template: what changed, and how the reviewer can check it works.

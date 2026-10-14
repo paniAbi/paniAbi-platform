@@ -1,16 +1,16 @@
 ## Ticket
 
-Closes #
-
 Trello card:
+
+Plan: docs/plans/
 
 ## What this changes
 
-<!-- In two or three lines: what a person can do now that they could not do before. -->
+<!-- In two or three lines: what Abril can do now that she could not do before. -->
 
 ## How to check it works
 
-<!-- Steps the reviewer can follow. Be specific: what to click, what should appear. -->
+<!-- Steps the reviewer can follow. Be specific: which page, what to click, what should appear. -->
 
 1.
 2.
@@ -18,8 +18,7 @@ Trello card:
 ## Checklist
 
 - [ ] The plan was approved before I started
-- [ ] `npm run lint` passes
-- [ ] `npm run test` passes
+- [ ] `node scripts/check.mjs` passes (the same checks as CI)
 - [ ] I added or updated a test for this change
 - [ ] No real customer data is committed (this repository is public)
 
