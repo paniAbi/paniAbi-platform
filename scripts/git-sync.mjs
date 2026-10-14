@@ -6,25 +6,14 @@ import {
   BASE_BRANCH,
   currentBranch,
   git,
-  insideRepository,
-  isMerging,
+  goToRepositoryRoot,
   stop,
+  stopIfUnfinishedOperation,
   uncommittedChanges,
 } from "./lib/git.mjs";
 
-if (!insideRepository()) {
-  stop(
-    "ERROR: you are not inside the project folder.",
-    "Open a terminal inside the repository and try again.",
-  );
-}
-
-if (isMerging()) {
-  stop(
-    "STOP: a previous merge is not finished yet.",
-    "Fix the conflicts and commit, or undo it with:  git merge --abort",
-  );
-}
+goToRepositoryRoot();
+stopIfUnfinishedOperation();
 
 const changes = uncommittedChanges();
 if (changes) {

@@ -6,7 +6,7 @@ import {
   BASE_BRANCH,
   currentBranch,
   git,
-  insideRepository,
+  goToRepositoryRoot,
   run,
   stop,
   uncommittedChanges,
@@ -22,9 +22,7 @@ import {
 const PLANS_FOLDER = "docs/plans";
 const TEMPLATE = ".github/pull_request_template.md";
 
-if (!insideRepository()) {
-  stop("ERROR: you are not inside the project folder.");
-}
+goToRepositoryRoot();
 
 const branch = currentBranch();
 if (branch === BASE_BRANCH) {
@@ -113,22 +111,32 @@ if (run("gh", ["auth", "status"], { capture: true }).ok) {
   }
 
   console.log("Creating the pull request...");
-  const created = run("gh", [
-    "pr",
-    "create",
-    "--base",
-    BASE_BRANCH,
-    "--head",
-    branch,
-    "--title",
-    title,
-    "--body-file",
-    bodyFile,
-  ]);
+  const created = run(
+    "gh",
+    [
+      "pr",
+      "create",
+      "--base",
+      BASE_BRANCH,
+      "--head",
+      branch,
+      "--title",
+      title,
+      "--body-file",
+      bodyFile,
+    ],
+    { capture: true, showErrors: true },
+  );
   if (!created.ok) {
     stop("ERROR: GitHub did not accept the pull request. Ask Juan for help.");
   }
-  console.log("Done. Ask Juan for a review.");
+  console.log(
+    [
+      "Done. Your pull request is here:",
+      `    ${created.stdout}`,
+      "Ask Juan for a review.",
+    ].join("\n"),
+  );
   process.exit(0);
 }
 

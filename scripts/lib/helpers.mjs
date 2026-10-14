@@ -52,10 +52,11 @@ export function findPlanFile(ticket, fileNames) {
 }
 
 // "git@github.com:owner/repo.git" -> "owner/repo"
-// Also accepts SSH host aliases such as "git@github-work:owner/repo.git".
+// Also accepts SSH host aliases such as "git@github-work:owner/repo.git"
+// and the "ssh://git@github.com/owner/repo.git" form.
 export function repoPathFromRemote(remoteUrl) {
   const match =
-    /^(?:git@[^:]+:|https:\/\/github\.com\/)([\w.-]+\/[\w.-]+?)(?:\.git)?$/.exec(
+    /^(?:git@[^:]+:|ssh:\/\/git@github\.com\/|https:\/\/github\.com\/)([\w.-]+\/[\w.-]+?)(?:\.git)?$/.exec(
       remoteUrl,
     );
   return match ? match[1] : null;

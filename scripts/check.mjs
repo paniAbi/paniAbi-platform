@@ -3,6 +3,7 @@
 // Usage: node scripts/check.mjs
 import { spawnSync } from "node:child_process";
 import process from "node:process";
+import { goToRepositoryRoot } from "./lib/git.mjs";
 
 const CHECKS = [
   { name: "Prisma client", command: "npx prisma generate" },
@@ -11,6 +12,8 @@ const CHECKS = [
   { name: "Tests", command: "npm run test -- --run" },
   { name: "Build", command: "npm run build" },
 ];
+
+goToRepositoryRoot();
 
 const results = CHECKS.map((check) => {
   console.log(`\n=== ${check.name}: ${check.command}`);

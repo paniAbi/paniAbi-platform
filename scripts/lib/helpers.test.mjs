@@ -88,6 +88,7 @@ describe("repoPathFromRemote", () => {
   it.each([
     ["git@github.com:paniAbi/paniAbi-platform.git"],
     ["git@github-mauriiac:paniAbi/paniAbi-platform.git"],
+    ["ssh://git@github.com/paniAbi/paniAbi-platform.git"],
     ["https://github.com/paniAbi/paniAbi-platform.git"],
     ["https://github.com/paniAbi/paniAbi-platform"],
   ])("reads owner/repo from %s", (url) => {

@@ -5,9 +5,9 @@ import process from "node:process";
 import {
   BASE_BRANCH,
   git,
-  insideRepository,
-  isMerging,
+  goToRepositoryRoot,
   stop,
+  stopIfUnfinishedOperation,
   uncommittedChanges,
 } from "./lib/git.mjs";
 import { branchName } from "./lib/helpers.mjs";
@@ -27,16 +27,8 @@ try {
   stop(`ERROR: ${error.message}`);
 }
 
-if (!insideRepository()) {
-  stop("ERROR: you are not inside the project folder.");
-}
-
-if (isMerging()) {
-  stop(
-    "STOP: a merge is not finished yet.",
-    "Finish it, or undo it with:  git merge --abort",
-  );
-}
+goToRepositoryRoot();
+stopIfUnfinishedOperation();
 
 const changes = uncommittedChanges();
 if (changes) {
@@ -57,6 +49,25 @@ if (git(["show-ref", "--verify", "--quiet", `refs/heads/${branch}`]).ok) {
   console.log(`That branch already exists. Switching to it: ${branch}`);
   if (!git(["switch", branch]).ok)
     stop(`ERROR: could not switch to ${branch}.`);
+  process.exit(0);
+}
+
+console.log("Fetching the latest changes...");
+if (!git(["fetch", "origin", "--prune"]).ok) {
+  stop("ERROR: could not reach GitHub. Check your connection and try again.");
+}
+
+// The branch may already be on GitHub (started on another computer or by a
+// teammate). Use that one instead of creating a new branch with the same name.
+if (
+  git(["show-ref", "--verify", "--quiet", `refs/remotes/origin/${branch}`]).ok
+) {
+  console.log(
+    `That branch already exists on GitHub. Switching to it: ${branch}`,
+  );
+  if (!git(["switch", "--track", `origin/${branch}`]).ok) {
+    stop(`ERROR: could not switch to ${branch}.`);
+  }
   process.exit(0);
 }
 
