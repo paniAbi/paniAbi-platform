@@ -2,6 +2,11 @@
 
 Trello card: https://trello.com/c/mldCDpzr/4-deploy-en-vercel-y-readme-para-setup-local
 
+> **Updated by #5** (`docs/plans/5-shared-database-migrations-by-juan.md`):
+> there are no personal Neon branches (Flor and Jesi use `production`
+> locally, only Juan runs migrations), and the preview branch is called
+> `dev` instead of `preview`.
+
 ## Goal
 
 1. Flor and Jesi can open the app on the web, and every pull request gets its
