@@ -77,3 +77,11 @@ export function parseOpenPrArguments(args) {
   }
   return { bodyFile, title: titleWords.join(" ") || null };
 }
+
+// Vercel sets VERCEL_ENV to "production", "preview" or "development".
+// Each of the first two has its own Neon branch, so both can migrate.
+// Anywhere else (your computer, CI) the build never migrates.
+// "preview" -> true, undefined -> false
+export function shouldMigrate(vercelEnv) {
+  return vercelEnv === "production" || vercelEnv === "preview";
+}

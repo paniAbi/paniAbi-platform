@@ -6,6 +6,7 @@ import {
   parseOpenPrArguments,
   prTitle,
   repoPathFromRemote,
+  shouldMigrate,
   slugify,
 } from "./helpers.mjs";
 
@@ -115,5 +116,15 @@ describe("parseOpenPrArguments", () => {
     expect(() => parseOpenPrArguments(["--body-file"])).toThrow(
       "--body-file needs a file name",
     );
+  });
+});
+
+describe("shouldMigrate", () => {
+  it.each(["production", "preview"])("migrates on Vercel %s", (env) => {
+    expect(shouldMigrate(env)).toBe(true);
+  });
+
+  it.each([undefined, "", "development"])("does not migrate for %s", (env) => {
+    expect(shouldMigrate(env)).toBe(false);
   });
 });

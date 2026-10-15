@@ -50,6 +50,24 @@ branch names, and commit messages in English. Never use real customer data.
 
    Do not push to `main` or bypass the pull request and review workflow.
 
+## Setting up and running the app
+
+Follow `README.md` to install the tools and run the app locally. Use the npm
+shortcuts it lists (`npm run db:migrate`, `npm run db:seed`, `npm run dev`,
+`npm run check`) instead of calling `npx prisma ...` directly.
+
+## Databases and migrations
+
+- Each Neon branch has one job: `production` (live site), `preview` (pull
+  request previews), `ci` (GitHub Actions), and one branch per person for
+  local work.
+- Never run migrations or the seed against the `production` or `preview`
+  URLs. Vercel migrates those itself (`scripts/vercel-build.mjs`). Before
+  any migration, check the `Datasource "db"` host that Prisma prints.
+- Migrations only add tables or columns. Deleting or renaming goes in a
+  second pull request, once no code uses the old name.
+- The site has no login yet: only invented sample data.
+
 ## Before changing code
 
 - Read the relevant Next.js guide under `node_modules/next/dist/docs/` first.
