@@ -28,59 +28,43 @@ Solved with a connector or a skill. No branch, no pull request: show the result 
 
 ## Working on a platform ticket
 
-### 1. Start
+You work by telling your agent (Codex or Claude Code) what you want, in your
+own words. Each step has a skill that knows how to do it safely; the agent
+picks it for you.
+
+| You say                        | What happens                                                                  | Skill              |
+| ------------------------------ | ----------------------------------------------------------------------------- | ------------------ |
+| "I want to start card 42"      | The agent explains the card, creates your branch, moves the card to Planning  | `start-ticket`     |
+| "Let's write the plan"         | You agree on what changes for Abril, then how; the plan goes to Mauricio      | `plan-ticket`      |
+| "Let's start building"         | Only after Mauricio approves: one step at a time, test first, one commit each | `implement-ticket` |
+| "Is everything ok?"            | Runs lint, type check, tests and build, and explains failures                 | `check-work`       |
+| "Bring the latest changes"     | Merges `main` into your branch and helps with conflicts                       | `sync-branch`      |
+| "I'm done"                     | Opens the pull request and moves the card to To Check                         | `open-pr`          |
+| "Juan left comments"           | Explains the review and applies the changes with you                          | `address-review`   |
+| "Where am I?" / "What's next?" | Tells you which step you are on                                               | `next-step`        |
+| "I'm stuck"                    | Writes a clear message for Juan or Mauricio on the card                       | `ask-for-help`     |
+
+**The plan checkpoint:** Mauricio approves a plan by moving its card to
+**Approved Plan**. The agent will not build anything before that — it is much
+cheaper to fix a plan than a pull request.
+
+### If you need to run the steps yourself
 
 ```bash
 node scripts/ticket-start.mjs <ticket-number> <short description>
-# example: node scripts/ticket-start.mjs 42 product list page
-```
-
-This updates `main`, creates your branch (`feat/42-product-list-page`) and pushes it.
-
-### 2. Plan before writing code
-
-Write a short markdown document: what you are going to do and how.
-Link it on the Trello card.
-
-**Wait for the manager to approve the plan before you implement.**
-This is the checkpoint — it is much cheaper to fix a plan than a pull request.
-
-### 3. Implement
-
-Work on your branch. Commit often, in small steps.
-
-Commit messages follow [Conventional Commits](https://www.conventionalcommits.org/):
-
-```
-feat: add product list page
-fix: correct total when an order has no items
-test: cover empty product list
-chore: update dependencies
-docs: explain the database setup
-```
-
-### 4. Stay up to date
-
-If you have been working for a while, or the pull request shows conflicts:
-
-```bash
 node scripts/git-sync.mjs
-```
-
-### 5. Open the pull request
-
-```bash
+node scripts/check.mjs
 node scripts/git-open-pr.mjs
 ```
 
-Fill in the template: what changed, and how the reviewer can check it works.
+Commit messages follow [Conventional Commits](https://www.conventionalcommits.org/):
+`feat:`, `fix:`, `test:`, `docs:`, `chore:`.
 
-### 6. Review
+### Review
 
-Juan reviews every pull request. CI must be green before it can be merged.
-
-If there are comments, push more commits to the same branch — the pull request
-updates itself. When it is approved, it gets merged and the card moves to **Done**.
+Juan reviews every pull request. CI must be green before it can be merged. If
+there are comments, new commits on the same branch update the pull request.
+When it is merged, the card moves to **Done**.
 
 ---
 
@@ -110,3 +94,16 @@ you its `DATABASE_URL` and `DIRECT_URL` privately.
 **Database changes go through Juan.** Only Juan edits `prisma/` and runs
 migrations. If your ticket needs a new field or table, ask Juan before you
 plan it; he adds it first in his own pull request.
+
+## Agent setup
+
+Do this once, after the local setup:
+
+- [ ] Open Codex (Flor, Jesi) or Claude Code (Juan, Mauricio) **in the
+      repository folder**. Skills are found from there.
+- [ ] Connect Trello to your agent, and make sure your Trello user is a member
+      of the board.
+- [ ] Install the GitHub CLI (`winget install GitHub.cli` on Windows,
+      `brew install gh` on macOS) and log in with `gh auth login`.
+- [ ] Check it works: ask your agent "what's next?". It should answer with the
+      `next-step` skill.
