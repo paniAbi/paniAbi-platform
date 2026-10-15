@@ -101,15 +101,8 @@ more expensive than asking.
 
 ## Local setup
 
-```bash
-git clone <repository-url>
-cd <repository>
-npm install
-cp .env.example .env     # then fill in your own DATABASE_URL and DIRECT_URL
-npx prisma migrate dev
-npm run db:seed
-npm run dev
-```
+Follow [README.md](README.md): it lists the tools to install and the steps to
+run the app on your computer.
 
 Each person has their own Neon database branch, so a migration you run never
 breaks anybody else. Ask Juan for both your pooled `DATABASE_URL` and direct
