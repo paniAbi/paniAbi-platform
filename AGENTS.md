@@ -10,45 +10,96 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 # Working in This Repository
 
-This is a public project for a bakery management platform. Flor and Jesi are
-new to programming, so make changes explicit and easy to follow. Prefer small,
-readable steps over clever abstractions. Write code, comments, documentation,
-branch names, and commit messages in English. Never use real customer data.
+This is a public repository for the paniAbi bakery platform. Abril runs the
+bakery and is our client. Write all repository content — code, comments,
+documentation, branch names, commit messages and pull requests — in English.
+All sample data must be invented.
 
-## Team and review
+## Who is on the other side
 
-- Mauricio prioritises tickets and approves the plan before implementation.
-- Juan owns infrastructure and reviews every pull request.
-- Flor and Jesi implement feature tickets.
-- Nobody pushes directly to `main`. Changes reach `main` through an approved
-  pull request.
+| Tool        | People         | How to talk                          |
+| ----------- | -------------- | ------------------------------------ |
+| Codex       | Flor and Jesi  | Product language (next section)      |
+| Claude Code | Juan, Mauricio | Technical language (see `CLAUDE.md`) |
 
-## Required ticket workflow
+Flor and Jesi are not programmers. They direct the work and must understand
+every change, but you write the code.
 
-1. Start a ticket branch from an up-to-date `main` with:
+## Talking with Flor and Jesi
 
-   ```bash
-   node scripts/ticket-start.mjs <ticket-number> <short-description>
-   ```
+- Reply in the language they write in. Files you write stay in English.
+- Talk about what changes for Abril or the bakery, never about how the code is
+  built.
+- Use this vocabulary and nothing more technical. The first time a word
+  appears in a conversation, add the technical word in brackets so they
+  recognise it on GitHub.
 
-   Example: `node scripts/ticket-start.mjs 42 product list page`. The script
-   creates and pushes the feature branch; it does not push to `main`.
+  | Say (English)     | Say (Spanish)       | Technical word |
+  | ----------------- | ------------------- | -------------- |
+  | card              | tarjeta             | ticket         |
+  | plan              | plan                | plan           |
+  | your working copy | tu copia de trabajo | branch         |
+  | save a step       | guardar un paso     | commit         |
+  | review request    | pedido de revisión  | pull request   |
+  | automatic check   | chequeo automático  | test           |
 
-2. Write a short implementation plan and wait for Mauricio's approval before
-   changing application code.
-3. Keep the branch up to date with:
+- Do not paste code, diffs or error output unless they ask. Summarise what
+  happened and what you will do next.
+- Ask one question at a time and offer options.
+- Before each change, say in one or two sentences what will change for Abril
+  and wait for their "ok".
+- Never decide how the product should behave. If the card does not say, write
+  it down as an open question for Abril; Flor and Jesi are the ones who talk
+  to her.
 
-   ```bash
-   node scripts/git-sync.mjs
-   ```
+Examples:
 
-4. Open the pull request with:
+- ❌ "I'll add a Server Action with Zod validation for the price."
+- ✅ "If Abril tries to save a product without a price, the screen will warn
+  her before saving it."
+- ❌ "Build failed: Type error: Property 'priceCents' does not exist…"
+- ✅ "An automatic check found a mistake in the step we just did. I know how
+  to fix it — shall I?"
 
-   ```bash
-   node scripts/git-open-pr.mjs
-   ```
+## Roles
 
-   Do not push to `main` or bypass the pull request and review workflow.
+- Mauricio prioritises the backlog and approves every plan.
+- Juan owns the infrastructure and reviews every pull request
+  (GitHub `cuellojuancruz`).
+- Flor and Jesi take platform cards and drive them with Codex.
+
+## Trello board
+
+- Board: https://trello.com/b/T0QnE8Ku/paniabi
+- The number in a card's URL (`trello.com/c/<id>/42-...`) is the ticket
+  number. It is used in the branch name (`feat/42-...`) and the plan file
+  (`docs/plans/42-....md`).
+- Columns, in order: `Backlog` (not prioritised) → `To Do` → `Planning` →
+  `Approved Plan` → `In Progress` → `To Check` → `Done`.
+- Labels: `platform` (changes this repository) and `automation` (does not).
+  Only `platform` cards use the skills below.
+- Plan approver: Trello user `mauriciocuello3`. A plan is approved only when
+  the card is in `Approved Plan`, the move was made by `mauriciocuello3`, and
+  the plan file has not changed since that move.
+- Juan's Trello user: `blacky57`.
+
+## Workflow
+
+| Step                        | Skill              |
+| --------------------------- | ------------------ |
+| Start a card                | `start-ticket`     |
+| Write or revise the plan    | `plan-ticket`      |
+| Build the approved plan     | `implement-ticket` |
+| Run the automatic checks    | `check-work`       |
+| Bring in the latest changes | `sync-branch`      |
+| Open the review request     | `open-pr`          |
+| Answer Juan's review        | `address-review`   |
+| Not sure where you are      | `next-step`        |
+| Stuck                       | `ask-for-help`     |
+
+Skills live in `.agents/skills/`. Claude Code reads pointers to them in
+`.claude/skills/`. If a skill is not there yet, follow the same step in
+`CONTRIBUTING.md`.
 
 ## Setting up and running the app
 
@@ -80,25 +131,28 @@ app, never about the database structure.
   renaming goes in a second pull request, once no code uses the old name.
 - The site has no login yet: only invented sample data.
 
-## Before changing code
+## Never
 
-- Read the relevant Next.js guide under `node_modules/next/dist/docs/` first.
-  This repository uses Next.js 16, whose APIs and conventions may differ from
-  older Next.js versions.
-- Follow existing patterns and make the smallest change that solves the ticket.
-- Keep dependency versions exact in `package.json`; do not add `^` or `~`.
-- Never commit `.env`, credentials, or real customer data. Use invented sample
-  data only.
-- Add or update focused tests for behaviour changes.
+- Push to `main`, or push with `--force`.
+- Commit `.env`, credentials or real customer data.
+- Write application code without an approved plan, or go beyond the plan
+  without a new approval.
+- Add version ranges (`^`, `~`) in `package.json`.
+- Create branches or pull requests by hand. Use the scripts in `scripts/`.
 
-## Before opening a pull request
+## Writing code
 
-Run this command from the repository root (it runs the same checks as CI: Prisma
-client, lint, type check, tests and build) and fix failures before asking for
-review:
+- Before planning or implementing, read `docs/code-patterns.md` and the
+  relevant Next.js 16 guide under `node_modules/next/dist/docs/`.
+- Make the smallest change that solves the card.
+- Every behaviour change gets a test.
+- Commit messages follow Conventional Commits: `feat:`, `fix:`, `test:`,
+  `docs:`, `chore:`.
 
-```bash
-node scripts/check.mjs
-```
+## Before a pull request
 
-Use `CONTRIBUTING.md` for the complete team workflow and ticket expectations.
+Run `node scripts/check.mjs` from the repository root. It runs the same checks
+as CI (Prisma client, lint, type check, tests and build). Fix every failure
+before asking for review.
+
+See `CONTRIBUTING.md` for the human-facing version of this workflow.
