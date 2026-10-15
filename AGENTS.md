@@ -53,19 +53,31 @@ branch names, and commit messages in English. Never use real customer data.
 ## Setting up and running the app
 
 Follow `README.md` to install the tools and run the app locally. Use the npm
-shortcuts it lists (`npm run db:migrate`, `npm run db:seed`, `npm run dev`,
-`npm run check`) instead of calling `npx prisma ...` directly.
+shortcuts it lists (`npm run dev`, `npm run check`) instead of calling
+`npx ...` directly.
 
-## Databases and migrations
+## Databases: only Juan changes them
 
-- Each Neon branch has one job: `production` (live site), `preview` (pull
-  request previews), `ci` (GitHub Actions), and one branch per person for
-  local work.
-- Never run migrations or the seed against the `production` or `preview`
-  URLs. Vercel migrates those itself (`scripts/vercel-build.mjs`). Before
-  any migration, check the `Datasource "db"` host that Prisma prints.
-- Migrations only add tables or columns. Deleting or renaming goes in a
-  second pull request, once no code uses the old name.
+Flor and Jesi run the app against the `production` database, the same one
+the live site uses. Their tickets are about design and features in the web
+app, never about the database structure.
+
+- Do not edit `prisma/schema.prisma`, anything in `prisma/migrations/`, or
+  `prisma/seed.ts`.
+- Do not run `prisma migrate` (any subcommand), `prisma db push`,
+  `prisma migrate reset`, `npm run db:migrate` or `npm run db:seed`. If a
+  command offers to reset or erase the database, answer no and stop.
+- If a task needs a new field, table or sample data, stop and tell the person
+  to ask Juan. Do not work around it (for example by storing data in a file
+  or in another field).
+- Anything created while testing locally appears on the live site: only
+  invented data, and name test products `TEST - ...`.
+- Neon branches: `production` (live site and Flor's and Jesi's computers),
+  `dev` (pull request previews and Juan's migrations), `ci` (GitHub
+  Actions). Vercel migrates `production` and `dev` itself
+  (`scripts/vercel-build.mjs`).
+- When Juan asks for a migration: it only adds tables or columns. Deleting or
+  renaming goes in a second pull request, once no code uses the old name.
 - The site has no login yet: only invented sample data.
 
 ## Before changing code

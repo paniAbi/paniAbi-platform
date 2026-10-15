@@ -49,20 +49,16 @@ Close and reopen the terminal after installing, so it finds the new programs.
    cp .env.example .env
    ```
 
-   Ask Juan for **your own** Neon branch and paste its two URLs in `.env`:
-   `DATABASE_URL` (pooled, the host contains `-pooler`) and `DIRECT_URL`
-   (direct, without `-pooler`). To copy a URL from Neon: open the branch,
-   click **Connect**, then **Copy snippet**. Paste only the text that starts
-   with `postgresql://`, inside the quotes that are already in `.env`.
+   Juan sends you two URLs privately (never in GitHub or Trello: this
+   repository is public). Paste them in `.env`, inside the quotes that are
+   already there: `DATABASE_URL` (the host contains `-pooler`) and
+   `DIRECT_URL` (without `-pooler`). Paste only the text that starts with
+   `postgresql://`.
 
-4. Create the tables in your database and add the sample products:
+   The database is already set up: you do not need to create tables or add
+   sample data.
 
-   ```bash
-   npm run db:migrate
-   npm run db:seed
-   ```
-
-5. Start the app and open http://localhost:3000/products:
+4. Start the app and open http://localhost:3000/products:
 
    ```bash
    npm run dev
@@ -79,7 +75,6 @@ Close and reopen the terminal after installing, so it finds the new programs.
 | Run the app                                 | `npm run dev`                                  |
 | Run every check CI runs (do it before a PR) | `npm run check`                                |
 | Push your branch and open the pull request  | `npm run git:pr`                               |
-| Apply new migrations to your database       | `npm run db:migrate`                           |
 
 The full flow (plan, approval, review) is in [CONTRIBUTING.md](CONTRIBUTING.md).
 
@@ -87,27 +82,45 @@ The full flow (plan, approval, review) is in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 Each Neon branch has one name and one job:
 
-| Neon branch    | Used by                                                   |
-| -------------- | --------------------------------------------------------- |
-| `production`   | The live site.                                            |
-| `preview`      | Every pull request preview (shared by all pull requests). |
-| `ci`           | GitHub Actions.                                           |
-| one per person | Your own computer. Only you migrate it.                   |
+| Neon branch  | Used by                                                       |
+| ------------ | ------------------------------------------------------------- |
+| `production` | The live site, and Flor's and Jesi's computers.               |
+| `dev`        | Pull request previews, and Juan when he prepares a migration. |
+| `ci`         | GitHub Actions.                                               |
 
-Never put the `production` or `preview` URLs in your `.env`.
+When you run the app on your computer you use the **same database as the
+live site**:
+
+- Anything you create while testing appears on the live site. Only invented
+  data, and name test products `TEST - ...`.
+- **Only Juan changes the database structure.** Do not edit
+  `prisma/schema.prisma`, `prisma/migrations/` or `prisma/seed.ts`, and do
+  not run `npm run db:migrate`, `npm run db:seed` or any `prisma migrate` /
+  `prisma db push` command. If your feature needs a new field or table,
+  stop and ask Juan; he adds it first in his own pull request.
+
+### Database changes (Juan only)
+
+1. Point your `.env` at the `dev` branch.
+2. Change `prisma/schema.prisma` and run `npm run db:migrate`: it creates the
+   migration file and applies it to `dev`.
+3. Open a pull request. Its preview migrates `dev`; the merge migrates
+   `production` (`scripts/vercel-build.mjs`).
+4. Point your `.env` back at `production`.
 
 **Migrations only add.** Adding tables or columns is safe. Deleting or
 renaming something goes in a second pull request, once no code uses the old
 name, because the live site keeps running the old code while the new version
-builds.
+builds. Never run `prisma migrate dev` or `prisma migrate reset` with the
+`production` URLs: they can erase the database.
 
 ## 5. Live site and previews
 
 - Every merge into `main` publishes the live site automatically:
   https://pani-abi-platform.vercel.app
 - Every pull request gets its own preview link. Vercel posts it as a comment
-  on the pull request. Previews use the `preview` database, so they never
-  change the live data.
+  on the pull request. Previews use the `dev` database, so they never change
+  the live data.
 - Before building, Vercel applies pending migrations to that environment's
   database (`scripts/vercel-build.mjs`). On your computer the build never
   migrates.
@@ -121,9 +134,9 @@ builds.
 | ---------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
 | `node -v` is not `v22...`, or npm warns about `engines`                      | Run `nvm use 22` (Windows) or `nvm use` (macOS), then try again.                                                   |
 | `Environment variable not found: DATABASE_URL`                               | You have no `.env` file. Do step 3 of section 2.                                                                   |
-| `the URL must start with the protocol postgresql://`                         | The URL in `.env` has extra text. Keep only `postgresql://...`, copied with **Copy snippet**.                      |
+| `the URL must start with the protocol postgresql://`                         | The URL in `.env` has extra text. Keep only the part that starts with `postgresql://`.                             |
 | `Cannot find module '.prisma/client'` or `@prisma/client did not initialize` | Run `npx prisma generate`.                                                                                         |
-| `The table public.Product does not exist`                                    | Your database has no tables yet. Run `npm run db:migrate`.                                                         |
+| `The table ... does not exist`                                               | Do not try to fix the database yourself. Ask Juan.                                                                 |
 | `Port 3000 is in use`                                                        | Another `npm run dev` is still running. Close that terminal, or open the address Next.js prints instead.           |
 | A command works in PowerShell but not in Git Bash (or the other way)         | Environment variables are set differently: `export NAME='value'` in Git Bash, `$env:NAME = "value"` in PowerShell. |
 

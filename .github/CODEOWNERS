@@ -1,2 +1,6 @@
 # Every pull request requires a review from Juan (infrastructure).
 *       @cuellojuancruz
+
+# Only Juan changes the database (schema, migrations and seed). See AGENTS.md.
+# Already covered by the line above; kept so the rule is visible on its own.
+/prisma/        @cuellojuancruz
