@@ -4,7 +4,10 @@
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import process from "node:process";
+import { goToRepositoryRoot } from "./lib/git.mjs";
 import { findSkillProblems } from "./lib/skills.mjs";
+
+goToRepositoryRoot();
 
 function readSkills(root) {
   if (!existsSync(root)) return [];

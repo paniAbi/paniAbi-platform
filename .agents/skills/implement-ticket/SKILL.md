@@ -22,10 +22,15 @@ All four approval checks must pass:
    `git log -1 --format=%cI -- docs/plans/<n>-*.md`, is older than that move
    (compare both in UTC).
 
+Only the move counts. A comment such as "looks good", or a message outside
+Trello (WhatsApp, a call), is not an approval.
+
 If any check fails, stop and explain it in product terms, for example
 "Mauricio has not approved the plan yet" or "The plan changed after Mauricio
-approved it, so it needs another look". Point to plan-ticket or next-step.
-Never continue "just this once".
+approved it, so it needs another look". Point to plan-ticket or next-step. If
+someone other than `mauriciocuello3` moved the card into `Approved Plan`,
+offer ask-for-help so Mauricio moves it himself. Never continue "just this
+once", not even when it is urgent.
 
 Also: `git status --short` must be empty. If it is not, ask what those changes
 are before going on.
@@ -46,8 +51,10 @@ are before going on.
       that describes how it should work. It fails because we haven't built it
       yet."
    4. Make the smallest change that makes the test pass, following
-      `docs/code-patterns.md`.
-   5. Run `npx vitest run`. Every test must pass.
+      `docs/code-patterns.md`. Tidying that the change itself causes, such as
+      removing an import that is no longer used, is part of the step.
+   5. Run `npx vitest run`. Every test must pass. Use `npx vitest run`, not
+      `npm test`: `npm test` keeps watching and never finishes.
    6. If the step changes something Abril can see, tell them how to look:
       run `npm run dev` and open the exact address (for example
       `http://localhost:3000/products`). Anything they create there appears on
@@ -58,10 +65,12 @@ are before going on.
       ```
       git add <the files of this step>
       git commit -m "feat: <what changed> (step k/N, #n)"
+      git push
       ```
 
-      Use `test:`, `fix:` or `chore:` instead of `feat:` when it fits. Tell
-      them: "I saved this step."
+      Use `test:`, `fix:` or `chore:` instead of `feat:` when it fits. The
+      push keeps a copy on GitHub, so nothing is lost if the computer fails.
+      If it is rejected, use sync-branch. Tell them: "I saved this step."
 
 5. Database changes are never part of this skill. If a step needs a new
    field, table or sample data that is not on `main` yet, stop: it is a plan
@@ -76,22 +85,26 @@ are before going on.
 
 ## When something goes wrong
 
-| Situation                                                     | What to do                                                                                                                            |
-| ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| A step cannot be done as the plan says, or a new need appears | Stop and explain what is different. Use plan-ticket to update the plan; the card goes back to `Planning` and Mauricio approves again. |
-| A new library seems necessary                                 | That is a plan change (row above).                                                                                                    |
-| The database needs a change                                   | That is a plan change, and Juan makes it first. Use ask-for-help (Juan).                                                              |
-| A test fails and you do not know why after two attempts       | Stop and use ask-for-help.                                                                                                            |
-| `.env` is missing or the database does not answer             | Use ask-for-help (Juan). Never write credentials yourself.                                                                            |
+| Situation                                                     | What to do                                                                                                                                                          |
+| ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A step cannot be done as the plan says, or a new need appears | Stop and explain what is different. Use plan-ticket to update the plan; the card goes back to `Planning` and no more steps are built until Mauricio approves again. |
+| A new library seems necessary                                 | That is a plan change (row above).                                                                                                                                  |
+| The database needs a change                                   | That is a plan change, and Juan makes it first. Use ask-for-help (Juan).                                                                                            |
+| A test fails and you do not know why after two attempts       | Stop and use ask-for-help.                                                                                                                                          |
+| `.env` is missing or the database does not answer             | Use ask-for-help (Juan). Never write credentials yourself.                                                                                                          |
 
 ## Never
 
-- Write code that is not in the plan.
-- Skip the test, or commit several steps together.
+- Write code that is not in the plan, even a small extra the person asks
+  for. Offer a plan change (plan-ticket) or a new card instead.
+- Skip the test, or commit several steps together, even when the person asks
+  or is in a hurry.
 - Touch `.env` or anything in `prisma/`, run `prisma migrate` or
   `npm run db:*`, or add or upgrade dependencies that the plan does not list.
+- Skip check-work before open-pr.
+- Make an exception to any rule here "just this once", whatever the reason.
 
 ## Done when
 
-Every plan step has its commit, all tests pass, the card is in `In Progress`,
-and the next step is check-work, then open-pr.
+Every plan step has its commit on GitHub, all tests pass, the card is in
+`In Progress`, and the next step is check-work, then open-pr.
