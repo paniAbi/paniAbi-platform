@@ -15,10 +15,10 @@ confirming the product part, and hand it to Mauricio for approval.
 1. The current branch is `feat/<n>-<description>` (`git branch --show-current`).
    On `main`, use start-ticket.
 2. Read card `n` with the Trello connector. It must be in `Planning`. If it is
-   in `Approved Plan` or `In Progress` and they want to change the plan, warn
-   them that Mauricio will have to approve it again. If they agree, move the
-   card back to `Planning` now, before changing the plan file, so the card
-   never shows as approved with a changed plan.
+   in `Approved Plan`, `In Progress` or `To Check` and they want to change the
+   plan, warn them that Mauricio will have to approve it again. If they
+   agree, move the card back to `Planning` now, before changing the plan
+   file, so the card never shows as approved with a changed plan.
 3. `git status --short` shows nothing, or only the plan file.
 
 ## Steps
