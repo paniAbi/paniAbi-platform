@@ -15,6 +15,7 @@
     "format:check": "prettier --check .",
     "db:migrate": "prisma migrate dev",
     "db:seed": "prisma db seed",
+    "db:local": "node scripts/db-local.mjs",
     "check": "node scripts/check.mjs",
     "ticket:start": "node scripts/ticket-start.mjs",
     "git:sync": "node scripts/git-sync.mjs",

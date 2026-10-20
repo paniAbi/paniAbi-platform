@@ -1,0 +1,28 @@
+# Local PostgreSQL for development. Start it and fill it with: npm run db:local
+# The user and password only work on this computer, so they are not secrets.
+
+# Fixed name, so every copy of the repository uses the same database.
+name: paniabi-platform
+
+services:
+  db:
+    # Same major version as the Neon project (18), so migrations behave the same.
+    image: postgres:18.6
+    environment:
+      POSTGRES_USER: paniabi
+      POSTGRES_PASSWORD: paniabi
+      POSTGRES_DB: paniabi
+    ports:
+      # Only reachable from this computer, not from the rest of the network.
+      - "127.0.0.1:5432:5432"
+    volumes:
+      # Postgres 18+ images keep their data under /var/lib/postgresql.
+      - db-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U paniabi -d paniabi"]
+      interval: 2s
+      timeout: 5s
+      retries: 15
+
+volumes:
+  db-data:

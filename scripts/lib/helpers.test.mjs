@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   branchName,
   findPlanFile,
+  isLocalDatabaseUrl,
   parseBranch,
   parseOpenPrArguments,
   prTitle,
@@ -126,5 +127,25 @@ describe("shouldMigrate", () => {
 
   it.each([undefined, "", "development"])("does not migrate for %s", (env) => {
     expect(shouldMigrate(env)).toBe(false);
+  });
+});
+
+describe("isLocalDatabaseUrl", () => {
+  it.each([
+    "postgresql://paniabi:paniabi@localhost:5432/paniabi",
+    "postgresql://paniabi:paniabi@127.0.0.1:5432/paniabi",
+    "postgresql://paniabi:paniabi@[::1]:5432/paniabi",
+  ])("accepts %s", (url) => {
+    expect(isLocalDatabaseUrl(url)).toBe(true);
+  });
+
+  it.each([
+    "postgresql://user:pass@ep-abc-pooler.us-east-2.aws.neon.tech/neondb",
+    "postgresql://user:pass@localhost.example.com/neondb",
+    "",
+    undefined,
+    "not a url",
+  ])("rejects %s", (url) => {
+    expect(isLocalDatabaseUrl(url)).toBe(false);
   });
 });

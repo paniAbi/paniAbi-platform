@@ -88,8 +88,9 @@ more expensive than asking.
 Follow [README.md](README.md): it lists the tools to install and the steps to
 run the app on your computer.
 
-Everyone runs the app against the same database as the live site. Juan sends
-you its `DATABASE_URL` and `DIRECT_URL` privately.
+Everyone runs the app against their own local database in Docker:
+`cp .env.example .env`, then `npm run db:local`. Nothing you create on your
+computer reaches the live site.
 
 **Database changes go through Juan.** Only Juan edits `prisma/` and runs
 migrations. If your ticket needs a new field or table, ask Juan before you
