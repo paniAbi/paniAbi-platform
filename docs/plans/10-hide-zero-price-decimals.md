@@ -32,10 +32,10 @@ Se deja de mostrar ",00" en los precios enteros de la lista de productos. Los im
 
 ## 5. Cómo lo comprueba Abril
 
-1. Abrir la página de productos en la copia de prueba, con productos e importes inventados.
-2. Buscar un producto de 800 pesos y otro de 1500 pesos: deben verse como "$ 800" y "$ 1.500".
-3. Buscar un producto de 1250 pesos con 50 centavos y otro de 800 pesos con 5 centavos: deben verse como "$ 1.250,50" y "$ 800,05".
-4. Comprobar que cada producto conserva su nombre y el mismo importe.
+1. Una vez que Juan publique el cambio, abrir la página de productos de la web real: https://pani-abi-platform.vercel.app/products.
+2. Mirar los productos que ya existen: los precios enteros deben verse sin ",00" y conservar el punto de los miles. Por ejemplo, un precio de 1500 pesos se verá como "$ 1.500".
+3. Si entre los productos existentes hay precios con centavos, comprobar que siguen mostrando dos decimales. Por ejemplo, 1250 pesos con 50 centavos se verá como "$ 1.250,50".
+4. Comprobar que cada producto conserva su nombre y el mismo importe. No hace falta crear ni modificar productos para esta revisión. Los ejemplos que no estén entre los productos existentes se cubrirán con los chequeos automáticos antes de publicar.
 
 ## 6. Pasos
 
