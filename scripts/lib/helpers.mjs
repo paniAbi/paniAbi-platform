@@ -62,12 +62,16 @@ export function repoPathFromRemote(remoteUrl) {
   return match ? match[1] : null;
 }
 
-// ["--body-file", "a.md", "My", "title"] -> { bodyFile: "a.md", title: "My title" }
+// ["--draft", "--body-file", "a.md", "My", "title"]
+//   -> { bodyFile: "a.md", draft: true, title: "My title" }
 export function parseOpenPrArguments(args) {
   let bodyFile = null;
+  let draft = false;
   const titleWords = [];
   for (let index = 0; index < args.length; index += 1) {
-    if (args[index] === "--body-file") {
+    if (args[index] === "--draft") {
+      draft = true;
+    } else if (args[index] === "--body-file") {
       bodyFile = args[index + 1];
       if (!bodyFile) throw new Error("--body-file needs a file name.");
       index += 1;
@@ -75,7 +79,7 @@ export function parseOpenPrArguments(args) {
       titleWords.push(args[index]);
     }
   }
-  return { bodyFile, title: titleWords.join(" ") || null };
+  return { bodyFile, draft, title: titleWords.join(" ") || null };
 }
 
 // Vercel sets VERCEL_ENV to "production", "preview" or "development".

@@ -24,42 +24,48 @@ after the person's "ok".
    - Column, latest comments, and in the activity the latest move into
      `Approved Plan`: who made it and when.
    - Whether `docs/plans/<n>-*.md` exists (on another branch, read it with
-     `git show origin/feat/<n>-...:docs/plans/<file>`), its "Open questions
-     for Abril", its "Database change" (if it names a pull request from
-     Juan, check it with `gh pr view <number> --json state`), and the date
-     of its last commit.
+     `git show origin/feat/<n>-...:docs/plans/<file>`), its open questions
+     for Abril ("Preguntas abiertas para Abril"; "Open questions for Abril"
+     in older plans), its database section ("Información nueva para
+     guardar"; "Database change" in older plans; if it names a pull request
+     from Juan, check it with `gh pr view <number> --json state`), and the
+     date of its last commit.
    - Whether a "plan ready for review" comment was posted after that last
-     plan commit, and whether Mauricio commented after it.
+     plan commit, and whether Mauricio commented after it, on the card or in
+     the review request (conversation and line comments:
+     `gh api repos/<owner>/<repo>/pulls/<number>/comments`).
    - Step commits: `git log main..origin/feat/<n>-... --oneline`. On the
      current branch, also unpushed commits: `git log @{u}..HEAD --oneline`.
    - The review request:
-     `gh pr view feat/<n>-... --json state,url,reviewDecision,mergeable,statusCheckRollup,reviews,comments`.
+     `gh pr view feat/<n>-... --json state,isDraft,url,reviewDecision,mergeable,statusCheckRollup,reviews,comments`.
+     A draft review request holds the plan for Mauricio; it becomes ready
+     for Juan only with open-pr.
      If `gh` does not work, say you cannot see GitHub instead of guessing.
 3. For each card, use the first row that matches. "Approved" means the latest
    move into `Approved Plan` was made by `mauriciocuello3` after the last
    plan commit; a comment or a move by someone else does not count.
 
-   | State                                                                        | Tell them                                                           | Next                                  |
-   | ---------------------------------------------------------------------------- | ------------------------------------------------------------------- | ------------------------------------- |
-   | Unsaved changes on the current branch                                        | Name the files                                                      | Usually implement-ticket              |
-   | Saved changes not on GitHub yet                                              | Say what they are; only on this computer                            | Offer to push (step 4)                |
-   | Review request merged                                                        | The card is finished                                                | Offer to close it (step 4)            |
-   | Review request closed without merging                                        | It was closed                                                       | ask-for-help (Juan)                   |
-   | Review request open, with conflicts                                          | It clashes with newer changes                                       | sync-branch                           |
-   | Review request open, an automatic check failed                               | A check failed on GitHub                                            | check-work                            |
-   | Review request open, changes requested or Juan commented after the last push | Juan answered                                                       | address-review                        |
-   | Review request open and approved                                             | Juan approved it and will merge it                                  | Wait                                  |
-   | Review request open, no review yet                                           | Waiting for Juan                                                    | Wait                                  |
-   | In `Approved Plan` or later, but not approved (see above)                    | Not approved yet, and why (who moved it, or the plan changed after) | ask-for-help (Mauricio)               |
-   | Approved, plan steps missing                                                 | Ready to build, or k of N steps done                                | implement-ticket                      |
-   | Approved, every plan step saved, no review request                           | Finished building                                                   | check-work, then open-pr              |
-   | `Planning`, no plan file                                                     | The plan is not written                                             | plan-ticket                           |
-   | `Planning`, open questions for Abril                                         | Waiting for Abril's answers                                         | Ask Abril, then plan-ticket           |
-   | `Planning`, Juan's database pull request not merged                          | Waiting for Juan                                                    | Wait                                  |
-   | `Planning`, Mauricio commented after the last plan commit                    | Mauricio asked for changes                                          | plan-ticket                           |
-   | `Planning`, plan complete but not sent to Mauricio                           | The plan is ready to send                                           | plan-ticket                           |
-   | `Planning`, plan sent, no new comments                                       | Waiting for Mauricio                                                | Wait                                  |
-   | No cards in progress, on `main`                                              | No card in progress                                                 | start-ticket with a card from `To Do` |
+   | State                                                                              | Tell them                                                           | Next                                  |
+   | ---------------------------------------------------------------------------------- | ------------------------------------------------------------------- | ------------------------------------- |
+   | Unsaved changes on the current branch                                              | Name the files                                                      | Usually implement-ticket              |
+   | Saved changes not on GitHub yet                                                    | Say what they are; only on this computer                            | Offer to push (step 4)                |
+   | Review request merged                                                              | The card is finished                                                | Offer to close it (step 4)            |
+   | Review request closed without merging                                              | It was closed                                                       | ask-for-help (Juan)                   |
+   | Review request open (draft or ready), with conflicts                               | It clashes with newer changes                                       | sync-branch                           |
+   | Review request ready, an automatic check failed                                    | A check failed on GitHub                                            | check-work                            |
+   | Review request ready, changes requested or Juan commented after the last push      | Juan answered                                                       | address-review                        |
+   | Review request ready and approved                                                  | Juan approved it and will merge it                                  | Wait                                  |
+   | Review request ready, no review yet                                                | Waiting for Juan                                                    | Wait                                  |
+   | In `Approved Plan` or later, but not approved (see above)                          | Not approved yet, and why (who moved it, or the plan changed after) | ask-for-help (Mauricio)               |
+   | Approved, plan steps missing                                                       | Ready to build, or k of N steps done                                | implement-ticket                      |
+   | Approved, every plan step saved, review request still a draft (or missing)         | Finished building                                                   | check-work, then open-pr              |
+   | `Planning`, no plan file                                                           | The plan is not written                                             | plan-ticket                           |
+   | `Planning`, open questions for Abril                                               | Waiting for Abril's answers                                         | Ask Abril, then plan-ticket           |
+   | `Planning`, Juan's database pull request not merged                                | Waiting for Juan                                                    | Wait                                  |
+   | `Planning`, Mauricio commented after the last plan commit (card or review request) | Mauricio asked for changes                                          | plan-ticket                           |
+   | `Planning`, plan complete but no draft review request or no comment for Mauricio   | The plan is ready to send                                           | plan-ticket                           |
+   | `Planning`, plan sent, no new comments                                             | Waiting for Mauricio                                                | Wait                                  |
+   | No cards in progress, on `main`                                                    | No card in progress                                                 | start-ticket with a card from `To Do` |
 
    If other rows also match (for example a failed check behind a conflict),
    mention them in one line so nothing is hidden. If they have more than one

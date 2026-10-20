@@ -106,11 +106,31 @@ describe("parseOpenPrArguments", () => {
   it("reads --body-file and a title", () => {
     expect(
       parseOpenPrArguments(["--body-file", ".git/PR_BODY.md", "My", "title"]),
-    ).toEqual({ bodyFile: ".git/PR_BODY.md", title: "My title" });
+    ).toEqual({
+      bodyFile: ".git/PR_BODY.md",
+      draft: false,
+      title: "My title",
+    });
   });
 
-  it("returns nulls when nothing is passed", () => {
-    expect(parseOpenPrArguments([])).toEqual({ bodyFile: null, title: null });
+  it("reads --draft together with --body-file and a title", () => {
+    expect(
+      parseOpenPrArguments([
+        "--draft",
+        "--body-file",
+        ".git/PR_BODY.md",
+        "My",
+        "title",
+      ]),
+    ).toEqual({ bodyFile: ".git/PR_BODY.md", draft: true, title: "My title" });
+  });
+
+  it("returns defaults when nothing is passed", () => {
+    expect(parseOpenPrArguments([])).toEqual({
+      bodyFile: null,
+      draft: false,
+      title: null,
+    });
   });
 
   it("rejects --body-file without a file", () => {

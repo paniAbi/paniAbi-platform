@@ -1,5 +1,8 @@
 // Push your branch and open its pull request, or update it if it already exists.
-// Usage: node scripts/git-open-pr.mjs [--body-file <file>] ["optional title"]
+// With --draft, the pull request is opened as a draft (the plan, for Mauricio).
+// Without it, an existing draft gets the new description and is marked ready
+// for review, which asks Juan for a review.
+// Usage: node scripts/git-open-pr.mjs [--draft] [--body-file <file>] ["optional title"]
 import { existsSync, readdirSync } from "node:fs";
 import process from "node:process";
 import {
@@ -89,22 +92,47 @@ if (!git(["push", "-u", "origin", branch]).ok) {
 if (run("gh", ["auth", "status"], { capture: true }).ok) {
   const existing = run(
     "gh",
-    [
-      "pr",
-      "view",
-      branch,
-      "--json",
-      "url,state",
-      "--jq",
-      'select(.state == "OPEN") | .url',
-    ],
+    ["pr", "view", branch, "--json", "url,state,isDraft"],
     { capture: true },
   );
-  if (existing.ok && existing.stdout) {
+  const pullRequest = existing.ok ? JSON.parse(existing.stdout) : null;
+  if (pullRequest?.state === "OPEN") {
+    if (!pullRequest.isDraft || options.draft) {
+      console.log(
+        [
+          "The pull request already exists and now has your new commits:",
+          `    ${pullRequest.url}`,
+        ].join("\n"),
+      );
+      process.exit(0);
+    }
+
+    if (options.bodyFile) {
+      const edited = run(
+        "gh",
+        ["pr", "edit", branch, "--body-file", options.bodyFile],
+        { capture: true, showErrors: true },
+      );
+      if (!edited.ok) {
+        stop(
+          "ERROR: GitHub did not accept the new description. Ask Juan for help.",
+        );
+      }
+    }
+    const ready = run("gh", ["pr", "ready", branch], {
+      capture: true,
+      showErrors: true,
+    });
+    if (!ready.ok) {
+      stop(
+        "ERROR: GitHub did not mark the pull request as ready. Ask Juan for help.",
+      );
+    }
     console.log(
       [
-        "The pull request already exists and now has your new commits:",
-        `    ${existing.stdout}`,
+        "Done. Your pull request is now ready for review:",
+        `    ${pullRequest.url}`,
+        "Juan was asked for a review.",
       ].join("\n"),
     );
     process.exit(0);
@@ -124,6 +152,7 @@ if (run("gh", ["auth", "status"], { capture: true }).ok) {
       title,
       "--body-file",
       bodyFile,
+      ...(options.draft ? ["--draft"] : []),
     ],
     { capture: true, showErrors: true },
   );
@@ -132,9 +161,13 @@ if (run("gh", ["auth", "status"], { capture: true }).ok) {
   }
   console.log(
     [
-      "Done. Your pull request is here:",
+      options.draft
+        ? "Done. Your draft pull request is here:"
+        : "Done. Your pull request is here:",
       `    ${created.stdout}`,
-      "Ask Juan for a review.",
+      options.draft
+        ? "Mauricio can comment on the plan there."
+        : "Ask Juan for a review.",
     ].join("\n"),
   );
   process.exit(0);
@@ -156,5 +189,11 @@ console.log(
     "",
     `Title:        ${title}`,
     `Description:  copy the contents of ${bodyFile}`,
+    ...(options.draft
+      ? [
+          "",
+          'Open the arrow next to "Create pull request" and pick "Create draft pull request".',
+        ]
+      : []),
   ].join("\n"),
 );

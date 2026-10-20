@@ -12,9 +12,11 @@ person's agreement.
 
 ## Before you start
 
-The branch is `feat/<n>-<description>` and has an open review request:
-`gh pr view --json url,state,reviewDecision`. If `gh` is not available, ask
-the person to paste Juan's comments.
+The branch is `feat/<n>-<description>` and has an open review request that
+is ready for review, not a draft:
+`gh pr view --json url,state,isDraft,reviewDecision`. Comments on a draft are
+Mauricio's comments on the plan: use plan-ticket instead. If `gh` is not
+available, ask the person to paste Juan's comments.
 
 ## Steps
 
@@ -27,7 +29,8 @@ the person to paste Juan's comments.
 
    The second command returns comments on specific lines. Take
    `<owner>/<repo>` from `git remote get-url origin`. Only Juan's comments
-   count: skip comments from bots (for example `vercel[bot]`), and comments
+   count: skip comments from bots (for example `vercel[bot]`), Mauricio's
+   comments on the plan from when it was a draft, and comments
    already handled by a later `(review, #<n>)` commit or by a reply. Tell the
    person which ones were already done.
 

@@ -38,15 +38,22 @@ are before going on.
 ## Steps
 
 1. Move the card to `In Progress` if it is not there yet.
-2. Read part 2 of the plan and `docs/code-patterns.md`.
+2. Read the plan ("Pasos", "Qué vamos a probar", "Fuera de esta tarjeta";
+   part 2 in older English plans) and `docs/code-patterns.md`.
 3. Find where you are: `git log main..HEAD --oneline`. Steps already done have
    commits ending in `(step k/N, #n)`.
 4. For each remaining step `k` of `N`:
    1. Say in one or two sentences what this step changes for Abril. Wait for
       "ok".
-   2. Read the Next.js 16 guide under `node_modules/next/dist/docs/` for what
-      this step uses.
-   3. Write the test first. Run `npx vitest run <test file>` and confirm it
+   2. Decide how to build the step, following `docs/code-patterns.md` and
+      only inside what the plan allows: no new dependencies, nothing in
+      `prisma/`, nothing outside the step. Read the Next.js 16 guide under
+      `node_modules/next/dist/docs/` for what it uses. These decisions are
+      yours: do not ask the person to choose between technical options, and
+      write the ones Juan should know about in the commit message body
+      (open-pr lists them for him).
+   3. Write the test first, covering the cases of "Qué vamos a probar" that
+      belong to this step. Run `npx vitest run <test file>` and confirm it
       fails for the expected reason. Tell them: "I wrote an automatic check
       that describes how it should work. It fails because we haven't built it
       yet."
