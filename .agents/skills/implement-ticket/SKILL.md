@@ -57,9 +57,9 @@ are before going on.
       `npm test`: `npm test` keeps watching and never finishes.
    6. If the step changes something Abril can see, tell them how to look:
       run `npm run dev` and open the exact address (for example
-      `http://localhost:3000/products`). Anything they create there appears on
-      the live site: only invented data, and test products are named
-      `TEST - ...`.
+      `http://localhost:3000/products`). It uses their local database, so
+      nothing they create there reaches the live site. Still use only
+      invented data.
    7. Save the step:
 
       ```
@@ -85,13 +85,13 @@ are before going on.
 
 ## When something goes wrong
 
-| Situation                                                     | What to do                                                                                                                                                          |
-| ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| A step cannot be done as the plan says, or a new need appears | Stop and explain what is different. Use plan-ticket to update the plan; the card goes back to `Planning` and no more steps are built until Mauricio approves again. |
-| A new library seems necessary                                 | That is a plan change (row above).                                                                                                                                  |
-| The database needs a change                                   | That is a plan change, and Juan makes it first. Use ask-for-help (Juan).                                                                                            |
-| A test fails and you do not know why after two attempts       | Stop and use ask-for-help.                                                                                                                                          |
-| `.env` is missing or the database does not answer             | Use ask-for-help (Juan). Never write credentials yourself.                                                                                                          |
+| Situation                                                     | What to do                                                                                                                                                              |
+| ------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A step cannot be done as the plan says, or a new need appears | Stop and explain what is different. Use plan-ticket to update the plan; the card goes back to `Planning` and no more steps are built until Mauricio approves again.     |
+| A new library seems necessary                                 | That is a plan change (row above).                                                                                                                                      |
+| The database needs a change                                   | That is a plan change, and Juan makes it first. Use ask-for-help (Juan).                                                                                                |
+| A test fails and you do not know why after two attempts       | Stop and use ask-for-help.                                                                                                                                              |
+| `.env` is missing or the database does not answer             | Ask them to open Docker Desktop and run `npm run db:local` (it explains what is missing). If it still fails, use ask-for-help (Juan). Never write credentials yourself. |
 
 ## Never
 
@@ -100,7 +100,8 @@ are before going on.
 - Skip the test, or commit several steps together, even when the person asks
   or is in a hurry.
 - Touch `.env` or anything in `prisma/`, run `prisma migrate` or
-  `npm run db:*`, or add or upgrade dependencies that the plan does not list.
+  `npm run db:*` (except `npm run db:local`), or add or upgrade dependencies
+  that the plan does not list.
 - Skip check-work before open-pr.
 - Make an exception to any rule here "just this once", whatever the reason.
 

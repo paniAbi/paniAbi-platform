@@ -9,11 +9,11 @@ A product and operations workspace for the paniAbi bakery team.
 ## Stack
 
 Next.js App Router, TypeScript, React, Tailwind CSS, shadcn/ui, Prisma,
-PostgreSQL on Neon, Zod, React Hook Form, Vitest, ESLint and Prettier.
+PostgreSQL (Neon online, Docker on your computer), Zod, React Hook Form, Vitest, ESLint and Prettier.
 
 ## 1. Install the tools (once per computer)
 
-You need four programs. After installing each one, run its check command in
+You need five programs. After installing each one, run its check command in
 a new terminal; it must print a version (or "Logged in") without errors.
 
 | Tool                  | Windows                                            | macOS                                                                       | Check               |
@@ -22,9 +22,14 @@ a new terminal; it must print a version (or "Logged in") without errors.
 | nvm (Node versions)   | `winget install --id CoreyButler.NVMforWindows -e` | [nvm install script](https://github.com/nvm-sh/nvm#installing-and-updating) | `nvm --version`     |
 | Node 22 (through nvm) | `nvm install 22` then `nvm use 22`                 | `nvm install` then `nvm use` (reads `.nvmrc`)                               | `node -v` → `v22.x` |
 | GitHub CLI            | `winget install --id GitHub.cli -e`                | `brew install gh`                                                           | `gh auth status`    |
+| Docker Desktop        | `winget install --id Docker.DockerDesktop -e`      | `brew install --cask docker`                                                | `docker info`       |
 
 Then sign in to GitHub once with `gh auth login` (choose GitHub.com, HTTPS,
 and "Login with a web browser").
+
+Open Docker Desktop once after installing it and accept its terms. It must be
+running whenever you work on the app, because your local database lives in
+it.
 
 Close and reopen the terminal after installing, so it finds the new programs.
 
@@ -49,16 +54,20 @@ Close and reopen the terminal after installing, so it finds the new programs.
    cp .env.example .env
    ```
 
-   Juan sends you two URLs privately (never in GitHub or Trello: this
-   repository is public). Paste them in `.env`, inside the quotes that are
-   already there: `DATABASE_URL` (the host contains `-pooler`) and
-   `DIRECT_URL` (without `-pooler`). Paste only the text that starts with
-   `postgresql://`.
+   It already points at your local database: you do not need any URL from
+   Juan.
 
-   The database is already set up: you do not need to create tables or add
-   sample data.
+4. With Docker Desktop open, create your local database with the tables and
+   sample products:
 
-4. Start the app and open http://localhost:3000/products:
+   ```bash
+   npm run db:local
+   ```
+
+   Run it again whenever the database is stopped (for example after
+   restarting the computer). It never erases data.
+
+5. Start the app and open http://localhost:3000/products:
 
    ```bash
    npm run dev
@@ -72,6 +81,7 @@ Close and reopen the terminal after installing, so it finds the new programs.
 | ------------------------------------------- | ---------------------------------------------- |
 | Start a ticket (creates your branch)        | `npm run ticket:start -- 42 product list page` |
 | Bring the latest `main` into your branch    | `npm run git:sync`                             |
+| Start the local database                    | `npm run db:local`                             |
 | Run the app                                 | `npm run dev`                                  |
 | Run every check CI runs (do it before a PR) | `npm run check`                                |
 | Push your branch and open the pull request  | `npm run git:pr`                               |
@@ -80,33 +90,33 @@ The full flow (plan, approval, review) is in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## 4. Databases
 
-Each Neon branch has one name and one job:
+Each database has one job:
 
-| Neon branch  | Used by                                                       |
-| ------------ | ------------------------------------------------------------- |
-| `production` | The live site, and Flor's and Jesi's computers.               |
-| `dev`        | Pull request previews, and Juan when he prepares a migration. |
-| `ci`         | GitHub Actions.                                               |
+| Database          | Used by                                   |
+| ----------------- | ----------------------------------------- |
+| Local (Docker)    | Everyone's computer (`npm run db:local`). |
+| Neon `production` | The live site.                            |
+| Neon `dev`        | Pull request previews.                    |
+| Neon `ci`         | GitHub Actions.                           |
 
-When you run the app on your computer you use the **same database as the
-live site**:
+When you run the app on your computer you use **your own local database**:
 
-- Anything you create while testing appears on the live site. Only invented
-  data, and name test products `TEST - ...`.
+- Nothing you create while testing reaches the live site. Still use only
+  invented data.
 - **Only Juan changes the database structure.** Do not edit
   `prisma/schema.prisma`, `prisma/migrations/` or `prisma/seed.ts`, and do
   not run `npm run db:migrate`, `npm run db:seed` or any `prisma migrate` /
-  `prisma db push` command. If your feature needs a new field or table,
-  stop and ask Juan; he adds it first in his own pull request.
+  `prisma db push` command. `npm run db:local` is the one database command
+  for everyone. If your feature needs a new field or table, stop and ask
+  Juan; he adds it first in his own pull request.
 
 ### Database changes (Juan only)
 
-1. Point your `.env` at the `dev` branch.
+1. Keep your `.env` on the local database.
 2. Change `prisma/schema.prisma` and run `npm run db:migrate`: it creates the
-   migration file and applies it to `dev`.
+   migration file and applies it to your local database.
 3. Open a pull request. Its preview migrates `dev`; the merge migrates
    `production` (`scripts/vercel-build.mjs`).
-4. Point your `.env` back at `production`.
 
 **Migrations only add.** Adding tables or columns is safe. Deleting or
 renaming something goes in a second pull request, once no code uses the old
@@ -136,7 +146,12 @@ builds. Never run `prisma migrate dev` or `prisma migrate reset` with the
 | `Environment variable not found: DATABASE_URL`                               | You have no `.env` file. Do step 3 of section 2.                                                                   |
 | `the URL must start with the protocol postgresql://`                         | The URL in `.env` has extra text. Keep only the part that starts with `postgresql://`.                             |
 | `Cannot find module '.prisma/client'` or `@prisma/client did not initialize` | Run `npx prisma generate`.                                                                                         |
-| `The table ... does not exist`                                               | Do not try to fix the database yourself. Ask Juan.                                                                 |
+| `The table ... does not exist`                                               | Run `npm run db:local`. If it still happens, ask Juan.                                                             |
+| `STOP: Docker is not running`                                                | Open Docker Desktop, wait until it says it is running, and run `npm run db:local` again.                           |
+| `Can't reach database server at localhost:5432`                              | Your local database is stopped. Open Docker Desktop and run `npm run db:local`.                                    |
+| `STOP: DATABASE_URL in .env does not point at this computer`                 | Your `.env` still has Neon URLs. Replace it with the example: `cp .env.example .env`.                              |
+| `port is already allocated` or `address already in use` for port 5432        | Another PostgreSQL is running on your computer. Stop it (macOS: `brew services stop postgresql`) or ask Juan.      |
+| You want to start again with only the sample products                        | `docker compose down -v` erases only your local database. Then run `npm run db:local`.                             |
 | `Port 3000 is in use`                                                        | Another `npm run dev` is still running. Close that terminal, or open the address Next.js prints instead.           |
 | A command works in PowerShell but not in Git Bash (or the other way)         | Environment variables are set differently: `export NAME='value'` in Git Bash, `$env:NAME = "value"` in PowerShell. |
 

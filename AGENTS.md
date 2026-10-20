@@ -109,10 +109,13 @@ shortcuts it lists (`npm run dev`, `npm run check`) instead of calling
 
 ## Databases: only Juan changes them
 
-Flor and Jesi run the app against the `production` database, the same one
-the live site uses. Their tickets are about design and features in the web
-app, never about the database structure.
+Everyone runs the app against their own local database in Docker
+(`docker-compose.yml`). Flor's and Jesi's tickets are about design and
+features in the web app, never about the database structure.
 
+- `npm run db:local` is the only database command Flor and Jesi may run. It
+  starts the local database and adds the tables and sample products, and it
+  refuses to run unless `.env` points at this computer.
 - Do not edit `prisma/schema.prisma`, anything in `prisma/migrations/`, or
   `prisma/seed.ts`.
 - Do not run `prisma migrate` (any subcommand), `prisma db push`,
@@ -121,11 +124,12 @@ app, never about the database structure.
 - If a task needs a new field, table or sample data, stop and tell the person
   to ask Juan. Do not work around it (for example by storing data in a file
   or in another field).
-- Anything created while testing locally appears on the live site: only
-  invented data, and name test products `TEST - ...`.
-- Neon branches: `production` (live site and Flor's and Jesi's computers),
-  `dev` (pull request previews and Juan's migrations), `ci` (GitHub
-  Actions). Vercel migrates `production` and `dev` itself
+- Keep `.env` pointing at the local database (`.env.example`). Only when
+  Juan asks for it does someone point it at Neon; then anything they create
+  appears on that database: only invented data, and name test products
+  `TEST - ...`.
+- Neon branches: `production` (live site), `dev` (pull request previews),
+  `ci` (GitHub Actions). Vercel migrates `production` and `dev` itself
   (`scripts/vercel-build.mjs`).
 - When Juan asks for a migration: it only adds tables or columns. Deleting or
   renaming goes in a second pull request, once no code uses the old name.

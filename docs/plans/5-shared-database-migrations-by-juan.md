@@ -2,6 +2,10 @@
 
 Trello card: https://trello.com/c/YWqLlisF/5-base-compartida-y-migraciones-solo-por-juan
 
+> **Replaced in part by #8:** computers now use a local Docker database
+> (`npm run db:local`) instead of `production`, and Juan prepares migrations
+> against it instead of `dev`. See `docs/plans/8-local-docker-database.md`.
+
 ## Goal
 
 1. Flor and Jesi run the app on their computers against the same database as

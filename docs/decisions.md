@@ -50,7 +50,8 @@ The CLI and client must stay on the same exact version:
    DATABASE_URL='postgresql://user:pass@localhost:5432/neondb' DIRECT_URL='postgresql://user:pass@localhost:5432/neondb' npx prisma generate
    ```
 
-5. Test migrations only against your own disposable Neon branch. Confirm the
+5. Test migrations only against your local Docker database
+   (`npm run db:local`), never against a Neon branch. Confirm the
    pooled URL is used by the application and the direct URL is used for
    migrations.
 6. Run `npm run lint`, `npx tsc --noEmit`, `npm run test -- --run`,
