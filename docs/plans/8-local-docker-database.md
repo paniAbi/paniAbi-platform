@@ -92,3 +92,12 @@ Trello card: https://trello.com/c/Ckh1OHEY/8-base-de-datos-local-con-docker-para
     `.env.example`; until they do, they still use `production`.
 
 ## 3. Changes after approval
+
+- 2026-10-19 — `npm run db:local` also runs `npx prisma generate` before the
+  seed: on a fresh `npm ci` the Prisma client does not exist yet and
+  `prisma/seed.ts` fails with `MODULE_NOT_FOUND`.
+- 2026-10-19 — Juan checked the Neon console: the project runs Postgres
+  **18**, not 17. `docker-compose.yml` now uses `postgres:18.6`, and the
+  volume is mounted at `/var/lib/postgresql`, where Postgres 18+ images keep
+  their data. Anyone who already created the local database with 17 must
+  erase it once (`docker compose down -v`) and run `npm run db:local` again.
