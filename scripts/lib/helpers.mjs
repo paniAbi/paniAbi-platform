@@ -85,3 +85,14 @@ export function parseOpenPrArguments(args) {
 export function shouldMigrate(vercelEnv) {
   return vercelEnv === "production" || vercelEnv === "preview";
 }
+
+// True only for a database on this computer (the Docker one from
+// docker-compose.yml), so local-only commands never reach Neon.
+// "postgresql://u:p@localhost:5432/db" -> true, a neon.tech URL -> false
+export function isLocalDatabaseUrl(url) {
+  try {
+    return ["localhost", "127.0.0.1", "[::1]"].includes(new URL(url).hostname);
+  } catch {
+    return false;
+  }
+}
