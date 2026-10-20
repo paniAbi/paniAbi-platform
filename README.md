@@ -75,6 +75,43 @@ Close and reopen the terminal after installing, so it finds the new programs.
 
    Stop it with `Ctrl+C`.
 
+### Already had the app running before the local database?
+
+Until October 2026 everyone's `.env` pointed at the live site's database.
+If you set up the app before then, move to your own local database once:
+
+1. Install Docker Desktop if you do not have it (section 1), open it, and
+   wait until it says **Engine running**.
+2. Get the latest version of the project:
+
+   ```bash
+   git switch main
+   npm run git:sync
+   ```
+
+3. Replace your `.env` with the example. **Run this yourself** (your coding
+   agent will not edit `.env`). It removes the old live-site URLs; you do
+   not need them anymore.
+
+   ```bash
+   cp .env.example .env
+   ```
+
+4. Create your local database with the tables and sample products:
+
+   ```bash
+   npm run db:local
+   ```
+
+5. Start the app and open http://localhost:3000/products:
+
+   ```bash
+   npm run dev
+   ```
+
+   You see the sample products. From now on, nothing you create on your
+   computer reaches the live site.
+
 ## 3. Day-to-day commands
 
 | What you want to do                         | Command                                        |
