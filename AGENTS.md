@@ -13,7 +13,9 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 This is a public repository for the paniAbi bakery platform. Abril runs the
 bakery and is our client. Write all repository content — code, comments,
 documentation, branch names, commit messages and pull requests — in English.
-All sample data must be invented.
+The one exception is plans: plan files in `docs/plans/` and Mauricio's
+comments on them are written in Spanish, in product language (see
+"Plans"). All sample data must be invented.
 
 ## Who is on the other side
 
@@ -27,7 +29,8 @@ every change, but you write the code.
 
 ## Talking with Flor and Jesi
 
-- Reply in the language they write in. Files you write stay in English.
+- Reply in the language they write in. Files you write stay in English,
+  except plans (Spanish).
 - Talk about what changes for Abril or the bakery, never about how the code is
   built.
 - Use this vocabulary and nothing more technical. The first time a word
@@ -80,7 +83,9 @@ Examples:
   Only `platform` cards use the skills below.
 - Plan approver: Trello user `mauriciocuello3`. A plan is approved only when
   the card is in `Approved Plan`, the move was made by `mauriciocuello3`, and
-  the plan file has not changed since that move.
+  the plan file has not changed since that move. Mauricio discusses the plan
+  in its draft pull request, but only the move approves it: a GitHub
+  "Approve" does not count.
 - Juan's Trello user: `blacky57`.
 
 ## Workflow
@@ -149,10 +154,24 @@ features in the web app, never about the database structure.
 - Add version ranges (`^`, `~`) in `package.json`.
 - Create branches or pull requests by hand. Use the scripts in `scripts/`.
 
+## Plans
+
+- Follow `docs/plans/_template.md`. The whole plan is in Spanish and in
+  product language: what changes for Abril, expected behaviour with concrete
+  examples, what will be tested (in words), steps. No file names, functions
+  or code, so Flor and Jesi can contribute to every part of it.
+- When the plan is ready, it is opened as a draft pull request
+  (`node scripts/git-open-pr.mjs --draft`). Mauricio comments on it there.
+  The same pull request later receives the step commits and is marked ready
+  for Juan by open-pr.
+
 ## Writing code
 
-- Before planning or implementing, read `docs/code-patterns.md` and the
-  relevant Next.js 16 guide under `node_modules/next/dist/docs/`.
+- Before implementing, read `docs/code-patterns.md` and the relevant Next.js
+  16 guide under `node_modules/next/dist/docs/`.
+- You make the technical decisions while building, inside what the approved
+  plan allows: its steps and test cases, no new dependencies, no database
+  changes. open-pr lists those decisions for Juan.
 - Make the smallest change that solves the card.
 - Every behaviour change gets a test.
 - Commit messages follow Conventional Commits: `feat:`, `fix:`, `test:`,
