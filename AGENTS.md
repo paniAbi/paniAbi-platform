@@ -124,6 +124,11 @@ features in the web app, never about the database structure.
 - If a task needs a new field, table or sample data, stop and tell the person
   to ask Juan. Do not work around it (for example by storing data in a file
   or in another field).
+- If `.env` points at Neon (a `neon.tech` host, or `npm run db:local` says
+  "does not point at this computer"), the person set up the app before the
+  local database existed. Tell them, and ask them to follow "Already had the
+  app running before the local database?" in `README.md`. They run
+  `cp .env.example .env` themselves; never edit or replace `.env` yourself.
 - Keep `.env` pointing at the local database (`.env.example`). Only when
   Juan asks for it does someone point it at Neon; then anything they create
   appears on that database: only invented data, and name test products
