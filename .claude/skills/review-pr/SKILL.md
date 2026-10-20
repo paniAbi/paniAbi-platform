@@ -14,15 +14,18 @@ each one must say concretely what to change and why.
 
 ## Steps
 
-1. Read the pull request:
+1. Read the pull request. If it is still a draft, it holds a plan waiting
+   for Mauricio (or steps being built): tell Juan and stop.
 
    ```
-   gh pr view <number> --json number,title,body,headRefName,files,commits
+   gh pr view <number> --json number,title,body,isDraft,headRefName,files,commits
    gh pr diff <number>
    gh pr checks <number>
    ```
 
-2. Read the plan from the branch:
+2. Read the plan from the branch. It is in Spanish and product-only: steps,
+   expected behaviour and the cases to test, with no technical design (older
+   plans are in English with a technical part 2).
 
    ```
    git fetch origin
@@ -36,8 +39,12 @@ each one must say concretely what to change and why.
 4. Review:
    - Every plan step is implemented, one commit per step
      (`(step k/N, #n)`), and nothing outside the plan unless it is recorded
-     under "Changes after approval".
-   - Each behaviour change has a test that checks behaviour.
+     under "Cambios después de la aprobación".
+   - Each behaviour change has a test that checks behaviour, and every case
+     in "Qué vamos a probar" has one.
+   - The technical decisions listed in "Notes for the reviewer" (and any
+     that are not listed) are sound and stay inside the plan: no new
+     dependencies or changes outside its steps.
    - `docs/code-patterns.md` is followed.
    - No real customer data, no `.env`, no secrets; versions stay exact.
    - Nothing in `prisma/` changed: only Juan changes the database.
