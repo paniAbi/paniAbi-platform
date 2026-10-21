@@ -23,6 +23,7 @@ describe("ProductList", () => {
     expect(screen.getByText("$ 800")).toBeInTheDocument();
     expect(screen.getByText("$ 1.500")).toBeInTheDocument();
     expect(screen.getByText("$ 800,05")).toBeInTheDocument();
+    expect(screen.queryByText("Available for sale")).not.toBeInTheDocument();
   });
 
   it("shows an empty state when there are no products", () => {

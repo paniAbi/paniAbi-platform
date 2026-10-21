@@ -42,9 +42,6 @@ export function ProductList({ products }: ProductListProps) {
                 <h2 className="truncate font-medium text-[#263a31]">
                   {product.name}
                 </h2>
-                <p className="mt-1 text-xs text-[#899089]">
-                  Available for sale
-                </p>
               </div>
               <p className="shrink-0 font-medium text-[#263a31] tabular-nums">
                 {formatPesos(product.priceCents)}
