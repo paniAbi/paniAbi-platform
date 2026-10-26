@@ -95,6 +95,7 @@ Examples:
 | Start a card                | `start-ticket`     |
 | Write or revise the plan    | `plan-ticket`      |
 | Build the approved plan     | `implement-ticket` |
+| See the change working      | `try-it-out`       |
 | Run the automatic checks    | `check-work`       |
 | Bring in the latest changes | `sync-branch`      |
 | Open the review request     | `open-pr`          |

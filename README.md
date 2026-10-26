@@ -114,14 +114,15 @@ If you set up the app before then, move to your own local database once:
 
 ## 3. Day-to-day commands
 
-| What you want to do                         | Command                                        |
-| ------------------------------------------- | ---------------------------------------------- |
-| Start a ticket (creates your branch)        | `npm run ticket:start -- 42 product list page` |
-| Bring the latest `main` into your branch    | `npm run git:sync`                             |
-| Start the local database                    | `npm run db:local`                             |
-| Run the app                                 | `npm run dev`                                  |
-| Run every check CI runs (do it before a PR) | `npm run check`                                |
-| Push your branch and open the pull request  | `npm run git:pr`                               |
+| What you want to do                         | Command                                           |
+| ------------------------------------------- | ------------------------------------------------- |
+| Start a ticket (creates your branch)        | `npm run ticket:start -- 42 product list page`    |
+| Bring the latest `main` into your branch    | `npm run git:sync`                                |
+| Start the local database                    | `npm run db:local`                                |
+| Run the app                                 | `npm run dev`                                     |
+| Run every check CI runs (do it before a PR) | `npm run check`                                   |
+| See your change working (with your agent)   | Tell it "Quiero verlo funcionando" (`try-it-out`) |
+| Push your branch and open the pull request  | `npm run git:pr`                                  |
 
 The full flow (plan, approval, review) is in [CONTRIBUTING.md](CONTRIBUTING.md).
 
