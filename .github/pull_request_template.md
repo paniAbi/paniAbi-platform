@@ -19,6 +19,7 @@ Plan: docs/plans/
 
 - [ ] The plan was approved before I started
 - [ ] `node scripts/check.mjs` passes (the same checks as CI)
+- [ ] I tried it on my computer following "Cómo lo comprueba Abril" (or: not applicable, this card changes nothing visible)
 - [ ] I added or updated a test for this change
 - [ ] No real customer data is committed (this repository is public)
 

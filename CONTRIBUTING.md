@@ -33,17 +33,18 @@ You work by telling your agent (Codex or Claude Code) what you want, in your
 own words. Each step has a skill that knows how to do it safely; the agent
 picks it for you.
 
-| You say                        | What happens                                                                  | Skill              |
-| ------------------------------ | ----------------------------------------------------------------------------- | ------------------ |
-| "I want to start card 42"      | The agent explains the card, creates your branch, moves the card to Planning  | `start-ticket`     |
-| "Let's write the plan"         | You agree on how it should work for Abril; the plan opens as a draft PR       | `plan-ticket`      |
-| "Let's start building"         | Only after Mauricio approves: one step at a time, test first, one commit each | `implement-ticket` |
-| "Is everything ok?"            | Runs lint, type check, tests and build, and explains failures                 | `check-work`       |
-| "Bring the latest changes"     | Merges `main` into your branch and helps with conflicts                       | `sync-branch`      |
-| "I'm done"                     | Marks the pull request ready for Juan and moves the card to To Check          | `open-pr`          |
-| "Juan left comments"           | Explains the review and applies the changes with you                          | `address-review`   |
-| "Where am I?" / "What's next?" | Tells you which step you are on                                               | `next-step`        |
-| "I'm stuck"                    | Writes a clear message for Juan or Mauricio on the card                       | `ask-for-help`     |
+| You say                        | What happens                                                                   | Skill              |
+| ------------------------------ | ------------------------------------------------------------------------------ | ------------------ |
+| "I want to start card 42"      | The agent explains the card, creates your branch, moves the card to Planning   | `start-ticket`     |
+| "Let's write the plan"         | You agree on how it should work for Abril; the plan opens as a draft PR        | `plan-ticket`      |
+| "Let's start building"         | Only after Mauricio approves: one step at a time, test first, one commit each  | `implement-ticket` |
+| "Quiero verlo funcionando"     | Starts the app on your computer and walks the plan's "Cómo lo comprueba Abril" | `try-it-out`       |
+| "Is everything ok?"            | Runs lint, type check, tests and build, and explains failures                  | `check-work`       |
+| "Bring the latest changes"     | Merges `main` into your branch and helps with conflicts                        | `sync-branch`      |
+| "I'm done"                     | Marks the pull request ready for Juan and moves the card to To Check           | `open-pr`          |
+| "Juan left comments"           | Explains the review and applies the changes with you                           | `address-review`   |
+| "Where am I?" / "What's next?" | Tells you which step you are on                                                | `next-step`        |
+| "I'm stuck"                    | Writes a clear message for Juan or Mauricio on the card                        | `ask-for-help`     |
 
 **The plan:** written in Spanish and only from the product side: what changes
 for Abril, how it should behave (with examples), what will be tested and how

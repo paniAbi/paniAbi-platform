@@ -62,12 +62,7 @@ are before going on.
       removing an import that is no longer used, is part of the step.
    5. Run `npx vitest run`. Every test must pass. Use `npx vitest run`, not
       `npm test`: `npm test` keeps watching and never finishes.
-   6. If the step changes something Abril can see, tell them how to look:
-      run `npm run dev` and open the exact address (for example
-      `http://localhost:3000/products`). It uses their local database, so
-      nothing they create there reaches the live site. Still use only
-      invented data.
-   7. Save the step:
+   6. Save the step:
 
       ```
       git add <the files of this step>
@@ -79,10 +74,15 @@ are before going on.
       push keeps a copy on GitHub, so nothing is lost if the computer fails.
       If it is rejected, use sync-branch. Tell them: "I saved this step."
 
+   7. If the step changes something Abril can see, offer to see it working
+      ("¿Querés verlo funcionando?") and use try-it-out if they say yes. Do
+      not give loose instructions to start the app yourself.
+
 5. Database changes are never part of this skill. If a step needs a new
    field, table or sample data that is not on `main` yet, stop: it is a plan
    change (see below), and Juan adds it first.
-6. When every step is saved, use check-work, then suggest open-pr.
+6. When every step is saved, use check-work. If the card changes something
+   visible, suggest walking the whole script with try-it-out, then open-pr.
 
 ## What to tell the person
 

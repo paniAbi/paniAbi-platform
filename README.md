@@ -114,14 +114,15 @@ If you set up the app before then, move to your own local database once:
 
 ## 3. Day-to-day commands
 
-| What you want to do                         | Command                                        |
-| ------------------------------------------- | ---------------------------------------------- |
-| Start a ticket (creates your branch)        | `npm run ticket:start -- 42 product list page` |
-| Bring the latest `main` into your branch    | `npm run git:sync`                             |
-| Start the local database                    | `npm run db:local`                             |
-| Run the app                                 | `npm run dev`                                  |
-| Run every check CI runs (do it before a PR) | `npm run check`                                |
-| Push your branch and open the pull request  | `npm run git:pr`                               |
+| What you want to do                         | Command                                           |
+| ------------------------------------------- | ------------------------------------------------- |
+| Start a ticket (creates your branch)        | `npm run ticket:start -- 42 product list page`    |
+| Bring the latest `main` into your branch    | `npm run git:sync`                                |
+| Start the local database                    | `npm run db:local`                                |
+| Run the app                                 | `npm run dev`                                     |
+| Run every check CI runs (do it before a PR) | `npm run check`                                   |
+| See your change working (with your agent)   | Tell it "Quiero verlo funcionando" (`try-it-out`) |
+| Push your branch and open the pull request  | `npm run git:pr`                                  |
 
 The full flow (plan, approval, review) is in [CONTRIBUTING.md](CONTRIBUTING.md).
 
@@ -152,7 +153,11 @@ When you run the app on your computer you use **your own local database**:
 1. Keep your `.env` on the local database.
 2. Change `prisma/schema.prisma` and run `npm run db:migrate`: it creates the
    migration file and applies it to your local database.
-3. Open a pull request. Its preview migrates `dev`; the merge migrates
+3. Add invented sample data for what you added to `prisma/seed.ts`, safe to
+   run again (for example with `upsert`), and check it with
+   `npm run db:local`. Each stage of features starts with this data card, so
+   Flor and Jesi always have data to try their changes with.
+4. Open a pull request. Its preview migrates `dev`; the merge migrates
    `production` (`scripts/vercel-build.mjs`).
 
 **Migrations only add.** Adding tables or columns is safe. Deleting or
