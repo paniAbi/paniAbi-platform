@@ -130,6 +130,12 @@ features in the web app, never about the database structure.
 - If a task needs a new field, table or sample data, stop and tell the person
   to ask Juan. Do not work around it (for example by storing data in a file
   or in another field).
+- Data cards come first. Each stage of new features (for example customers,
+  orders or recipes) starts with Juan's data card, which adds what is stored
+  **and its sample data** in `prisma/seed.ts`, so `npm run db:local` always
+  has something to try the features with. A feature card that needs data
+  from a data card that is not merged yet waits for it (plan-ticket blocks
+  it).
 - If `.env` points at Neon (a `neon.tech` host, or `npm run db:local` says
   "does not point at this computer"), the person set up the app before the
   local database existed. Tell them, and ask them to follow "Already had the
@@ -142,8 +148,10 @@ features in the web app, never about the database structure.
 - Neon branches: `production` (live site), `dev` (pull request previews),
   `ci` (GitHub Actions). Vercel migrates `production` and `dev` itself
   (`scripts/vercel-build.mjs`).
-- When Juan asks for a migration: it only adds tables or columns. Deleting or
-  renaming goes in a second pull request, once no code uses the old name.
+- When Juan asks for a migration: it only adds tables or columns, and the
+  same pull request adds invented sample data for them to `prisma/seed.ts`
+  (the seed must stay safe to run again). Deleting or renaming goes in a
+  second pull request, once no code uses the old name.
 - The site has no login yet: only invented sample data.
 
 ## Never

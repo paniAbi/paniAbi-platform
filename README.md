@@ -153,7 +153,11 @@ When you run the app on your computer you use **your own local database**:
 1. Keep your `.env` on the local database.
 2. Change `prisma/schema.prisma` and run `npm run db:migrate`: it creates the
    migration file and applies it to your local database.
-3. Open a pull request. Its preview migrates `dev`; the merge migrates
+3. Add invented sample data for what you added to `prisma/seed.ts`, safe to
+   run again (for example with `upsert`), and check it with
+   `npm run db:local`. Each stage of features starts with this data card, so
+   Flor and Jesi always have data to try their changes with.
+4. Open a pull request. Its preview migrates `dev`; the merge migrates
    `production` (`scripts/vercel-build.mjs`).
 
 **Migrations only add.** Adding tables or columns is safe. Deleting or
