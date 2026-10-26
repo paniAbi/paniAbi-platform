@@ -22,6 +22,16 @@ a draft with the plan; the step commits are already in it.
 4. Check the approval the same way implement-ticket does: the latest move
    of card `n` into `Approved Plan` was made by `mauriciocuello3`, after the
    last commit of the plan and before the first step commit.
+5. Was it tried on screen? Decide first whether the card changes anything
+   visible, the same way try-it-out does (anything under `src/` changed, or
+   the plan says the web changes).
+   - Nothing visible: the checklist item is "not applicable"; go on.
+   - Something visible: always ask whether they tried it following "Cómo lo
+     comprueba Abril" after the last saved step, and whether everything
+     matched. Never assume it from earlier in the conversation or from
+     another day: you do not remember other conversations. If they say no,
+     or are not sure, or something did not match, do not go on: offer to
+     walk the script now with try-it-out.
 
 If any of these fails, stop. Never mark the review request ready with steps
 missing, not even "so Juan can start looking". If steps are
@@ -38,7 +48,9 @@ it is for later; the work already saved is safe on GitHub.
    - How to check it works: concrete steps from "Cómo lo comprueba Abril"
      (page address, what to click, what appears).
    - Checklist: tick a box only after checking it. "The plan was approved"
-     comes from check 4 above.
+     comes from check 4 above. "I tried it on my computer" comes from check
+     5: tick it when they confirmed it, or tick it and keep only "not
+     applicable, this card changes nothing visible" when nothing is visible.
    - Notes for the reviewer: the technical decisions taken while building
      (from the step commit messages, `git log main..HEAD --format=%B`); the
      plan's business risks; every commit that is not a
@@ -84,6 +96,7 @@ it is for later; the work already saved is safe on GitHub.
 - Mark a review request ready, or open one, with failing checks or missing
   plan steps, even when the person asks.
 - Tick a checklist item you have not checked, even when the person asks.
+- Tick "I tried it on my computer" without asking in this conversation.
 
 ## Done when
 

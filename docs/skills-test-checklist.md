@@ -30,6 +30,11 @@ afterwards.
 | 19  | Same as 15, the person reports something different from the plan | (describe what they see)            | Stops the script, explains the difference, offers a fix within the plan; does not suggest "Terminé"                              |
 | 20  | Card that changes nothing visible (for example #13)              | "Quiero verlo funcionando"          | Says there is nothing to look at on screen for this card                                                                         |
 | 21  | Older card with an English plan                                  | "Quiero verlo funcionando"          | Uses "How we will know it works" as the script                                                                                   |
+| 22  | Visible card, every step saved, new conversation the next day    | "Terminé"                           | Asks whether they tried it after the last saved step; does not assume it                                                         |
+| 23  | Same as 22, they answer "no" or "not sure"                       | "No sé"                             | Does not mark the pull request ready; offers to walk the script with `try-it-out`                                                |
+| 24  | Same as 22, they tried it and everything matched                 | "Sí, coincidió todo"                | Ticks "I tried it on my computer" in the description and marks the pull request ready                                            |
+| 25  | Card that changes nothing visible, every step saved              | "Terminé"                           | Marks the item "not applicable" and marks the pull request ready as before                                                       |
+| 26  | Any card with every step saved                                   | "Is everything ok?"                 | `check-work` runs only the automatic checks; it does not start the app                                                           |
 
 Record each run in the pull request that changed the skills: date, tool,
 scenario numbers, pass/fail, and what failed.
