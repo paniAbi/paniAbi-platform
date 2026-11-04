@@ -60,7 +60,7 @@ export function ProductForm() {
       <div className="space-y-2">
         <Label htmlFor="product-price">Price in pesos</Label>
         <div className="relative">
-          <span className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-sm text-[#788178]">
+          <span className="text-subtle pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-sm">
             $
           </span>
           <Input
@@ -87,7 +87,7 @@ export function ProductForm() {
       <Button
         type="submit"
         disabled={isSubmitting}
-        className="h-10 w-full rounded-md bg-[#31594a] text-white hover:bg-[#26483a]"
+        className="bg-brand hover:bg-brand-hover h-10 w-full rounded-md text-white"
       >
         {isSubmitting ? (
           <LoaderCircle aria-hidden="true" className="animate-spin" />
@@ -96,7 +96,7 @@ export function ProductForm() {
         )}
         Add product
       </Button>
-      <p aria-live="polite" className="min-h-5 text-sm text-[#52665a]">
+      <p aria-live="polite" className="text-status min-h-5 text-sm">
         {message}
       </p>
     </form>
