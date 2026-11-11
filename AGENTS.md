@@ -113,29 +113,39 @@ Follow `README.md` to install the tools and run the app locally. Use the npm
 shortcuts it lists (`npm run dev`, `npm run check`) instead of calling
 `npx ...` directly.
 
-## Databases: only Juan changes them
+## Databases: cards bring their data, Juan approves it
 
 Everyone runs the app against their own local database in Docker
-(`docker-compose.yml`). Flor's and Jesi's tickets are about design and
-features in the web app, never about the database structure.
+(`docker-compose.yml`). When a card needs to store something new (a field,
+a table or sample data), the agent adds it while building the card, and Juan
+reviews the data model in the same pull request as the rest of the code.
+Nothing reaches `main` without his approval.
 
-- `npm run db:local` is the only database command Flor and Jesi may run. It
-  starts the local database and adds the tables and sample products, and it
-  refuses to run unless `.env` points at this computer.
-- Do not edit `prisma/schema.prisma`, anything in `prisma/migrations/`, or
-  `prisma/seed.ts`.
-- Do not run `prisma migrate` (any subcommand), `prisma db push`,
-  `prisma migrate reset`, `npm run db:migrate` or `npm run db:seed`. If a
-  command offers to reset or erase the database, answer no and stop.
-- If a task needs a new field, table or sample data, stop and tell the person
-  to ask Juan. Do not work around it (for example by storing data in a file
-  or in another field).
-- Data cards come first. Each stage of new features (for example customers,
-  orders or recipes) starts with Juan's data card, which adds what is stored
-  **and its sample data** in `prisma/seed.ts`, so `npm run db:local` always
-  has something to try the features with. A feature card that needs data
-  from a data card that is not merged yet waits for it (plan-ticket blocks
-  it).
+- The plan describes in product words what is stored, under "Información
+  nueva para guardar" (for example "a product has one category or none").
+  A card is not blocked because it needs new data.
+- Database changes are built in the first step that needs them, before the
+  screens that use them:
+  1. Run `npm run db:local` first. If it stops saying that `.env` does not
+     point at this computer, stop: never change a database that is not the
+     local one (see the `.env` rule below).
+  2. Edit `prisma/schema.prisma`, then run
+     `npm run db:migrate -- --name <short-description>`. It creates the
+     migration file and applies it to the local database.
+  3. Add invented sample data for what you added to `prisma/seed.ts`. The
+     seed must stay safe to run again. Run `npm run db:local` to check it.
+- Migrations only add tables or columns. Deleting or renaming goes in a
+  second card, once no code uses the old name.
+- If a command offers to reset or erase the database, answer no and stop.
+  Never run `prisma migrate reset`, `prisma db push`, or any database
+  command against a database that is not the local one.
+- Two cards that add data to the same thing (for example, products) are not
+  built at the same time. If the plan touches data that another card in
+  `Approved Plan` or `In Progress` also changes, say so: Mauricio orders
+  them.
+- When Juan asks for changes to the data model, address-review applies them
+  like any other comment. Until the pull request is merged, the migration
+  can still be edited.
 - If `.env` points at Neon (a `neon.tech` host, or `npm run db:local` says
   "does not point at this computer"), the person set up the app before the
   local database existed. Tell them, and ask them to follow "Already had the
@@ -148,10 +158,6 @@ features in the web app, never about the database structure.
 - Neon branches: `production` (live site), `dev` (pull request previews),
   `ci` (GitHub Actions). Vercel migrates `production` and `dev` itself
   (`scripts/vercel-build.mjs`).
-- When Juan asks for a migration: it only adds tables or columns, and the
-  same pull request adds invented sample data for them to `prisma/seed.ts`
-  (the seed must stay safe to run again). Deleting or renaming goes in a
-  second pull request, once no code uses the old name.
 - The site has no login yet: only invented sample data.
 
 ## Never
@@ -179,8 +185,9 @@ features in the web app, never about the database structure.
 - Before implementing, read `docs/code-patterns.md` and the relevant Next.js
   16 guide under `node_modules/next/dist/docs/`.
 - You make the technical decisions while building, inside what the approved
-  plan allows: its steps and test cases, no new dependencies, no database
-  changes. open-pr lists those decisions for Juan.
+  plan allows: its steps and test cases, no new dependencies, and database
+  changes only for what "Información nueva para guardar" describes.
+  open-pr lists those decisions for Juan, including the data model.
 - Make the smallest change that solves the card.
 - Every behaviour change gets a test.
 - Commit messages follow Conventional Commits: `feat:`, `fix:`, `test:`,
