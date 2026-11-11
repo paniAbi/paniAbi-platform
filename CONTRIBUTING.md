@@ -101,9 +101,10 @@ Everyone runs the app against their own local database in Docker:
 `cp .env.example .env`, then `npm run db:local`. Nothing you create on your
 computer reaches the live site.
 
-**Database changes go through Juan.** Only Juan edits `prisma/` and runs
-migrations. If your ticket needs a new field or table, ask Juan before you
-plan it; he adds it first in his own pull request.
+**Each card brings its own data.** If your card needs to store something new,
+the plan says what in plain words, and the agent adds it to the database while
+building, with invented sample data, on your local database. Juan reviews how
+the data is stored in your pull request, together with the rest of the code.
 
 ## Agent setup
 

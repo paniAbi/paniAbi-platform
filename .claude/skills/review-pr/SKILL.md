@@ -47,7 +47,14 @@ each one must say concretely what to change and why.
      dependencies or changes outside its steps.
    - `docs/code-patterns.md` is followed.
    - No real customer data, no `.env`, no secrets; versions stay exact.
-   - Nothing in `prisma/` changed: only Juan changes the database.
+   - Data model, when `prisma/` changed: it stores what "Información nueva
+     para guardar" describes and nothing else; names, types, relations,
+     optional fields, constraints and indexes fit the rules in the plan; the
+     migration only adds tables or columns and matches the schema; the seed
+     has invented sample data and is safe to run again; and it does not
+     clash with migrations on other open branches
+     (`gh pr list --json headRefName` and their `prisma/migrations/`).
+     Model issues are blocking: they are cheap to fix before the merge.
    - CI is green.
 5. Report to Juan: blocking, should fix, and minor issues, each with
    `file:line`.

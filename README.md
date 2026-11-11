@@ -141,23 +141,24 @@ When you run the app on your computer you use **your own local database**:
 
 - Nothing you create while testing reaches the live site. Still use only
   invented data.
-- **Only Juan changes the database structure.** Do not edit
-  `prisma/schema.prisma`, `prisma/migrations/` or `prisma/seed.ts`, and do
-  not run `npm run db:migrate`, `npm run db:seed` or any `prisma migrate` /
-  `prisma db push` command. `npm run db:local` is the one database command
-  for everyone. If your feature needs a new field or table, stop and ask
-  Juan; he adds it first in his own pull request.
+- **Each card brings its own data.** When a card needs a new field or table,
+  the agent adds it while building the card, following the steps below, and
+  Juan reviews the data model in the card's pull request. Nothing reaches
+  `main` without his approval. Never run `prisma migrate reset` or
+  `prisma db push`.
 
-### Database changes (Juan only)
+### Database changes
 
-1. Keep your `.env` on the local database.
-2. Change `prisma/schema.prisma` and run `npm run db:migrate`: it creates the
+1. Keep your `.env` on the local database. Run `npm run db:local` first: if
+   it says your `.env` does not point at this computer, stop and fix that
+   before changing anything.
+2. Change `prisma/schema.prisma` and run
+   `npm run db:migrate -- --name <short-description>`: it creates the
    migration file and applies it to your local database.
 3. Add invented sample data for what you added to `prisma/seed.ts`, safe to
    run again (for example with `upsert`), and check it with
-   `npm run db:local`. Each stage of features starts with this data card, so
-   Flor and Jesi always have data to try their changes with.
-4. Open a pull request. Its preview migrates `dev`; the merge migrates
+   `npm run db:local`, so everyone has data to try the card with.
+4. It goes in the card's pull request, and Juan reviews the data model there. Its preview migrates `dev`; the merge migrates
    `production` (`scripts/vercel-build.mjs`).
 
 **Migrations only add.** Adding tables or columns is safe. Deleting or

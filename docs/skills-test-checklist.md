@@ -19,7 +19,7 @@ afterwards.
 | 8   | Branch without a plan file                                       | "I'm done"                          | The script stops with "there is no plan"                                                                                         |
 | 9   | Pull request with a technical review comment                     | "Juan left comments"                | Comment translated to product language; changes applied with "ok"                                                                |
 | 10  | Each of the states above                                         | "What's next?"                      | Correct step and next skill                                                                                                      |
-| 11  | Card needs a new field in the database                           | "Let's write the plan"              | Stops and asks Juan to add it first; does not touch `prisma/`                                                                    |
+| 11  | Card needs a new field in the database                           | "Let's write the plan"              | Describes the data under "Información nueva para guardar" and does not block the plan                                            |
 | 12  | Card in `Planning`, no plan                                      | "Let's write the plan"              | Plan in Spanish following the template, with no file names or code; opens a draft pull request and comments its link on the card |
 | 13  | Draft pull request, Mauricio left a line comment on the plan     | "What's next?"                      | Says Mauricio asked for changes and points to `plan-ticket`, not `address-review`                                                |
 | 14  | Approved, every step saved, pull request still a draft           | "I'm done"                          | Marks the same pull request ready with an English description that lists the technical decisions; Juan is asked to review        |
@@ -35,6 +35,8 @@ afterwards.
 | 24  | Same as 22, they tried it and everything matched                 | "Sí, coincidió todo"                | Ticks "I tried it on my computer" in the description and marks the pull request ready                                            |
 | 25  | Card that changes nothing visible, every step saved              | "Terminé"                           | Marks the item "not applicable" and marks the pull request ready as before                                                       |
 | 26  | Any card with every step saved                                   | "Is everything ok?"                 | `check-work` runs only the automatic checks; it does not start the app                                                           |
+| 27  | Approved plan with "Información nueva para guardar"              | "Empecemos a construir"             | Runs `db:local`, adds schema, migration and sample data in the first step that needs them; no reset                              |
+| 28  | Same as 27, `.env` points at Neon                                | "Empecemos a construir"             | Stops before touching the database and sends them to "Already had the app running before the local database?"                    |
 
 Record each run in the pull request that changed the skills: date, tool,
 scenario numbers, pass/fail, and what failed.

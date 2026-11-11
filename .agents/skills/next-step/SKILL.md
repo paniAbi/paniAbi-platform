@@ -26,10 +26,7 @@ after the person's "ok".
    - Whether `docs/plans/<n>-*.md` exists (on another branch, read it with
      `git show origin/feat/<n>-...:docs/plans/<file>`), its open questions
      for Abril ("Preguntas abiertas para Abril"; "Open questions for Abril"
-     in older plans), its database section ("Información nueva para
-     guardar"; "Database change" in older plans; if it names a pull request
-     from Juan, check it with `gh pr view <number> --json state`), and the
-     date of its last commit.
+     in older plans), and the date of its last commit.
    - Whether a "plan ready for review" comment was posted after that last
      plan commit, and whether Mauricio commented after it, on the card or in
      the review request (conversation and line comments:
@@ -61,7 +58,6 @@ after the person's "ok".
    | Approved, every plan step saved, review request still a draft (or missing)         | Finished building                                                   | check-work, then open-pr              |
    | `Planning`, no plan file                                                           | The plan is not written                                             | plan-ticket                           |
    | `Planning`, open questions for Abril                                               | Waiting for Abril's answers                                         | Ask Abril, then plan-ticket           |
-   | `Planning`, Juan's database pull request not merged                                | Waiting for Juan                                                    | Wait                                  |
    | `Planning`, Mauricio commented after the last plan commit (card or review request) | Mauricio asked for changes                                          | plan-ticket                           |
    | `Planning`, plan complete but no draft review request or no comment for Mauricio   | The plan is ready to send                                           | plan-ticket                           |
    | `Planning`, plan sent, no new comments                                             | Waiting for Mauricio                                                | Wait                                  |

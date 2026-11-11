@@ -49,8 +49,10 @@ Tarjeta de Trello: <link de la tarjeta>
 ## 7. Información nueva para guardar
 
 <!-- ¿Hace falta guardar algo que hoy no se guarda (un dato nuevo de los
-     productos, una lista nueva)? Si es así, Juan lo agrega primero en su
-     propio pedido de revisión: enlazalo acá. -->
+     productos, una lista nueva)? Describilo en palabras, con sus reglas
+     (por ejemplo: "un producto tiene una categoría o ninguna"). El agente
+     lo agrega al construir y Juan revisa cómo se guarda en el pedido de
+     revisión. Si no hay nada nuevo: "No." -->
 
 No.
 

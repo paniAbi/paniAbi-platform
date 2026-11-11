@@ -42,10 +42,11 @@ Each feature lives in a few files named after it:
 - Store money as integer cents (`priceCents`). Convert at the boundary with
   `Math.round(pesos * 100)` and display with `src/lib/format-money.ts`.
 - Pages that read the database export `const dynamic = "force-dynamic"`.
-- Only Juan changes the database: `prisma/schema.prisma`, `prisma/migrations/`
-  and `prisma/seed.ts`. If a card needs a new field, table or sample data, ask
-  Juan before planning it; he adds it first in his own pull request. See
-  "Databases: only Juan changes them" in `AGENTS.md`.
+- A card that needs new data changes `prisma/schema.prisma`, adds its
+  migration in `prisma/migrations/` (only adding tables or columns) and its
+  invented sample data in `prisma/seed.ts`, in the first step that needs it.
+  Juan reviews the data model in the card's pull request. See "Databases:
+  cards bring their data, Juan approves it" in `AGENTS.md`.
 
 ## UI
 
@@ -64,8 +65,8 @@ Each feature lives in a few files named after it:
 
 ## Recipe: add a new screen
 
-1. If new data is needed: ask Juan first. Continue once his pull request with
-   the new field or table is merged.
+1. If new data is needed: add it first (schema, migration and sample data),
+   as described in "Databases" in `AGENTS.md`.
 2. If the screen saves data: the schema in `src/lib/<feature>-schema.ts`, with
    a test for what it rejects.
 3. The server action in `src/app/<feature>/actions.ts`.

@@ -39,9 +39,11 @@ product language following "Talking with Flor and Jesi" in `AGENTS.md`.
    - "Pasos" are small (one commit each) and in a sensible order; more than
      about six suggests splitting the card.
    - "Preguntas abiertas para Abril" is empty.
-   - Database: if the card needs to store something new, Juan's pull request
-     adding it must already be merged and linked under "Información nueva
-     para guardar". The plan changes nothing in `prisma/`.
+   - "Información nueva para guardar" says, in product words, everything new
+     the card stores and its rules, or "No.". Check that no other card in
+     `Approved Plan` or `In Progress` adds data to the same thing; if one
+     does, tell Mauricio so he decides the order. Juan reviews the data
+     model later, in the pull request.
    - Older comments in the pull request are answered by the current plan.
 4. Report to Mauricio: a recommendation (approve or ask for changes) and the
    issues, most important first.
