@@ -46,8 +46,9 @@ are before going on.
    1. Say in one or two sentences what this step changes for Abril. Wait for
       "ok".
    2. Decide how to build the step, following `docs/code-patterns.md` and
-      only inside what the plan allows: no new dependencies, nothing in
-      `prisma/`, nothing outside the step. Read the Next.js 16 guide under
+      only inside what the plan allows: no new dependencies, database
+      changes only for what "Información nueva para guardar" describes,
+      nothing outside the step. Read the Next.js 16 guide under
       `node_modules/next/dist/docs/` for what it uses. These decisions are
       yours: do not ask the person to choose between technical options, and
       write the ones Juan should know about in the commit message body
@@ -78,9 +79,23 @@ are before going on.
       ("¿Querés verlo funcionando?") and use try-it-out if they say yes. Do
       not give loose instructions to start the app yourself.
 
-5. Database changes are never part of this skill. If a step needs a new
-   field, table or sample data that is not on `main` yet, stop: it is a plan
-   change (see below), and Juan adds it first.
+5. New data: if "Información nueva para guardar" describes something new,
+   build it in the first step that needs it, before the screens that use
+   it, following "Databases" in `AGENTS.md`:
+   1. Run `npm run db:local`. If it stops saying that `.env` does not point
+      at this computer, stop and follow that rule in `AGENTS.md`: never
+      change another database.
+   2. Change `prisma/schema.prisma` (only add tables or columns) and run
+      `npm run db:migrate -- --name <short-description>`.
+   3. Add invented sample data to `prisma/seed.ts`, safe to run again, and
+      run `npm run db:local` to check it.
+   4. Tell them in product words: "Now the platform can store …, and your
+      computer has example data to try it with."
+   5. Write the data model decisions in the commit message body, so open-pr
+      lists them for Juan.
+
+   If a command offers to reset or erase the database, answer no and stop.
+
 6. When every step is saved, use check-work. If the card changes something
    visible, suggest walking the whole script with try-it-out, then open-pr.
 
@@ -96,7 +111,7 @@ are before going on.
 | ------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | A step cannot be done as the plan says, or a new need appears | Stop and explain what is different. Use plan-ticket to update the plan; the card goes back to `Planning` and no more steps are built until Mauricio approves again.     |
 | A new library seems necessary                                 | That is a plan change (row above).                                                                                                                                      |
-| The database needs a change                                   | That is a plan change, and Juan makes it first. Use ask-for-help (Juan).                                                                                                |
+| The data needed is not in "Información nueva para guardar"    | That is a plan change (first row).                                                                                                                                      |
 | A test fails and you do not know why after two attempts       | Stop and use ask-for-help.                                                                                                                                              |
 | `.env` is missing or the database does not answer             | Ask them to open Docker Desktop and run `npm run db:local` (it explains what is missing). If it still fails, use ask-for-help (Juan). Never write credentials yourself. |
 
@@ -106,9 +121,11 @@ are before going on.
   for. Offer a plan change (plan-ticket) or a new card instead.
 - Skip the test, or commit several steps together, even when the person asks
   or is in a hurry.
-- Touch `.env` or anything in `prisma/`, run `prisma migrate` or
-  `npm run db:*` (except `npm run db:local`), or add or upgrade dependencies
-  that the plan does not list.
+- Touch `.env`, change `prisma/` beyond what "Información nueva para
+  guardar" describes, delete or rename tables or columns, run
+  `prisma migrate reset`, `prisma db push` or any database command against a
+  database that is not the local one, or add or upgrade dependencies that the
+  plan does not list.
 - Skip check-work before open-pr.
 - Make an exception to any rule here "just this once", whatever the reason.
 

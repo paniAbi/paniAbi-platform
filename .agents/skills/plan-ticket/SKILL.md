@@ -63,25 +63,26 @@ Spanish and only from the product side, and open it as a draft review request
    - "Pasos": numbered, one product sentence each; each becomes one saved
      step (commit) that starts with a test. One step is fine for a small
      card.
-   - "Información nueva para guardar", "Fuera de esta tarjeta", "Riesgos
-     para el negocio".
+   - "Información nueva para guardar": in product words, what the card
+     stores that is not stored today and its rules (for example "a product
+     has one category or none; two categories cannot have the same name").
+     "No." when nothing new is stored. If another card in `Approved Plan` or
+     `In Progress` also adds data to the same thing, say so there: Mauricio
+     decides the order.
+   - "Fuera de esta tarjeta", "Riesgos para el negocio".
    - Anything nobody knows goes into "Preguntas abiertas para Abril". Never
      fill a gap by guessing.
-5. Check whether the plan is blocked. It is blocked when "Preguntas abiertas
-   para Abril" is not empty, or when the card needs to store something new
-   (a new field, table or sample data in the database: only Juan changes
-   the database). If it is blocked, do all of this in one go, then stop:
+5. Check whether the plan is blocked. It is blocked only when "Preguntas
+   abiertas para Abril" is not empty. Needing new data does not block it:
+   the data is built with the card and Juan reviews it in the pull request.
+   If it is blocked, do all of this in one go, then stop:
    - Tell them you will save the plan as a draft so it is not lost, and wait
      for their "ok". Then save it with the `git` commands in step 7, without
      opening the review request and without the card comment: saving a
      draft does not ask Mauricio for anything.
-   - Open questions: help them phrase the questions so they can send them to
-     Abril.
-   - Database: use ask-for-help so Juan adds it first in his own pull
-     request.
+   - Help them phrase the questions so they can send them to Abril.
 
-   Continue when the answers are in, or when Juan's pull request is merged
-   (link it under "Información nueva para guardar").
+   Continue when the answers are in.
 
 6. Read the whole plan back to them in two or three sentences (what changes
    for Abril, how many steps, what will be tested). Show the card comment
@@ -140,14 +141,13 @@ Spanish and only from the product side, and open it as a draft review request
 
 ## When something goes wrong
 
-| Situation                                      | What to do                                                                  |
-| ---------------------------------------------- | --------------------------------------------------------------------------- |
-| The card asks for something nobody understands | Write it as an open question for Abril.                                     |
-| The card needs a database change               | Step 5: save the draft, use ask-for-help (Juan), wait for his pull request. |
-| The plan needs more than about six steps       | Suggest splitting the card; use ask-for-help to propose it to Mauricio.     |
-| `git push` is rejected                         | Use sync-branch, then push again.                                           |
-| `GitHub did not accept the pull request`       | Use ask-for-help (Juan).                                                    |
-| Mauricio's comment is unclear                  | Help the person ask in the review request. Do not guess.                    |
+| Situation                                      | What to do                                                              |
+| ---------------------------------------------- | ----------------------------------------------------------------------- |
+| The card asks for something nobody understands | Write it as an open question for Abril.                                 |
+| The plan needs more than about six steps       | Suggest splitting the card; use ask-for-help to propose it to Mauricio. |
+| `git push` is rejected                         | Use sync-branch, then push again.                                       |
+| `GitHub did not accept the pull request`       | Use ask-for-help (Juan).                                                |
+| Mauricio's comment is unclear                  | Help the person ask in the review request. Do not guess.                |
 
 ## Never
 
@@ -156,13 +156,13 @@ Spanish and only from the product side, and open it as a draft review request
 - Move a card to `Approved Plan`, or mark the review request as ready.
 - Invent requirements, or remove an open question without the person
   confirming Abril's answer.
-- Plan changes to `prisma/` yourself.
+- Put file names or code in "Información nueva para guardar": describe the
+  data in product words; the agent decides how to store it when building.
 
 ## Done when
 
 The plan file is committed and pushed, "Preguntas abiertas para Abril" is
 empty, the draft review request exists, the card is in `Planning` with the
 comment for Mauricio, and the person knows they are waiting for approval. Or,
-when the plan is blocked: the draft is saved, the questions are with Abril or
-the database change is with Juan, and the person knows what they are waiting
-for.
+when the plan is blocked: the draft is saved, the questions are with Abril,
+and the person knows what they are waiting for.
