@@ -100,3 +100,34 @@ export function isLocalDatabaseUrl(url) {
     return false;
   }
 }
+
+// The check shared by every command that may only touch the local database
+// (db:local, db:migrate). Returns the lines to show when it must stop, or
+// null when .env exists and both URLs point at this computer.
+// { envFileExists: true, env: { DATABASE_URL: <neon> } } -> ["STOP: ...", ...]
+export function localDatabaseProblem({ envFileExists, env }) {
+  if (!envFileExists) {
+    return [
+      "STOP: there is no .env file.",
+      "Create it from the example, then run this again:",
+      "    cp .env.example .env",
+    ];
+  }
+  for (const name of ["DATABASE_URL", "DIRECT_URL"]) {
+    if (!isLocalDatabaseUrl(env[name])) {
+      return [
+        `STOP: ${name} in .env does not point at this computer.`,
+        "This command only works with the local Docker database, so it never",
+        "changes the live site. Copy the local URLs from .env.example.",
+      ];
+    }
+  }
+  return null;
+}
+
+// Arguments for running Prisma's own entry point with node, without a
+// shell, so the options (for example the migration name) arrive exactly as
+// typed. ["--name", "x"] -> [".../prisma/build/index.js", "migrate", "dev", "--name", "x"]
+export function migrateDevArguments(options) {
+  return ["node_modules/prisma/build/index.js", "migrate", "dev", ...options];
+}
