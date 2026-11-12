@@ -13,9 +13,10 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 This is a public repository for the paniAbi bakery platform. Abril runs the
 bakery and is our client. Write all repository content — code, comments,
 documentation, branch names, commit messages and pull requests — in English.
-The one exception is plans: plan files in `docs/plans/` and Mauricio's
+There are two exceptions. Plans: plan files in `docs/plans/` and Mauricio's
 comments on them are written in Spanish, in product language (see
-"Plans"). All sample data must be invented.
+"Plans"). Screens: the text Abril and her customers read is in Spanish (see
+"UI" in `docs/code-patterns.md`). All sample data must be invented.
 
 ## Who is on the other side
 

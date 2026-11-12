@@ -27,7 +27,12 @@ Each feature lives in a few files named after it:
   schema and its inferred type (`ProductFormValues`).
 - The form uses it through `zodResolver` (React Hook Form).
 - The server action validates again with `safeParse`. Never trust the browser.
-- Error messages are full sentences Abril can act on: "Enter a product name."
+- Error messages are full sentences in Spanish that Abril can act on:
+  "Escribí el nombre del producto.", not "Campo requerido". Give every rule
+  its own message, including the type error (an empty number field arrives
+  as `NaN`), so no default English message from Zod reaches the screen.
+- Forms have `noValidate`, so the warnings come from the schema, in Spanish,
+  and not from the browser in its own language.
 
 ## Server actions
 
@@ -50,6 +55,10 @@ Each feature lives in a few files named after it:
 
 ## UI
 
+- Everything Abril or her customers read is in Spanish (Argentine voseo:
+  "Agregá", "Escribí"): titles, labels, buttons, placeholders, messages,
+  `aria-label`s and the page title. Code, comments and tests stay in
+  English; only the strings on screen are Spanish. `<html lang="es">`.
 - Use the components in `src/components/ui/` (shadcn) before writing new ones.
 - Every input has a `Label` with `htmlFor`; errors appear under the field and
   are linked with `aria-describedby`; results are announced with
@@ -80,8 +89,3 @@ Each feature lives in a few files named after it:
 3. The server action in `src/app/<feature>/actions.ts`.
 4. The form and list components in `src/components/<feature>/`, with tests.
 5. The page in `src/app/<feature>/page.tsx`.
-
-## Open decisions
-
-- The interface text is in English. Confirm with Abril which language the
-  screens should use.

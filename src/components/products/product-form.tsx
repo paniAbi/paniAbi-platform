@@ -31,7 +31,7 @@ export function ProductForm() {
 
     if (result.success) {
       reset();
-      setMessage("Product added to the list.");
+      setMessage("Producto agregado a la lista.");
       return;
     }
 
@@ -39,13 +39,13 @@ export function ProductForm() {
   }
 
   return (
-    <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+    <form className="space-y-4" noValidate onSubmit={handleSubmit(onSubmit)}>
       <div className="space-y-2">
-        <Label htmlFor="product-name">Product name</Label>
+        <Label htmlFor="product-name">Nombre del producto</Label>
         <Input
           id="product-name"
           autoComplete="off"
-          placeholder="e.g. Lemon poppy loaf"
+          placeholder="Por ejemplo: Budín de limón"
           aria-invalid={Boolean(errors.name)}
           aria-describedby={errors.name ? "product-name-error" : undefined}
           {...register("name")}
@@ -58,7 +58,7 @@ export function ProductForm() {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="product-price">Price in pesos</Label>
+        <Label htmlFor="product-price">Precio en pesos</Label>
         <div className="relative">
           <span className="text-subtle pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-sm">
             $
@@ -94,7 +94,7 @@ export function ProductForm() {
         ) : (
           <Plus aria-hidden="true" />
         )}
-        Add product
+        Agregar producto
       </Button>
       <p aria-live="polite" className="text-status min-h-5 text-sm">
         {message}

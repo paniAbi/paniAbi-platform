@@ -21,11 +21,11 @@ export function ProductList({ products }: ProductListProps) {
             <PackageOpen aria-hidden="true" size={21} />
           </span>
           <h2 className="font-display text-ink text-xl">
-            Nothing on the shelf yet
+            Todavía no hay productos
           </h2>
           <p className="text-quiet mt-2 max-w-sm text-sm leading-6">
-            Add the first product using the form. It will appear here for the
-            whole team.
+            Agregá el primer producto con el formulario. Va a aparecer acá para
+            todo el equipo.
           </p>
         </CardContent>
       </Card>
@@ -33,7 +33,7 @@ export function ProductList({ products }: ProductListProps) {
   }
 
   return (
-    <ul aria-label="Products" className="divide-line-row divide-y">
+    <ul aria-label="Productos" className="divide-line-row divide-y">
       {products.map((product) => (
         <li key={product.id}>
           <Card className="border-line-row rounded-none border-0 border-b bg-transparent py-0 shadow-none last:border-b-0">
