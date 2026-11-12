@@ -16,36 +16,33 @@ export default async function ProductsPage() {
   return (
     <main className="min-h-screen px-4 pb-16 sm:px-8">
       <div className="mx-auto max-w-6xl">
-        <header className="flex h-16 items-center justify-between border-b border-[#dfe3dc]">
-          <a
-            href="/products"
-            className="flex items-center gap-2.5 text-[#263a31]"
-          >
-            <span className="flex size-8 items-center justify-center rounded-md bg-[#31594a] text-white">
+        <header className="border-line flex h-16 items-center justify-between border-b">
+          <a href="/products" className="text-ink flex items-center gap-2.5">
+            <span className="bg-brand flex size-8 items-center justify-center rounded-md text-white">
               <Package2 aria-hidden="true" size={17} />
             </span>
-            <span className="font-serif text-lg">paniAbi</span>
-            <span className="ml-1 hidden border-l border-[#d8ddd5] pl-3 text-xs text-[#778078] sm:block">
+            <span className="font-display text-lg">paniAbi</span>
+            <span className="border-line-divider text-tagline ml-1 hidden border-l pl-3 text-xs sm:block">
               Bakery workspace
             </span>
           </a>
-          <span className="text-xs font-medium tracking-[0.12em] text-[#7c847d] uppercase">
+          <span className="text-label text-xs font-medium tracking-[0.12em] uppercase">
             Inventory
           </span>
         </header>
 
         <section className="grid gap-10 py-10 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-14 lg:py-14">
           <div>
-            <div className="mb-7 flex flex-wrap items-end justify-between gap-4 border-b border-[#dfe3dc] pb-5">
+            <div className="border-line mb-7 flex flex-wrap items-end justify-between gap-4 border-b pb-5">
               <div>
-                <p className="mb-2 text-xs font-semibold tracking-[0.16em] text-[#b65f48] uppercase">
+                <p className="text-highlight mb-2 text-xs font-semibold tracking-[0.16em] uppercase">
                   The daily shelf
                 </p>
-                <h1 className="font-serif text-3xl text-[#263a31] sm:text-4xl">
+                <h1 className="font-display text-ink text-3xl sm:text-4xl">
                   Products
                 </h1>
               </div>
-              <p className="text-sm text-[#788178]">
+              <p className="text-subtle text-sm">
                 {products.length} {products.length === 1 ? "item" : "items"}
               </p>
             </div>
@@ -53,15 +50,15 @@ export default async function ProductsPage() {
           </div>
 
           <aside className="lg:pt-[3.25rem]">
-            <Card className="border-[#dfe3dc] bg-white/80 shadow-[0_8px_32px_-24px_rgba(38,58,49,0.3)]">
-              <CardHeader className="border-b border-[#edf0ea] px-5 pb-4">
-                <div className="flex items-center gap-2 text-[#b65f48]">
+            <Card className="border-line shadow-card bg-white/80">
+              <CardHeader className="border-line-soft border-b px-5 pb-4">
+                <div className="text-highlight flex items-center gap-2">
                   <Plus aria-hidden="true" size={16} />
                   <span className="text-xs font-semibold tracking-[0.14em] uppercase">
                     New listing
                   </span>
                 </div>
-                <CardTitle className="font-serif text-xl text-[#263a31]">
+                <CardTitle className="font-display text-ink text-xl">
                   Add a product
                 </CardTitle>
               </CardHeader>
@@ -71,8 +68,8 @@ export default async function ProductsPage() {
             </Card>
           </aside>
         </section>
-        <footer className="border-t border-[#dfe3dc] py-5 text-xs text-[#929991]">
-          paniAbi platform <span className="px-1.5 text-[#c1c7bf]">/</span>{" "}
+        <footer className="border-line text-faint border-t py-5 text-xs">
+          paniAbi platform <span className="text-fainter px-1.5">/</span>{" "}
           Product catalogue
         </footer>
       </div>
