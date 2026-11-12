@@ -154,7 +154,9 @@ When you run the app on your computer you use **your own local database**:
    before changing anything.
 2. Change `prisma/schema.prisma` and run
    `npm run db:migrate -- --name <short-description>`: it creates the
-   migration file and applies it to your local database.
+   migration file and applies it to your local database. Like
+   `npm run db:local`, it refuses to run if `.env` does not point at this
+   computer.
 3. Add invented sample data for what you added to `prisma/seed.ts`, safe to
    run again (for example with `upsert`), and check it with
    `npm run db:local`, so everyone has data to try the card with.
@@ -192,7 +194,7 @@ builds. Never run `prisma migrate dev` or `prisma migrate reset` with the
 | `The table ... does not exist`                                               | Run `npm run db:local`. If it still happens, ask Juan.                                                             |
 | `STOP: Docker is not running`                                                | Open Docker Desktop, wait until it says it is running, and run `npm run db:local` again.                           |
 | `Can't reach database server at localhost:5432`                              | Your local database is stopped. Open Docker Desktop and run `npm run db:local`.                                    |
-| `STOP: DATABASE_URL in .env does not point at this computer`                 | Your `.env` still has Neon URLs. Replace it with the example: `cp .env.example .env`.                              |
+| `STOP: DATABASE_URL in .env does not point at this computer`                 | Your `.env` (or a variable exported in the terminal) still has Neon URLs. Replace it: `cp .env.example .env`.      |
 | `port is already allocated` or `address already in use` for port 5432        | Another PostgreSQL is running on your computer. Stop it (macOS: `brew services stop postgresql`) or ask Juan.      |
 | You want to start again with only the sample products                        | `docker compose down -v` erases only your local database. Then run `npm run db:local`.                             |
 | `Port 3000 is in use`                                                        | Another `npm run dev` is still running. Close that terminal, or open the address Next.js prints instead.           |

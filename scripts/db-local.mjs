@@ -7,7 +7,7 @@ import { spawnSync } from "node:child_process";
 import { existsSync } from "node:fs";
 import process from "node:process";
 import { goToRepositoryRoot, run, stop } from "./lib/git.mjs";
-import { isLocalDatabaseUrl } from "./lib/helpers.mjs";
+import { localDatabaseProblem } from "./lib/helpers.mjs";
 
 // Runs a fixed command line and stops the script if it fails.
 // Fixed command lines with no user input, so using the shell is safe.
@@ -25,24 +25,10 @@ function runStep(name, command) {
 
 goToRepositoryRoot();
 
-if (!existsSync(".env")) {
-  stop(
-    "STOP: there is no .env file.",
-    "Create it from the example, then run this again:",
-    "    cp .env.example .env",
-  );
-}
-process.loadEnvFile(".env");
-
-for (const name of ["DATABASE_URL", "DIRECT_URL"]) {
-  if (!isLocalDatabaseUrl(process.env[name])) {
-    stop(
-      `STOP: ${name} in .env does not point at this computer.`,
-      "This command only works with the local Docker database, so it never",
-      "changes the live site. Copy the local URLs from .env.example.",
-    );
-  }
-}
+const envFileExists = existsSync(".env");
+if (envFileExists) process.loadEnvFile(".env");
+const problem = localDatabaseProblem({ envFileExists, env: process.env });
+if (problem) stop(...problem);
 
 if (!run("docker", ["info"], { capture: true }).ok) {
   stop(
