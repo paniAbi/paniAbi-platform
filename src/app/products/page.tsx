@@ -24,7 +24,9 @@ export default async function ProductsPage() {
             <span className="flex size-8 items-center justify-center rounded-md bg-[#31594a] text-white">
               <Package2 aria-hidden="true" size={17} />
             </span>
-            <span className="font-serif text-lg">paniAbi</span>
+            <span className="font-serif text-lg text-[#800020]">
+              Hanna Banana
+            </span>
             <span className="ml-1 hidden border-l border-[#d8ddd5] pl-3 text-xs text-[#778078] sm:block">
               Bakery workspace
             </span>
