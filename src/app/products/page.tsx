@@ -23,11 +23,11 @@ export default async function ProductsPage() {
             </span>
             <span className="font-display text-lg">paniAbi</span>
             <span className="border-line-divider text-tagline ml-1 hidden border-l pl-3 text-xs sm:block">
-              Bakery workspace
+              Gestión de la panadería
             </span>
           </a>
           <span className="text-label text-xs font-medium tracking-[0.12em] uppercase">
-            Inventory
+            Inventario
           </span>
         </header>
 
@@ -36,14 +36,15 @@ export default async function ProductsPage() {
             <div className="border-line mb-7 flex flex-wrap items-end justify-between gap-4 border-b pb-5">
               <div>
                 <p className="text-highlight mb-2 text-xs font-semibold tracking-[0.16em] uppercase">
-                  The daily shelf
+                  La vitrina del día
                 </p>
                 <h1 className="font-display text-ink text-3xl sm:text-4xl">
-                  Products
+                  Productos
                 </h1>
               </div>
               <p className="text-subtle text-sm">
-                {products.length} {products.length === 1 ? "item" : "items"}
+                {products.length}{" "}
+                {products.length === 1 ? "producto" : "productos"}
               </p>
             </div>
             <ProductList products={products} />
@@ -59,7 +60,7 @@ export default async function ProductsPage() {
                   </span>
                 </div>
                 <CardTitle className="font-display text-ink text-xl">
-                  Add a product
+                  Agregar un producto
                 </CardTitle>
               </CardHeader>
               <CardContent className="px-5 pt-5">
@@ -69,8 +70,8 @@ export default async function ProductsPage() {
           </aside>
         </section>
         <footer className="border-line text-faint border-t py-5 text-xs">
-          paniAbi platform <span className="text-fainter px-1.5">/</span>{" "}
-          Product catalogue
+          Plataforma paniAbi <span className="text-fainter px-1.5">/</span>{" "}
+          Catálogo de productos
         </footer>
       </div>
     </main>

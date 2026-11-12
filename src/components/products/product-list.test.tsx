@@ -24,14 +24,20 @@ describe("ProductList", () => {
     expect(screen.getByText("$ 1.500")).toBeInTheDocument();
     expect(screen.getByText("$ 800,05")).toBeInTheDocument();
     expect(screen.queryByText("Available for sale")).not.toBeInTheDocument();
+    expect(screen.getByRole("list", { name: "Productos" })).toBeInTheDocument();
   });
 
   it("shows an empty state when there are no products", () => {
     render(<ProductList products={[]} />);
 
-    expect(screen.getByText("Nothing on the shelf yet")).toBeInTheDocument();
+    expect(screen.getByText("Todavía no hay productos")).toBeInTheDocument();
     expect(
-      screen.queryByRole("list", { name: "Products" }),
+      screen.getByText(
+        "Agregá el primer producto con el formulario. Va a aparecer acá para todo el equipo.",
+      ),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("list", { name: "Productos" }),
     ).not.toBeInTheDocument();
   });
 });
