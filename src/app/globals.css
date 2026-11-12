@@ -4,6 +4,44 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/*
+ * paniAbi brand tokens: the one place for the screens' colours, shadows and
+ * title font. Use them by name (text-ink, bg-brand, border-line, font-display,
+ * shadow-card...) and never write a colour value in a screen.
+ * Each value is the exact one the products screen used before it had a name.
+ * The greys that look almost the same are kept apart on purpose, so nothing
+ * changes on screen.
+ */
+@theme {
+  /* Main text and titles. */
+  --color-ink: #263a31;
+  /* Buttons, the logo square and icons. */
+  --color-brand: #31594a;
+  --color-brand-hover: #26483a;
+  /* Small uppercase labels above titles. */
+  --color-highlight: #b65f48;
+  /* Borders and dividers. */
+  --color-line: #dfe3dc;
+  --color-line-soft: #edf0ea;
+  --color-line-row: #e7e8e1;
+  --color-line-divider: #d8ddd5;
+  /* Soft background behind the empty-list icon. */
+  --color-mist: #edf2ee;
+  /* Secondary text, from darker to lighter. */
+  --color-status: #52665a;
+  --color-quiet: #727b74;
+  --color-tagline: #778078;
+  --color-subtle: #788178;
+  --color-label: #7c847d;
+  --color-faint: #929991;
+  --color-fainter: #c1c7bf;
+
+  --shadow-card: 0 8px 32px -24px rgb(38 58 49 / 0.3);
+
+  /* Title font: the same stack as Tailwind's default serif. */
+  --font-display: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

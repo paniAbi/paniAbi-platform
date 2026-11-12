@@ -54,6 +54,14 @@ Each feature lives in a few files named after it:
 - Every input has a `Label` with `htmlFor`; errors appear under the field and
   are linked with `aria-describedby`; results are announced with
   `aria-live="polite"`.
+- Colours, shadows and the title font come from the named tokens in the
+  `@theme` block of `src/app/globals.css`: `text-ink`, `bg-brand`,
+  `hover:bg-brand-hover`, `text-highlight`, `border-line`, `text-subtle`,
+  `shadow-card`, `font-display` and the rest listed there. Never write a
+  colour value in a screen (`text-[#263a31]`, `rgba(...)`): the check in
+  `src/lib/hardcoded-colors.test.ts` fails CI if you do. If a screen needs a
+  colour that does not exist yet, add a token with a name that says what it
+  is for, and reuse it everywhere.
 
 ## Tests
 
@@ -75,8 +83,5 @@ Each feature lives in a few files named after it:
 
 ## Open decisions
 
-- Colours are hard-coded hex values in `src/app/products/page.tsx`. Before
-  more screens copy them, they should move to theme tokens in
-  `src/app/globals.css`.
 - The interface text is in English. Confirm with Abril which language the
   screens should use.
