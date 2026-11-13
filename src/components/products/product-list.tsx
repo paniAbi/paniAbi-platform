@@ -1,4 +1,6 @@
 import { PackageOpen } from "lucide-react";
+import type { CategoryListItem } from "@/components/products/category-list";
+import { ProductCategoryChange } from "@/components/products/product-category-change";
 import { Card, CardContent } from "@/components/ui/card";
 import { formatPesos } from "@/lib/format-money";
 
@@ -10,9 +12,15 @@ export type ProductListItem = {
 
 type ProductListProps = {
   products: ProductListItem[];
+  categories?: CategoryListItem[];
+  currentCategoryId?: string | null;
 };
 
-export function ProductList({ products }: ProductListProps) {
+export function ProductList({
+  products,
+  categories,
+  currentCategoryId,
+}: ProductListProps) {
   if (products.length === 0) {
     return (
       <Card className="border-dashed bg-white/70 shadow-none">
@@ -42,6 +50,13 @@ export function ProductList({ products }: ProductListProps) {
                 <h2 className="truncate font-medium text-[#263a31]">
                   {product.name}
                 </h2>
+                {categories && currentCategoryId !== undefined && (
+                  <ProductCategoryChange
+                    productId={product.id}
+                    currentCategoryId={currentCategoryId}
+                    categories={categories}
+                  />
+                )}
               </div>
               <p className="shrink-0 font-medium text-[#263a31] tabular-nums">
                 {formatPesos(product.priceCents)}

@@ -99,7 +99,11 @@ export function ProductWorkspace({
           </Card>
         )}
 
-        <ProductList products={products} />
+        <ProductList
+          products={products}
+          categories={categories}
+          currentCategoryId={selectedCategoryId}
+        />
       </div>
     </section>
   );
