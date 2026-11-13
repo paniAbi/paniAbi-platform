@@ -33,7 +33,7 @@ export function ProductList({ products }: ProductListProps) {
   }
 
   return (
-    <ul aria-label="Products" className="divide-y divide-[#e7e8e1]">
+    <ul aria-label="Productos" className="divide-y divide-[#e7e8e1]">
       {products.map((product) => (
         <li key={product.id}>
           <Card className="rounded-none border-0 border-b border-[#e7e8e1] bg-transparent py-0 shadow-none last:border-b-0">

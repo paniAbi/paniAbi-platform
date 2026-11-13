@@ -13,7 +13,12 @@ import {
 } from "@/lib/product-schema";
 import { createProduct } from "@/app/products/actions";
 
-export function ProductForm() {
+type ProductFormProps = {
+  categoryId: string | null;
+  categoryName: string;
+};
+
+export function ProductForm({ categoryId, categoryName }: ProductFormProps) {
   const [message, setMessage] = useState("");
   const {
     register,
@@ -22,16 +27,16 @@ export function ProductForm() {
     formState: { errors, isSubmitting },
   } = useForm<ProductFormValues>({
     resolver: zodResolver(productFormSchema),
-    defaultValues: { name: "", pricePesos: 0 },
+    defaultValues: { name: "", pricePesos: 0, categoryId },
   });
 
   async function onSubmit(values: ProductFormValues) {
     setMessage("");
-    const result = await createProduct(values);
+    const result = await createProduct({ ...values, categoryId });
 
     if (result.success) {
       reset();
-      setMessage("Product added to the list.");
+      setMessage(`Producto agregado a ${categoryName}.`);
       return;
     }
 
@@ -41,11 +46,11 @@ export function ProductForm() {
   return (
     <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
       <div className="space-y-2">
-        <Label htmlFor="product-name">Product name</Label>
+        <Label htmlFor="product-name">Nombre del producto</Label>
         <Input
           id="product-name"
           autoComplete="off"
-          placeholder="e.g. Lemon poppy loaf"
+          placeholder="Por ejemplo, Budín de limón"
           aria-invalid={Boolean(errors.name)}
           aria-describedby={errors.name ? "product-name-error" : undefined}
           {...register("name")}
@@ -58,7 +63,7 @@ export function ProductForm() {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="product-price">Price in pesos</Label>
+        <Label htmlFor="product-price">Precio en pesos</Label>
         <div className="relative">
           <span className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-sm text-[#788178]">
             $
@@ -94,7 +99,7 @@ export function ProductForm() {
         ) : (
           <Plus aria-hidden="true" />
         )}
-        Add product
+        Guardar producto
       </Button>
       <p aria-live="polite" className="min-h-5 text-sm text-[#52665a]">
         {message}
