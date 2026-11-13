@@ -1,4 +1,6 @@
 import { Package2, Plus } from "lucide-react";
+import { CategoryForm } from "@/components/products/category-form";
+import { CategoryList } from "@/components/products/category-list";
 import { ProductForm } from "@/components/products/product-form";
 import { ProductList } from "@/components/products/product-list";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,11 +9,17 @@ import { prisma } from "@/lib/prisma";
 export const dynamic = "force-dynamic";
 
 export default async function ProductsPage() {
-  const products = await prisma.product.findMany({
-    where: { isActive: true },
-    orderBy: { name: "asc" },
-    select: { id: true, name: true, priceCents: true },
-  });
+  const [products, categories] = await Promise.all([
+    prisma.product.findMany({
+      where: { isActive: true },
+      orderBy: { name: "asc" },
+      select: { id: true, name: true, priceCents: true },
+    }),
+    prisma.category.findMany({
+      orderBy: { name: "asc" },
+      select: { id: true, name: true },
+    }),
+  ]);
 
   return (
     <main className="min-h-screen px-4 pb-16 sm:px-8">
@@ -53,6 +61,17 @@ export default async function ProductsPage() {
           </div>
 
           <aside className="lg:pt-[3.25rem]">
+            <Card className="mb-6 border-[#dfe3dc] bg-white/80 shadow-[0_8px_32px_-24px_rgba(38,58,49,0.3)]">
+              <CardHeader className="border-b border-[#edf0ea] px-5 pb-4">
+                <CardTitle className="font-serif text-xl text-[#263a31]">
+                  Categorías
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-5 px-5 pt-5">
+                <CategoryList categories={categories} />
+                <CategoryForm />
+              </CardContent>
+            </Card>
             <Card className="border-[#dfe3dc] bg-white/80 shadow-[0_8px_32px_-24px_rgba(38,58,49,0.3)]">
               <CardHeader className="border-b border-[#edf0ea] px-5 pb-4">
                 <div className="flex items-center gap-2 text-[#b65f48]">
