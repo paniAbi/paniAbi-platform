@@ -20,32 +20,32 @@ Tarjeta de Trello: https://trello.com/c/40I2G5YR/15-las-pantallas-de-abril-en-es
 Los textos nuevos que proponemos. Mauricio puede cambiar cualquiera al
 revisar el plan.
 
-| Dónde | Hoy | Después |
-| ----- | --- | ------- |
-| Nombre de la pestaña del navegador | Products \| paniAbi | Productos \| paniAbi |
-| Arriba, al lado de "paniAbi" | Bakery workspace | Gestión de la panadería |
-| Arriba a la derecha | Inventory | Inventario |
-| Encima del título | The daily shelf | La vitrina del día |
-| Título de la página | Products | Productos |
-| Cantidad de productos | 1 item / 7 items | 1 producto / 7 productos |
-| Lista vacía, título | Nothing on the shelf yet | Todavía no hay productos |
-| Lista vacía, texto | Add the first product using the form. It will appear here for the whole team. | Agregá el primer producto con el formulario. Va a aparecer acá para todo el equipo. |
-| Título del formulario | Add a product | Agregar un producto |
-| Campo del nombre | Product name | Nombre del producto |
-| Ejemplo dentro del campo | e.g. Lemon poppy loaf | Por ejemplo: Budín de limón |
-| Campo del precio | Price in pesos | Precio en pesos |
-| Botón | Add product | Agregar producto |
-| Aviso al guardar | Product added to the list. | Producto agregado a la lista. |
-| Pie de página | paniAbi platform / Product catalogue | Plataforma paniAbi / Catálogo de productos |
+| Dónde                              | Hoy                                                                           | Después                                                                             |
+| ---------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| Nombre de la pestaña del navegador | Products \| paniAbi                                                           | Productos \| paniAbi                                                                |
+| Arriba, al lado de "paniAbi"       | Bakery workspace                                                              | Gestión de la panadería                                                             |
+| Arriba a la derecha                | Inventory                                                                     | Inventario                                                                          |
+| Encima del título                  | The daily shelf                                                               | La vitrina del día                                                                  |
+| Título de la página                | Products                                                                      | Productos                                                                           |
+| Cantidad de productos              | 1 item / 7 items                                                              | 1 producto / 7 productos                                                            |
+| Lista vacía, título                | Nothing on the shelf yet                                                      | Todavía no hay productos                                                            |
+| Lista vacía, texto                 | Add the first product using the form. It will appear here for the whole team. | Agregá el primer producto con el formulario. Va a aparecer acá para todo el equipo. |
+| Título del formulario              | Add a product                                                                 | Agregar un producto                                                                 |
+| Campo del nombre                   | Product name                                                                  | Nombre del producto                                                                 |
+| Ejemplo dentro del campo           | e.g. Lemon poppy loaf                                                         | Por ejemplo: Budín de limón                                                         |
+| Campo del precio                   | Price in pesos                                                                | Precio en pesos                                                                     |
+| Botón                              | Add product                                                                   | Agregar producto                                                                    |
+| Aviso al guardar                   | Product added to the list.                                                    | Producto agregado a la lista.                                                       |
+| Pie de página                      | paniAbi platform / Product catalogue                                          | Plataforma paniAbi / Catálogo de productos                                          |
 
 Los avisos cuando algo sale mal:
 
-| Situación | Qué ve Abril |
-| --------- | ------------ |
-| Deja el nombre vacío o solo con espacios | Escribí el nombre del producto. |
-| Deja el precio vacío | Escribí el precio del producto. |
-| Pone un precio de 0 o negativo | El precio tiene que ser de al menos un centavo. |
-| Algo falla al guardar | Revisá los datos del producto y probá de nuevo. |
+| Situación                                | Qué ve Abril                                    |
+| ---------------------------------------- | ----------------------------------------------- |
+| Deja el nombre vacío o solo con espacios | Escribí el nombre del producto.                 |
+| Deja el precio vacío                     | Escribí el precio del producto.                 |
+| Pone un precio de 0 o negativo           | El precio tiene que ser de al menos un centavo. |
+| Algo falla al guardar                    | Revisá los datos del producto y probá de nuevo. |
 
 Los avisos los muestra siempre la plataforma, debajo del campo y en
 español. Hoy, según el navegador, algunos casos (como un precio de 0)
