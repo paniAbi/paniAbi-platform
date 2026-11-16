@@ -52,7 +52,9 @@ they see; you never say it works on their behalf.
    happened ("the web did not start on your computer") and use ask-for-help
    (Juan). Stop.
 4. Give them the exact address to open: the local address plus the page the
-   script mentions (for example `http://localhost:3000/products`). If the
+   script mentions (for example `http://localhost:3000/admin/productos`). The
+   admin asks them to log in: give them the invented test account
+   `abril-prueba`, password `paniabi-prueba`. If the
    script names the live site (`pani-abi-platform.vercel.app`), use the same
    page on their computer instead: the live site does not have their change
    yet.

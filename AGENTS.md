@@ -159,7 +159,12 @@ Nothing reaches `main` without his approval.
 - Neon branches: `production` (live site), `dev` (pull request previews),
   `ci` (GitHub Actions). Vercel migrates `production` and `dev` itself
   (`scripts/vercel-build.mjs`).
-- The site has no login yet: only invented sample data.
+- The admin (`/admin`) needs a login. The live site holds Abril's real
+  products, entered by her; everyone else only enters invented data
+  (`TEST - ...`), locally or in previews. Locally, log in with the invented
+  account `abril-prueba` / `paniabi-prueba` from `prisma/seed.ts`.
+- Never create accounts or change passwords, and never run
+  `npm run admin:password`: only Juan does, by hand.
 
 ## Never
 
