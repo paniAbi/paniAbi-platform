@@ -28,20 +28,17 @@ export default async function ProductsPage() {
   return (
     <main className="min-h-screen px-4 pb-16 sm:px-8">
       <div className="mx-auto max-w-6xl">
-        <header className="flex h-16 items-center justify-between border-b border-[#dfe3dc]">
-          <a
-            href="/products"
-            className="flex items-center gap-2.5 text-[#263a31]"
-          >
-            <span className="flex size-8 items-center justify-center rounded-md bg-[#31594a] text-white">
+        <header className="border-line flex h-16 items-center justify-between border-b">
+          <a href="/products" className="text-ink flex items-center gap-2.5">
+            <span className="bg-brand flex size-8 items-center justify-center rounded-md text-white">
               <Package2 aria-hidden="true" size={17} />
             </span>
-            <span className="font-serif text-lg">paniAbi</span>
-            <span className="ml-1 hidden border-l border-[#d8ddd5] pl-3 text-xs text-[#778078] sm:block">
+            <span className="font-display text-lg">paniAbi</span>
+            <span className="border-line-divider text-tagline ml-1 hidden border-l pl-3 text-xs sm:block">
               Bakery workspace
             </span>
           </a>
-          <span className="text-xs font-medium tracking-[0.12em] text-[#7c847d] uppercase">
+          <span className="text-label text-xs font-medium tracking-[0.12em] uppercase">
             Inventory
           </span>
         </header>
@@ -50,8 +47,8 @@ export default async function ProductsPage() {
           categories={categories}
           uncategorizedProducts={uncategorizedProducts}
         />
-        <footer className="border-t border-[#dfe3dc] py-5 text-xs text-[#929991]">
-          paniAbi platform <span className="px-1.5 text-[#c1c7bf]">/</span>{" "}
+        <footer className="border-line text-faint border-t py-5 text-xs">
+          paniAbi platform <span className="text-fainter px-1.5">/</span>{" "}
           Product catalogue
         </footer>
       </div>
