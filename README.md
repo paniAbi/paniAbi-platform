@@ -2,7 +2,9 @@
 
 A product and operations workspace for the paniAbi bakery team.
 
-- **Live site:** https://pani-abi-platform.vercel.app/products
+- **Live site:** https://pani-abi-platform.vercel.app (public view for
+  customers). Abril manages the products at
+  https://pani-abi-platform.vercel.app/admin/productos after logging in.
 - **Team workflow:** [CONTRIBUTING.md](CONTRIBUTING.md)
 - **Rules for coding agents (Codex, Claude Code):** [AGENTS.md](AGENTS.md)
 
@@ -67,7 +69,10 @@ Close and reopen the terminal after installing, so it finds the new programs.
    Run it again whenever the database is stopped (for example after
    restarting the computer). It never erases data.
 
-5. Start the app and open http://localhost:3000/products:
+5. Start the app and open http://localhost:3000 (the public view) or
+   http://localhost:3000/admin/productos (the admin). The admin asks you to
+   log in: use the invented test account `abril-prueba`, password
+   `paniabi-prueba`. It only exists in local databases.
 
    ```bash
    npm run dev
@@ -103,7 +108,10 @@ If you set up the app before then, move to your own local database once:
    npm run db:local
    ```
 
-5. Start the app and open http://localhost:3000/products:
+5. Start the app and open http://localhost:3000 (the public view) or
+   http://localhost:3000/admin/productos (the admin). The admin asks you to
+   log in: use the invented test account `abril-prueba`, password
+   `paniabi-prueba`. It only exists in local databases.
 
    ```bash
    npm run dev
@@ -179,9 +187,35 @@ builds. Never run `prisma migrate dev` or `prisma migrate reset` with the
 - Before building, Vercel applies pending migrations to that environment's
   database (`scripts/vercel-build.mjs`). On your computer the build never
   migrates.
-- **The site has no login yet.** Anyone with the link can see it and create
-  products. Only enter invented sample data. A login is required before any
-  real data goes in.
+- **The admin needs a login.** Anyone can see the public view, but only a
+  logged-in account can create or change products.
+  - The live site holds Abril's real products, entered by her. Everyone
+    else only enters invented data (`TEST - ...`), on their computer or in
+    a preview.
+  - Previews use the `dev` database, which has its own invented account.
+    Juan creates it and shares the password privately with the team.
+
+### Accounts (Juan only)
+
+`npm run admin:password -- <username>` creates an account or resets its
+password, in the database `DATABASE_URL` points at. It shows that database's
+host and asks you to type it back, reads the new password hidden (at least 12
+characters), stores only a scrypt hash, and logs the account out everywhere.
+The password is never written to a file.
+
+For the live site or the `dev` database, run it in a separate Git Bash with
+that branch's Neon URLs exported for this one command. Keep `.env` on the
+local database. Close that terminal afterwards: `export` lines stay in the
+shell history (`history -c` clears it).
+
+```bash
+export DATABASE_URL='<production pooled URL>'
+export DIRECT_URL='<production direct URL>'
+npm run admin:password -- abril
+```
+
+Abril forgot her password? Run the same command and send her the new one
+privately.
 
 ## 6. Common problems
 

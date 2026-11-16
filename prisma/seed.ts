@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { hashPassword } from "../src/lib/auth/password";
 
 const prisma = new PrismaClient();
 
@@ -12,6 +13,25 @@ const products = [
   { name: "Olive Oil Orange Cake", priceCents: 840000 },
 ];
 
+// Invented test account for local databases only. Its password is public
+// (README), so it must never exist on Neon: it is skipped unless the database
+// is on this computer. Juan creates Abril's real account with
+// `npm run admin:password`.
+const TEST_ACCOUNT = {
+  username: "abril-prueba",
+  password: "paniabi-prueba",
+};
+
+function isLocalDatabase(url: string | undefined) {
+  try {
+    return ["localhost", "127.0.0.1", "[::1]"].includes(
+      new URL(url ?? "").hostname,
+    );
+  } catch {
+    return false;
+  }
+}
+
 async function main() {
   for (const product of products) {
     await prisma.product.upsert({
@@ -19,6 +39,18 @@ async function main() {
       update: { priceCents: product.priceCents, isActive: true },
       create: product,
     });
+  }
+
+  if (isLocalDatabase(process.env.DATABASE_URL)) {
+    // Resets the test password on every run, so it always matches the README.
+    const passwordHash = await hashPassword(TEST_ACCOUNT.password);
+    await prisma.user.upsert({
+      where: { username: TEST_ACCOUNT.username },
+      update: { passwordHash },
+      create: { username: TEST_ACCOUNT.username, passwordHash },
+    });
+  } else {
+    console.log("Skipping the test account: the database is not local.");
   }
 }
 

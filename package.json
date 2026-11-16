@@ -16,6 +16,7 @@
     "db:migrate": "node scripts/db-migrate.mjs",
     "db:seed": "prisma db seed",
     "db:local": "node scripts/db-local.mjs",
+    "admin:password": "tsx scripts/admin-password.ts",
     "check": "node scripts/check.mjs",
     "ticket:start": "node scripts/ticket-start.mjs",
     "git:sync": "node scripts/git-sync.mjs",
