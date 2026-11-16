@@ -81,9 +81,9 @@ en español.
 
 1. Abrir la página de productos: título, botones, cantidad de productos y
    pie de página están en español.
-2. Tocar "Agregar producto" sin escribir nada: debajo del nombre aparece
-   "Escribí el nombre del producto." y debajo del precio "Escribí el
-   precio del producto.".
+2. Dejar el nombre vacío, borrar el 0 que trae el precio y tocar "Agregar
+   producto": debajo del nombre aparece "Escribí el nombre del producto." y
+   debajo del precio "Escribí el precio del producto.".
 3. Escribir "TEST - Medialuna de prueba" con precio 0: aparece "El precio
    tiene que ser de al menos un centavo.".
 4. Cambiar el precio a 800 y guardar: aparece "Producto agregado a la
@@ -121,3 +121,9 @@ No.
 ## 10. Preguntas abiertas para Abril
 
 ## 11. Cambios después de la aprobación
+
+- 16/11/2026: el paso 2 de "Cómo lo comprueba Abril" ahora dice que hay que
+  borrar el 0 del precio. El campo del precio ya arrancaba en 0 antes de esta
+  tarjeta, así que tocando el botón sin escribir nada aparece el aviso del
+  centavo y no el del precio vacío. La pantalla no cambia; solo se corrige el
+  guion de la prueba.
