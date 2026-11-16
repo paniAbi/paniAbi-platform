@@ -131,7 +131,8 @@ Nothing reaches `main` without his approval.
      local one (see the `.env` rule below).
   2. Edit `prisma/schema.prisma`, then run
      `npm run db:migrate -- --name <short-description>`. It creates the
-     migration file and applies it to the local database.
+     migration file and applies it to the local database, and refuses to
+     run if `.env` does not point at this computer.
   3. Add invented sample data for what you added to `prisma/seed.ts`. The
      seed must stay safe to run again. Run `npm run db:local` to check it.
 - Migrations only add tables or columns. Deleting or renaming goes in a
