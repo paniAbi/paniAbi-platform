@@ -58,7 +58,7 @@ export function ProductCategoryChange({
           id={`product-category-${productId}`}
           value={categoryId}
           onChange={(event) => setCategoryId(event.target.value)}
-          className="h-8 rounded-lg border border-[#d8ddd5] bg-white px-2 text-sm text-[#263a31]"
+          className="border-line-divider text-ink h-8 rounded-lg border bg-white px-2 text-sm"
         >
           <option value="" disabled>
             Elegí una categoría
@@ -76,7 +76,7 @@ export function ProductCategoryChange({
       <Button type="submit" size="sm" disabled={!categoryId || isSaving}>
         Confirmar cambio
       </Button>
-      <p aria-live="polite" className="text-sm text-[#52665a]">
+      <p aria-live="polite" className="text-status text-sm">
         {message}
       </p>
     </form>

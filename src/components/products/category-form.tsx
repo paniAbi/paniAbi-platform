@@ -60,7 +60,7 @@ export function CategoryForm() {
       <Button
         type="submit"
         disabled={isSubmitting}
-        className="h-10 w-full rounded-md bg-[#31594a] text-white hover:bg-[#26483a]"
+        className="bg-brand hover:bg-brand-hover h-10 w-full rounded-md text-white"
       >
         {isSubmitting ? (
           <LoaderCircle aria-hidden="true" className="animate-spin" />
@@ -69,7 +69,7 @@ export function CategoryForm() {
         )}
         Crear categoría
       </Button>
-      <p aria-live="polite" className="min-h-5 text-sm text-[#52665a]">
+      <p aria-live="polite" className="text-status min-h-5 text-sm">
         {message}
       </p>
     </form>
