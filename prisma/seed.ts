@@ -1,12 +1,9 @@
 import { PrismaClient } from "@prisma/client";
+import { normalizeCategoryName } from "../src/lib/category-schema";
 
 const prisma = new PrismaClient();
 
-const categories = [
-  { name: "Budines", normalizedName: "budines" },
-  { name: "Postres", normalizedName: "postres" },
-  { name: "Tortas", normalizedName: "tortas" },
-];
+const categories = ["Budines", "Postres", "Tortas"];
 
 const products = [
   { name: "Lemon Poppy Loaf", priceCents: 680000, categoryName: "Budines" },
@@ -21,13 +18,14 @@ const products = [
 async function main() {
   const categoryIds = new Map<string, string>();
 
-  for (const category of categories) {
+  for (const categoryName of categories) {
+    const normalizedName = normalizeCategoryName(categoryName);
     const savedCategory = await prisma.category.upsert({
-      where: { normalizedName: category.normalizedName },
-      update: { name: category.name },
-      create: category,
+      where: { normalizedName },
+      update: { name: categoryName },
+      create: { name: categoryName, normalizedName },
     });
-    categoryIds.set(category.name, savedCategory.id);
+    categoryIds.set(categoryName, savedCategory.id);
   }
 
   for (const product of products) {

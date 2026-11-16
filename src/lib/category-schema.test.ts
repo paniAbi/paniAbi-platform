@@ -5,10 +5,19 @@ import {
 } from "@/lib/category-schema";
 
 describe("categoryFormSchema", () => {
-  it("rejects an empty name and a name longer than 50 characters", () => {
-    expect(categoryFormSchema.safeParse({ name: "   " }).success).toBe(false);
-    expect(categoryFormSchema.safeParse({ name: "a".repeat(51) }).success).toBe(
-      false,
+  it("shows Abril what to correct when a category name cannot be saved", () => {
+    const emptyName = categoryFormSchema.safeParse({ name: "" });
+    const spacesOnly = categoryFormSchema.safeParse({ name: "   " });
+    const tooLong = categoryFormSchema.safeParse({ name: "a".repeat(51) });
+
+    expect(emptyName.error?.issues[0]?.message).toBe(
+      "Ingresá un nombre de categoría.",
+    );
+    expect(spacesOnly.error?.issues[0]?.message).toBe(
+      "Ingresá un nombre de categoría.",
+    );
+    expect(tooLong.error?.issues[0]?.message).toBe(
+      "El nombre no puede tener más de 50 caracteres. Achicalo.",
     );
   });
 

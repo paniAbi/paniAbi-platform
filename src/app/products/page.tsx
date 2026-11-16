@@ -1,5 +1,6 @@
 import { Package2 } from "lucide-react";
 import { ProductWorkspace } from "@/components/products/product-workspace";
+import { sortCategoriesByName } from "@/lib/category-order";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -25,6 +26,8 @@ export default async function ProductsPage() {
     }),
   ]);
 
+  const sortedCategories = sortCategoriesByName(categories);
+
   return (
     <main className="min-h-screen px-4 pb-16 sm:px-8">
       <div className="mx-auto max-w-6xl">
@@ -44,7 +47,7 @@ export default async function ProductsPage() {
         </header>
 
         <ProductWorkspace
-          categories={categories}
+          categories={sortedCategories}
           uncategorizedProducts={uncategorizedProducts}
         />
         <footer className="border-line text-faint border-t py-5 text-xs">
