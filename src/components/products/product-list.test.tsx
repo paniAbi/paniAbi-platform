@@ -31,7 +31,7 @@ describe("ProductList", () => {
 
     expect(screen.getByText("Nothing on the shelf yet")).toBeInTheDocument();
     expect(
-      screen.queryByRole("list", { name: "Products" }),
+      screen.queryByRole("list", { name: "Productos" }),
     ).not.toBeInTheDocument();
   });
 });
