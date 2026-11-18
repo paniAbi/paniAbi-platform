@@ -25,17 +25,13 @@ revisar el plan.
 | Nombre de la pestaña del navegador | Products \| paniAbi                                                           | Productos \| paniAbi                                                                |
 | Arriba, al lado de "paniAbi"       | Bakery workspace                                                              | Gestión de la panadería                                                             |
 | Arriba a la derecha                | Inventory                                                                     | Inventario                                                                          |
-| Encima del título                  | The daily shelf                                                               | La vitrina del día                                                                  |
-| Título de la página                | Products                                                                      | Productos                                                                           |
-| Cantidad de productos              | 1 item / 7 items                                                              | 1 producto / 7 productos                                                            |
 | Lista vacía, título                | Nothing on the shelf yet                                                      | Todavía no hay productos                                                            |
 | Lista vacía, texto                 | Add the first product using the form. It will appear here for the whole team. | Agregá el primer producto con el formulario. Va a aparecer acá para todo el equipo. |
-| Título del formulario              | Add a product                                                                 | Agregar un producto                                                                 |
 | Campo del nombre                   | Product name                                                                  | Nombre del producto                                                                 |
-| Ejemplo dentro del campo           | e.g. Lemon poppy loaf                                                         | Por ejemplo: Budín de limón                                                         |
+| Ejemplo dentro del campo           | e.g. Lemon poppy loaf                                                         | Por ejemplo, Budín de limón                                                         |
 | Campo del precio                   | Price in pesos                                                                | Precio en pesos                                                                     |
-| Botón                              | Add product                                                                   | Agregar producto                                                                    |
-| Aviso al guardar                   | Product added to the list.                                                    | Producto agregado a la lista.                                                       |
+| Botón para guardar el producto     | Add product                                                                   | Guardar producto                                                                    |
+| Aviso al guardar                   | Product added to the list.                                                    | Producto agregado a Budines. (el nombre de la categoría donde lo cargó)             |
 | Pie de página                      | paniAbi platform / Product catalogue                                          | Plataforma paniAbi / Catálogo de productos                                          |
 
 Los avisos cuando algo sale mal:
@@ -63,7 +59,6 @@ en español.
 
 - [ ] La página muestra cada texto nuevo de la tabla.
 - [ ] Ninguno de los textos en inglés de la columna "Hoy" queda en pantalla.
-- [ ] Con un producto dice "1 producto"; con siete, "7 productos".
 - [ ] Sin productos, muestra "Todavía no hay productos" y su texto.
 - [ ] Nombre vacío o solo con espacios: avisa "Escribí el nombre del
       producto." y no guarda.
@@ -72,22 +67,23 @@ en español.
       centavo." y no guarda.
 - [ ] Si los datos llegan mal al guardar, avisa "Revisá los datos del
       producto y probá de nuevo."
-- [ ] Al guardar "TEST - Medialuna de prueba" a 800 pesos, avisa "Producto
-      agregado a la lista."
+- [ ] Al guardar "TEST - Medialuna de prueba" a 800 pesos en "Sin
+      categoría", avisa "Producto agregado a Sin categoría."
 - [ ] Los nombres que escribió Abril no se traducen y los precios se ven
       igual que hoy.
 
 ## 5. Cómo lo comprueba Abril
 
-1. Abrir la página de productos: título, botones, cantidad de productos y
-   pie de página están en español.
-2. Dejar el nombre vacío, borrar el 0 que trae el precio y tocar "Agregar
-   producto": debajo del nombre aparece "Escribí el nombre del producto." y
-   debajo del precio "Escribí el precio del producto.".
+1. Abrir la página de productos: la parte de arriba, las categorías, los
+   botones y el pie de página están en español.
+2. Entrar a "Sin categoría", tocar "Agregar producto", dejar el nombre vacío,
+   borrar el 0 que trae el precio y tocar "Guardar producto": debajo del
+   nombre aparece "Escribí el nombre del producto." y debajo del precio
+   "Escribí el precio del producto.".
 3. Escribir "TEST - Medialuna de prueba" con precio 0: aparece "El precio
    tiene que ser de al menos un centavo.".
-4. Cambiar el precio a 800 y guardar: aparece "Producto agregado a la
-   lista." y el producto se ve en la lista a $ 800.
+4. Cambiar el precio a 800 y guardar: aparece "Producto agregado a Sin
+   categoría." y el producto se ve en la lista a $ 800.
 
 ## 6. Pasos
 
@@ -127,3 +123,14 @@ No.
   tarjeta, así que tocando el botón sin escribir nada aparece el aviso del
   centavo y no el del precio vacío. La pantalla no cambia; solo se corrige el
   guion de la prueba.
+
+- 18/11/2026: la tarjeta #18 (categorías) rehízo la pantalla de productos
+  antes de que esta tarjeta se incorporara. Ya no existen "La vitrina del
+  día", el título "Productos" con la cantidad, ni el título "Agregar un
+  producto": se sacaron de la tabla. El formulario de la #18 ya venía en
+  español con otros textos, y se mantienen los suyos: el ejemplo "Por
+  ejemplo, Budín de limón", el botón "Guardar producto" (el botón "Agregar
+  producto" ahora es el que abre el formulario) y el aviso "Producto
+  agregado a" seguido del nombre de la categoría. Los avisos de error, la
+  parte de arriba, el pie de página y la lista vacía quedan como estaban en
+  el plan.
