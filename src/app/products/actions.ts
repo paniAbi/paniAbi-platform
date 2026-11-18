@@ -18,7 +18,7 @@ export async function createProduct(
   if (!parsedValues.success) {
     return {
       success: false,
-      message: "Check the product details and try again.",
+      message: "Revisá los datos del producto y probá de nuevo.",
     };
   }
 

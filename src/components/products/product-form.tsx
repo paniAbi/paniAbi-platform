@@ -44,7 +44,7 @@ export function ProductForm({ categoryId, categoryName }: ProductFormProps) {
   }
 
   return (
-    <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+    <form className="space-y-4" noValidate onSubmit={handleSubmit(onSubmit)}>
       <div className="space-y-2">
         <Label htmlFor="product-name">Nombre del producto</Label>
         <Input
