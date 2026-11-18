@@ -3,6 +3,8 @@ import {
   branchName,
   findPlanFile,
   isLocalDatabaseUrl,
+  localDatabaseProblem,
+  migrateDevArguments,
   parseBranch,
   parseOpenPrArguments,
   prTitle,
@@ -167,5 +169,50 @@ describe("isLocalDatabaseUrl", () => {
     "not a url",
   ])("rejects %s", (url) => {
     expect(isLocalDatabaseUrl(url)).toBe(false);
+  });
+});
+
+describe("localDatabaseProblem", () => {
+  const local = "postgresql://paniabi:paniabi@localhost:5432/paniabi";
+  const neon = "postgresql://user:pass@ep-abc.us-east-2.aws.neon.tech/neondb";
+
+  it("allows both URLs on this computer", () => {
+    expect(
+      localDatabaseProblem({
+        envFileExists: true,
+        env: { DATABASE_URL: local, DIRECT_URL: local },
+      }),
+    ).toBeNull();
+  });
+
+  it("stops when there is no .env file", () => {
+    expect(localDatabaseProblem({ envFileExists: false, env: {} })?.[0]).toBe(
+      "STOP: there is no .env file.",
+    );
+  });
+
+  it.each([
+    ["DATABASE_URL", { DATABASE_URL: neon, DIRECT_URL: local }],
+    ["DIRECT_URL", { DATABASE_URL: local, DIRECT_URL: neon }],
+    ["DATABASE_URL", { DATABASE_URL: neon, DIRECT_URL: neon }],
+    ["DATABASE_URL", { DATABASE_URL: "", DIRECT_URL: local }],
+    ["DIRECT_URL", { DATABASE_URL: local }],
+    ["DATABASE_URL", { DATABASE_URL: "not a url", DIRECT_URL: local }],
+  ])("stops naming %s for %o", (name, env) => {
+    expect(localDatabaseProblem({ envFileExists: true, env })?.[0]).toBe(
+      `STOP: ${name} in .env does not point at this computer.`,
+    );
+  });
+});
+
+describe("migrateDevArguments", () => {
+  it("passes the options to prisma migrate dev unchanged", () => {
+    expect(migrateDevArguments(["--name", "add product category"])).toEqual([
+      "node_modules/prisma/build/index.js",
+      "migrate",
+      "dev",
+      "--name",
+      "add product category",
+    ]);
   });
 });

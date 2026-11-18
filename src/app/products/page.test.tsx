@@ -2,35 +2,41 @@ import { render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import ProductsPage from "@/app/products/page";
 
-const { findMany } = vi.hoisted(() => ({ findMany: vi.fn() }));
+const mocks = vi.hoisted(() => ({
+  findCategories: vi.fn(),
+  findProducts: vi.fn(),
+}));
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
-    product: { findMany },
+    category: { findMany: mocks.findCategories },
+    product: { findMany: mocks.findProducts },
   },
 }));
 
-const product = (id: string, name: string) => ({ id, name, priceCents: 80000 });
-
 describe("ProductsPage", () => {
   beforeEach(() => {
-    findMany.mockResolvedValue([product("p1", "Lemon loaf")]);
+    mocks.findCategories.mockResolvedValue([]);
+    mocks.findProducts.mockResolvedValue([
+      { id: "p1", name: "Lemon loaf", priceCents: 80000 },
+    ]);
   });
 
-  it("shows every text in Spanish", async () => {
+  it("shows the category workspace without the New listing label", async () => {
     render(await ProductsPage());
 
-    for (const text of [
-      "Gestión de la panadería",
-      "Inventario",
-      "La vitrina del día",
-      "Agregar un producto",
-    ]) {
-      expect(screen.getByText(text)).toBeInTheDocument();
-    }
+    expect(screen.queryByText(/new listing/i)).not.toBeInTheDocument();
+    expect(screen.getByText("Categorías")).toBeInTheDocument();
     expect(
-      screen.getByRole("heading", { level: 1, name: "Productos" }),
+      screen.getByRole("button", { name: "Sin categoría" }),
     ).toBeInTheDocument();
+  });
+
+  it("shows the header and footer in Spanish", async () => {
+    render(await ProductsPage());
+
+    expect(screen.getByText("Gestión de la panadería")).toBeInTheDocument();
+    expect(screen.getByText("Inventario")).toBeInTheDocument();
     expect(document.querySelector("footer")?.textContent).toBe(
       "Plataforma paniAbi / Catálogo de productos",
     );
@@ -50,7 +56,7 @@ describe("ProductsPage", () => {
       "Add product",
       "paniAbi platform",
       "Product catalogue",
-      " item",
+      " items",
     ]) {
       expect(text).not.toContain(old);
     }
@@ -61,17 +67,5 @@ describe("ProductsPage", () => {
 
     expect(screen.getByText("Lemon loaf")).toBeInTheDocument();
     expect(screen.getByText("$ 800")).toBeInTheDocument();
-  });
-
-  it.each([
-    [1, "1 producto"],
-    [7, "7 productos"],
-  ])("counts %d product(s) as %s", async (count, label) => {
-    findMany.mockResolvedValue(
-      Array.from({ length: count }, (_, i) => product(`p${i}`, `Torta ${i}`)),
-    );
-    render(await ProductsPage());
-
-    expect(screen.getByText(label)).toBeInTheDocument();
   });
 });

@@ -13,7 +13,12 @@ import {
 } from "@/lib/product-schema";
 import { createProduct } from "@/app/products/actions";
 
-export function ProductForm() {
+type ProductFormProps = {
+  categoryId: string | null;
+  categoryName: string;
+};
+
+export function ProductForm({ categoryId, categoryName }: ProductFormProps) {
   const [message, setMessage] = useState("");
   const {
     register,
@@ -22,16 +27,16 @@ export function ProductForm() {
     formState: { errors, isSubmitting },
   } = useForm<ProductFormValues>({
     resolver: zodResolver(productFormSchema),
-    defaultValues: { name: "", pricePesos: 0 },
+    defaultValues: { name: "", pricePesos: 0, categoryId },
   });
 
   async function onSubmit(values: ProductFormValues) {
     setMessage("");
-    const result = await createProduct(values);
+    const result = await createProduct({ ...values, categoryId });
 
     if (result.success) {
       reset();
-      setMessage("Producto agregado a la lista.");
+      setMessage(`Producto agregado a ${categoryName}.`);
       return;
     }
 
@@ -45,7 +50,7 @@ export function ProductForm() {
         <Input
           id="product-name"
           autoComplete="off"
-          placeholder="Por ejemplo: Budín de limón"
+          placeholder="Por ejemplo, Budín de limón"
           aria-invalid={Boolean(errors.name)}
           aria-describedby={errors.name ? "product-name-error" : undefined}
           {...register("name")}
@@ -94,7 +99,7 @@ export function ProductForm() {
         ) : (
           <Plus aria-hidden="true" />
         )}
-        Agregar producto
+        Guardar producto
       </Button>
       <p aria-live="polite" className="text-status min-h-5 text-sm">
         {message}

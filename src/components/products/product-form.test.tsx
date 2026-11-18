@@ -13,7 +13,7 @@ function fillAndSubmit(name: string, price: string) {
   fireEvent.change(screen.getByLabelText("Precio en pesos"), {
     target: { value: price },
   });
-  fireEvent.click(screen.getByRole("button", { name: "Agregar producto" }));
+  fireEvent.click(screen.getByRole("button", { name: "Guardar producto" }));
 }
 
 describe("ProductForm", () => {
@@ -22,20 +22,20 @@ describe("ProductForm", () => {
   });
 
   it("shows its labels and example in Spanish", () => {
-    render(<ProductForm />);
+    render(<ProductForm categoryId={null} categoryName="Sin categoría" />);
 
     expect(screen.getByLabelText("Nombre del producto")).toHaveAttribute(
       "placeholder",
-      "Por ejemplo: Budín de limón",
+      "Por ejemplo, Budín de limón",
     );
     expect(screen.getByLabelText("Precio en pesos")).toBeInTheDocument();
     expect(
-      screen.getByRole("button", { name: "Agregar producto" }),
+      screen.getByRole("button", { name: "Guardar producto" }),
     ).toBeInTheDocument();
   });
 
   it("asks for the name and the price when both are empty", async () => {
-    render(<ProductForm />);
+    render(<ProductForm categoryId={null} categoryName="Sin categoría" />);
 
     fillAndSubmit("", "");
 
@@ -49,7 +49,7 @@ describe("ProductForm", () => {
   });
 
   it("rejects a price of 0 with its own message", async () => {
-    render(<ProductForm />);
+    render(<ProductForm categoryId={null} categoryName="Sin categoría" />);
 
     fillAndSubmit("TEST - Medialuna de prueba", "0");
 
@@ -62,23 +62,26 @@ describe("ProductForm", () => {
   });
 
   it("leaves the warnings to the platform, not the browser", () => {
-    const { container } = render(<ProductForm />);
+    const { container } = render(
+      <ProductForm categoryId={null} categoryName="Sin categoría" />,
+    );
 
     expect(container.querySelector("form")).toHaveAttribute("novalidate");
   });
 
   it("confirms in Spanish when the product is saved", async () => {
     createProduct.mockResolvedValue({ success: true });
-    render(<ProductForm />);
+    render(<ProductForm categoryId={null} categoryName="Sin categoría" />);
 
     fillAndSubmit("TEST - Medialuna de prueba", "800");
 
     expect(
-      await screen.findByText("Producto agregado a la lista."),
+      await screen.findByText("Producto agregado a Sin categoría."),
     ).toBeInTheDocument();
     expect(createProduct).toHaveBeenCalledWith({
       name: "TEST - Medialuna de prueba",
       pricePesos: 800,
+      categoryId: null,
     });
   });
 });

@@ -6,6 +6,7 @@ export const productFormSchema = z.object({
     // An empty number field arrives as NaN, which is not a number to Zod.
     .number({ error: "Escribí el precio del producto." })
     .min(0.01, "El precio tiene que ser de al menos un centavo."),
+  categoryId: z.string().cuid().nullable().optional(),
 });
 
 export type ProductFormValues = z.infer<typeof productFormSchema>;

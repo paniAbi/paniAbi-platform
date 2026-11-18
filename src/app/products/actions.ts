@@ -27,6 +27,7 @@ export async function createProduct(
       name: parsedValues.data.name,
       // Convert the form's pesos to integer cents at the database boundary.
       priceCents: Math.round(parsedValues.data.pricePesos * 100),
+      categoryId: parsedValues.data.categoryId ?? null,
     },
   });
 
