@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { CategoryForm } from "@/components/products/category-form";
 
-vi.mock("@/app/products/category-actions", () => ({
+vi.mock("@/app/admin/productos/category-actions", () => ({
   createCategory: vi.fn(),
 }));
 

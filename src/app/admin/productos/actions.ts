@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { getCurrentUser } from "@/lib/auth/session";
 import {
   productFormSchema,
   type ProductFormValues,
@@ -13,6 +14,15 @@ export type CreateProductResult =
 export async function createProduct(
   values: ProductFormValues,
 ): Promise<CreateProductResult> {
+  // Checked here, next to the data: server actions can be called directly,
+  // without opening the page, so the page's redirect is not enough.
+  if (!(await getCurrentUser())) {
+    return {
+      success: false,
+      message: "Tenés que entrar para guardar cambios.",
+    };
+  }
+
   const parsedValues = productFormSchema.safeParse(values);
 
   if (!parsedValues.success) {
@@ -31,6 +41,8 @@ export async function createProduct(
     },
   });
 
-  revalidatePath("/products");
+  revalidatePath("/admin/productos");
+  // The public view on the home page lists the same products.
+  revalidatePath("/");
   return { success: true };
 }

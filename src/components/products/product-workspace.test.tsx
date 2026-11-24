@@ -8,15 +8,15 @@ const mocks = vi.hoisted(() => ({
   changeProductCategory: vi.fn(),
 }));
 
-vi.mock("@/app/products/category-actions", () => ({
+vi.mock("@/app/admin/productos/category-actions", () => ({
   createCategory: mocks.createCategory,
 }));
 
-vi.mock("@/app/products/actions", () => ({
+vi.mock("@/app/admin/productos/actions", () => ({
   createProduct: mocks.createProduct,
 }));
 
-vi.mock("@/app/products/product-category-actions", () => ({
+vi.mock("@/app/admin/productos/product-category-actions", () => ({
   changeProductCategory: mocks.changeProductCategory,
 }));
 

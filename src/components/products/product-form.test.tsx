@@ -4,7 +4,7 @@ import { ProductForm } from "@/components/products/product-form";
 
 const { createProduct } = vi.hoisted(() => ({ createProduct: vi.fn() }));
 
-vi.mock("@/app/products/actions", () => ({ createProduct }));
+vi.mock("@/app/admin/productos/actions", () => ({ createProduct }));
 
 function fillAndSubmit(name: string, price: string) {
   fireEvent.change(screen.getByLabelText("Nombre del producto"), {

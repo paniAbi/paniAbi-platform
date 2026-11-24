@@ -11,7 +11,7 @@ import {
   productFormSchema,
   type ProductFormValues,
 } from "@/lib/product-schema";
-import { createProduct } from "@/app/products/actions";
+import { createProduct } from "@/app/admin/productos/actions";
 
 type ProductFormProps = {
   categoryId: string | null;

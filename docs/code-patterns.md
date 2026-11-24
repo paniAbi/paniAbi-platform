@@ -8,7 +8,7 @@ the same rules.
 Juan maintains this file. When the same review comment appears twice, add it
 here.
 
-The products feature (`src/app/products/`) is the reference example.
+The products feature (`src/app/admin/productos/`) is the reference example.
 
 ## Feature slice
 
@@ -16,8 +16,8 @@ Each feature lives in a few files named after it:
 
 | File                           | Responsibility                                       | Example                                |
 | ------------------------------ | ---------------------------------------------------- | -------------------------------------- |
-| `src/app/<feature>/page.tsx`   | Server component: reads data with Prisma and renders | `src/app/products/page.tsx`            |
-| `src/app/<feature>/actions.ts` | Server actions: validate and write data              | `src/app/products/actions.ts`          |
+| `src/app/<feature>/page.tsx`   | Server component: reads data with Prisma and renders | `src/app/admin/productos/page.tsx`     |
+| `src/app/<feature>/actions.ts` | Server actions: validate and write data              | `src/app/admin/productos/actions.ts`   |
 | `src/components/<feature>/`    | Client components: forms and lists                   | `product-form.tsx`, `product-list.tsx` |
 | `src/lib/<feature>-schema.ts`  | Zod schema shared by the form and the server action  | `src/lib/product-schema.ts`            |
 
@@ -40,6 +40,18 @@ Each feature lives in a few files named after it:
 - Return `{ success: true } | { success: false; message: string }`. Do not
   throw errors to the UI.
 - Call `revalidatePath("/<feature>")` after writing.
+
+## Login
+
+- Admin screens live under `src/app/admin/` and call `requireUser()` from
+  `src/lib/auth/session.ts` before reading anything.
+- Every server action that writes calls `getCurrentUser()` first and returns
+  `{ success: false, message: "Tenés que entrar para guardar cambios." }`
+  without touching the database when nobody is logged in. Server actions can
+  be called directly, so the page's redirect is not enough. Test it by
+  calling the action with no session.
+- Public screens (`src/app/page.tsx`) only read, and never show buttons or
+  forms that write.
 
 ## Data
 

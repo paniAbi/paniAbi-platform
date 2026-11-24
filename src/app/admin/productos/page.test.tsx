@@ -1,10 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import ProductsPage from "@/app/products/page";
 
 const mocks = vi.hoisted(() => ({
   findCategories: vi.fn(),
   findProducts: vi.fn(),
+  requireUser: vi.fn(),
 }));
 
 vi.mock("@/lib/prisma", () => ({
@@ -13,13 +13,42 @@ vi.mock("@/lib/prisma", () => ({
     product: { findMany: mocks.findProducts },
   },
 }));
+vi.mock("@/lib/auth/session", () => ({ requireUser: mocks.requireUser }));
+vi.mock("@/app/admin/entrar/actions", () => ({ logout: vi.fn() }));
+// Server actions: the page only needs their references. Their own tests
+// cover what they do.
+vi.mock("@/app/admin/productos/actions", () => ({ createProduct: vi.fn() }));
+vi.mock("@/app/admin/productos/category-actions", () => ({
+  createCategory: vi.fn(),
+}));
+vi.mock("@/app/admin/productos/product-category-actions", () => ({
+  changeProductCategory: vi.fn(),
+}));
+
+import ProductsPage from "@/app/admin/productos/page";
 
 describe("ProductsPage", () => {
   beforeEach(() => {
+    vi.clearAllMocks();
+    mocks.requireUser.mockResolvedValue({ id: "u1", username: "abril" });
     mocks.findCategories.mockResolvedValue([]);
     mocks.findProducts.mockResolvedValue([
       { id: "p1", name: "Lemon loaf", priceCents: 80000 },
     ]);
+  });
+
+  it("sends anyone who is not logged in to the login screen, before reading anything", async () => {
+    mocks.requireUser.mockRejectedValue(new Error("redirect:/admin/entrar"));
+
+    await expect(ProductsPage()).rejects.toThrow("redirect:/admin/entrar");
+    expect(mocks.findCategories).not.toHaveBeenCalled();
+    expect(mocks.findProducts).not.toHaveBeenCalled();
+  });
+
+  it("offers a way to log out", async () => {
+    render(await ProductsPage());
+
+    expect(screen.getByRole("button", { name: "Salir" })).toBeInTheDocument();
   });
 
   it("shows the category workspace without the New listing label", async () => {

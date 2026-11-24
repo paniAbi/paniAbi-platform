@@ -4,7 +4,7 @@ import { ProductCategoryChange } from "@/components/products/product-category-ch
 
 const mocks = vi.hoisted(() => ({ changeProductCategory: vi.fn() }));
 
-vi.mock("@/app/products/product-category-actions", () => ({
+vi.mock("@/app/admin/productos/product-category-actions", () => ({
   changeProductCategory: mocks.changeProductCategory,
 }));
 
