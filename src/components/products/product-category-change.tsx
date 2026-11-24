@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { changeProductCategory } from "@/app/products/product-category-actions";
+import { changeProductCategory } from "@/app/admin/productos/product-category-actions";
 import type { CategoryListItem } from "@/components/products/category-list";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";

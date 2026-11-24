@@ -11,7 +11,7 @@ import {
   productFormSchema,
   type ProductFormValues,
 } from "@/lib/product-schema";
-import { createProduct } from "@/app/products/actions";
+import { createProduct } from "@/app/admin/productos/actions";
 
 type ProductFormProps = {
   categoryId: string | null;
@@ -44,7 +44,7 @@ export function ProductForm({ categoryId, categoryName }: ProductFormProps) {
   }
 
   return (
-    <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+    <form className="space-y-4" noValidate onSubmit={handleSubmit(onSubmit)}>
       <div className="space-y-2">
         <Label htmlFor="product-name">Nombre del producto</Label>
         <Input

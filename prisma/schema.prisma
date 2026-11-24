@@ -29,3 +29,29 @@ model Category {
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 }
+
+// The person who manages the bakery (only Abril for now). There is no sign-up
+// screen: Juan creates or resets the account with `npm run admin:password`.
+model User {
+  id           String    @id @default(cuid())
+  username     String    @unique
+  // "scrypt$N$r$p$salt$hash" (src/lib/auth/password.ts). Never the password.
+  passwordHash String
+  sessions     Session[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+// One row per device where Abril is logged in. "Salir" deletes it; resetting
+// the password deletes all of them.
+model Session {
+  id        String   @id @default(cuid())
+  // SHA-256 of the cookie token (src/lib/auth/session-token.ts).
+  tokenHash String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}

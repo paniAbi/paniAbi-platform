@@ -1,6 +1,7 @@
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
+  getCurrentUser: vi.fn(),
   create: vi.fn(),
   findUnique: vi.fn(),
   revalidatePath: vi.fn(),
@@ -15,11 +16,30 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 
+vi.mock("@/lib/auth/session", () => ({
+  getCurrentUser: mocks.getCurrentUser,
+}));
 vi.mock("next/cache", () => ({ revalidatePath: mocks.revalidatePath }));
 
-import { createCategory } from "@/app/products/category-actions";
+import { createCategory } from "@/app/admin/productos/category-actions";
 
 describe("createCategory", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mocks.getCurrentUser.mockResolvedValue({ id: "u1", username: "abril" });
+  });
+
+  it("saves nothing when nobody is logged in", async () => {
+    mocks.getCurrentUser.mockResolvedValue(null);
+
+    await expect(createCategory({ name: "Postres" })).resolves.toEqual({
+      success: false,
+      message: "Tenés que entrar para guardar cambios.",
+    });
+    expect(mocks.findUnique).not.toHaveBeenCalled();
+    expect(mocks.create).not.toHaveBeenCalled();
+  });
+
   it("does not create a spelling variation of an existing category", async () => {
     mocks.findUnique.mockResolvedValue({ id: "category-1" });
 
@@ -42,6 +62,7 @@ describe("createCategory", () => {
     expect(mocks.create).toHaveBeenCalledWith({
       data: { name: "Postres", normalizedName: "postres" },
     });
-    expect(mocks.revalidatePath).toHaveBeenCalledWith("/products");
+    expect(mocks.revalidatePath).toHaveBeenCalledWith("/admin/productos");
+    expect(mocks.revalidatePath).toHaveBeenCalledWith("/");
   });
 });

@@ -8,7 +8,7 @@ the same rules.
 Juan maintains this file. When the same review comment appears twice, add it
 here.
 
-The products feature (`src/app/products/`) is the reference example.
+The products feature (`src/app/admin/productos/`) is the reference example.
 
 ## Feature slice
 
@@ -16,8 +16,8 @@ Each feature lives in a few files named after it:
 
 | File                           | Responsibility                                       | Example                                |
 | ------------------------------ | ---------------------------------------------------- | -------------------------------------- |
-| `src/app/<feature>/page.tsx`   | Server component: reads data with Prisma and renders | `src/app/products/page.tsx`            |
-| `src/app/<feature>/actions.ts` | Server actions: validate and write data              | `src/app/products/actions.ts`          |
+| `src/app/<feature>/page.tsx`   | Server component: reads data with Prisma and renders | `src/app/admin/productos/page.tsx`     |
+| `src/app/<feature>/actions.ts` | Server actions: validate and write data              | `src/app/admin/productos/actions.ts`   |
 | `src/components/<feature>/`    | Client components: forms and lists                   | `product-form.tsx`, `product-list.tsx` |
 | `src/lib/<feature>-schema.ts`  | Zod schema shared by the form and the server action  | `src/lib/product-schema.ts`            |
 
@@ -27,7 +27,12 @@ Each feature lives in a few files named after it:
   schema and its inferred type (`ProductFormValues`).
 - The form uses it through `zodResolver` (React Hook Form).
 - The server action validates again with `safeParse`. Never trust the browser.
-- Error messages are full sentences Abril can act on: "Enter a product name."
+- Error messages are full sentences in Spanish that Abril can act on:
+  "Escribí el nombre del producto.", not "Campo requerido". Give every rule
+  its own message, including the type error (an empty number field arrives
+  as `NaN`), so no default English message from Zod reaches the screen.
+- Forms have `noValidate`, so the warnings come from the schema, in Spanish,
+  and not from the browser in its own language.
 
 ## Server actions
 
@@ -35,6 +40,18 @@ Each feature lives in a few files named after it:
 - Return `{ success: true } | { success: false; message: string }`. Do not
   throw errors to the UI.
 - Call `revalidatePath("/<feature>")` after writing.
+
+## Login
+
+- Admin screens live under `src/app/admin/` and call `requireUser()` from
+  `src/lib/auth/session.ts` before reading anything.
+- Every server action that writes calls `getCurrentUser()` first and returns
+  `{ success: false, message: "Tenés que entrar para guardar cambios." }`
+  without touching the database when nobody is logged in. Server actions can
+  be called directly, so the page's redirect is not enough. Test it by
+  calling the action with no session.
+- Public screens (`src/app/page.tsx`) only read, and never show buttons or
+  forms that write.
 
 ## Data
 
@@ -50,6 +67,10 @@ Each feature lives in a few files named after it:
 
 ## UI
 
+- Everything Abril or her customers read is in Spanish (Argentine voseo:
+  "Agregá", "Escribí"): titles, labels, buttons, placeholders, messages,
+  `aria-label`s and the page title. Code, comments and tests stay in
+  English; only the strings on screen are Spanish. `<html lang="es">`.
 - Use the components in `src/components/ui/` (shadcn) before writing new ones.
 - Every input has a `Label` with `htmlFor`; errors appear under the field and
   are linked with `aria-describedby`; results are announced with
@@ -80,8 +101,3 @@ Each feature lives in a few files named after it:
 3. The server action in `src/app/<feature>/actions.ts`.
 4. The form and list components in `src/components/<feature>/`, with tests.
 5. The page in `src/app/<feature>/page.tsx`.
-
-## Open decisions
-
-- The interface text is in English. Confirm with Abril which language the
-  screens should use.

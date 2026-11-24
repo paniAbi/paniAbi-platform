@@ -8,15 +8,15 @@ const mocks = vi.hoisted(() => ({
   changeProductCategory: vi.fn(),
 }));
 
-vi.mock("@/app/products/category-actions", () => ({
+vi.mock("@/app/admin/productos/category-actions", () => ({
   createCategory: mocks.createCategory,
 }));
 
-vi.mock("@/app/products/actions", () => ({
+vi.mock("@/app/admin/productos/actions", () => ({
   createProduct: mocks.createProduct,
 }));
 
-vi.mock("@/app/products/product-category-actions", () => ({
+vi.mock("@/app/admin/productos/product-category-actions", () => ({
   changeProductCategory: mocks.changeProductCategory,
 }));
 
@@ -32,7 +32,9 @@ describe("ProductWorkspace", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Agregar producto" }));
 
-    expect(screen.getByText("Agregar producto a Sin categoría")).toBeInTheDocument();
+    expect(
+      screen.getByText("Agregar producto a Sin categoría"),
+    ).toBeInTheDocument();
   });
 
   it("shows a selected category's products and saves a new product in it", async () => {
@@ -44,7 +46,9 @@ describe("ProductWorkspace", () => {
           {
             id: "c123456789012345678901234",
             name: "Budines",
-            products: [{ id: "budin-1", name: "Budín de limón", priceCents: 85000 }],
+            products: [
+              { id: "budin-1", name: "Budín de limón", priceCents: 85000 },
+            ],
           },
         ]}
         uncategorizedProducts={[]}
