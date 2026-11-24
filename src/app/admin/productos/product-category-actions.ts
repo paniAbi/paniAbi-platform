@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
+import { getCurrentUser } from "@/lib/auth/session";
 import { prisma } from "@/lib/prisma";
 
 const productCategorySchema = z.object({
@@ -15,6 +16,13 @@ export type ChangeProductCategoryResult =
 export async function changeProductCategory(
   values: z.infer<typeof productCategorySchema>,
 ): Promise<ChangeProductCategoryResult> {
+  if (!(await getCurrentUser())) {
+    return {
+      success: false,
+      message: "Tenés que entrar para guardar cambios.",
+    };
+  }
+
   const parsedValues = productCategorySchema.safeParse(values);
 
   if (!parsedValues.success) {
@@ -45,5 +53,6 @@ export async function changeProductCategory(
   });
 
   revalidatePath("/admin/productos");
+  revalidatePath("/");
   return { success: true };
 }

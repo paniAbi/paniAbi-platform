@@ -7,6 +7,7 @@ import {
   normalizeCategoryName,
   type CategoryFormValues,
 } from "@/lib/category-schema";
+import { getCurrentUser } from "@/lib/auth/session";
 import { prisma } from "@/lib/prisma";
 
 export type CreateCategoryResult =
@@ -15,6 +16,13 @@ export type CreateCategoryResult =
 export async function createCategory(
   values: CategoryFormValues,
 ): Promise<CreateCategoryResult> {
+  if (!(await getCurrentUser())) {
+    return {
+      success: false,
+      message: "Tenés que entrar para guardar cambios.",
+    };
+  }
+
   const parsedValues = categoryFormSchema.safeParse(values);
 
   if (!parsedValues.success) {
@@ -55,5 +63,6 @@ export async function createCategory(
   }
 
   revalidatePath("/admin/productos");
+  revalidatePath("/");
   return { success: true };
 }
