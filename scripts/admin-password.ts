@@ -95,7 +95,12 @@ async function main() {
   }
 }
 
-main().catch((error: unknown) => {
-  console.error(error);
-  process.exit(1);
-});
+main().then(
+  // Reading the password leaves stdin open, which would keep the process
+  // waiting after it finished.
+  () => process.exit(0),
+  (error: unknown) => {
+    console.error(error);
+    process.exit(1);
+  },
+);
