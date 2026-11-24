@@ -28,7 +28,7 @@ export async function createProduct(
   if (!parsedValues.success) {
     return {
       success: false,
-      message: "Check the product details and try again.",
+      message: "Revisá los datos del producto y probá de nuevo.",
     };
   }
 
@@ -37,6 +37,7 @@ export async function createProduct(
       name: parsedValues.data.name,
       // Convert the form's pesos to integer cents at the database boundary.
       priceCents: Math.round(parsedValues.data.pricePesos * 100),
+      categoryId: parsedValues.data.categoryId ?? null,
     },
   });
 
