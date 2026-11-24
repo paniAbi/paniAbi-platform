@@ -38,11 +38,11 @@ export default async function ProductsPage() {
             </span>
             <span className="font-display text-lg">paniAbi</span>
             <span className="border-line-divider text-tagline ml-1 hidden border-l pl-3 text-xs sm:block">
-              Bakery workspace
+              Gestión de la panadería
             </span>
           </a>
           <span className="text-label text-xs font-medium tracking-[0.12em] uppercase">
-            Inventory
+            Inventario
           </span>
         </header>
 
@@ -51,8 +51,8 @@ export default async function ProductsPage() {
           uncategorizedProducts={uncategorizedProducts}
         />
         <footer className="border-line text-faint border-t py-5 text-xs">
-          paniAbi platform <span className="text-fainter px-1.5">/</span>{" "}
-          Product catalogue
+          Plataforma paniAbi <span className="text-fainter px-1.5">/</span>{" "}
+          Catálogo de productos
         </footer>
       </div>
     </main>

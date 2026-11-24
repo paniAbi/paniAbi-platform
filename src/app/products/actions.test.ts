@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
   create: vi.fn(),
@@ -14,6 +14,8 @@ vi.mock("next/cache", () => ({ revalidatePath: mocks.revalidatePath }));
 import { createProduct } from "@/app/products/actions";
 
 describe("createProduct", () => {
+  beforeEach(() => vi.clearAllMocks());
+
   it("stores a product in the category where Abril opened the form", async () => {
     mocks.create.mockResolvedValue({ id: "product-1" });
 
@@ -32,5 +34,15 @@ describe("createProduct", () => {
         categoryId: "c123456789012345678901234",
       },
     });
+  });
+
+  it("answers in Spanish when the data arrives wrong", async () => {
+    await expect(createProduct({ name: "", pricePesos: 800 })).resolves.toEqual(
+      {
+        success: false,
+        message: "Revisá los datos del producto y probá de nuevo.",
+      },
+    );
+    expect(mocks.create).not.toHaveBeenCalled();
   });
 });
