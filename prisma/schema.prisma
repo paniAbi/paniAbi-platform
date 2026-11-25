@@ -12,6 +12,7 @@ datasource db {
 model Product {
   id          String    @id @default(cuid())
   name        String    @unique
+  normalizedName String?   @unique
   // Store money as integer cents so floating-point rounding cannot change totals.
   priceCents  Int
   isActive    Boolean   @default(true)

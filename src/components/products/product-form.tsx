@@ -24,6 +24,7 @@ export function ProductForm({ categoryId, categoryName }: ProductFormProps) {
     register,
     handleSubmit,
     reset,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<ProductFormValues>({
     resolver: zodResolver(productFormSchema),
@@ -40,6 +41,10 @@ export function ProductForm({ categoryId, categoryName }: ProductFormProps) {
       return;
     }
 
+    if (result.field === "name") {
+      setError("name", { type: "server", message: result.message });
+      return;
+    }
     setMessage(result.message);
   }
 
@@ -56,7 +61,7 @@ export function ProductForm({ categoryId, categoryName }: ProductFormProps) {
           {...register("name")}
         />
         {errors.name && (
-          <p id="product-name-error" className="text-destructive text-sm">
+          <p id="product-name-error" aria-live="polite" className="text-destructive text-sm">
             {errors.name.message}
           </p>
         )}

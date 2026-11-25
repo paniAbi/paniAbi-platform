@@ -4,6 +4,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const mocks = vi.hoisted(() => ({
   getCurrentUser: vi.fn(),
   create: vi.fn(),
+  findMany: vi.fn(),
   revalidatePath: vi.fn(),
 }));
 
@@ -11,7 +12,7 @@ vi.mock("@/lib/auth/session", () => ({
   getCurrentUser: mocks.getCurrentUser,
 }));
 vi.mock("@/lib/prisma", () => ({
-  prisma: { product: { create: mocks.create } },
+  prisma: { product: { create: mocks.create, findMany: mocks.findMany } },
 }));
 vi.mock("next/cache", () => ({ revalidatePath: mocks.revalidatePath }));
 
@@ -27,6 +28,7 @@ describe("createProduct", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mocks.getCurrentUser.mockResolvedValue({ id: "u1", username: "abril" });
+    mocks.findMany.mockResolvedValue([]);
   });
 
   // Calls the server action directly, as anyone could with a hand-made
@@ -47,6 +49,7 @@ describe("createProduct", () => {
     expect(mocks.create).toHaveBeenCalledWith({
       data: {
         name: "TEST - Budín de prueba",
+        normalizedName: "test budin de prueba",
         priceCents: 85000,
         categoryId: "c123456789012345678901234",
       },
@@ -62,6 +65,29 @@ describe("createProduct", () => {
         message: "Revisá los datos del producto y probá de nuevo.",
       },
     );
+    expect(mocks.create).not.toHaveBeenCalled();
+  });
+
+  it.each(["budin de limon", "BUDÍN-DE-LIMÓN", " Budín   de limón "])(
+    "does not save an existing product name written as %s",
+    async (name) => {
+      mocks.findMany.mockResolvedValue([{ name: "Budín de limón" }]);
+      const result = await createProduct({ ...product, name });
+      expect(result.success).toBe(false);
+      expect(mocks.create).not.toHaveBeenCalled();
+    },
+  );
+
+  it.each([
+    [{ name: "Budines" }, "Budines"],
+    [null, "Sin categoría"],
+  ])("identifies the existing product category", async (category, label) => {
+    mocks.findMany.mockResolvedValue([{ name: "Budín de limón", category }]);
+    await expect(createProduct({ ...product, name: "budin de limon" })).resolves.toEqual({
+      success: false,
+      field: "name",
+      message: `Ya hay un producto con ese nombre en ${label}. Elegí otro nombre o buscá el que ya cargaste.`,
+    });
     expect(mocks.create).not.toHaveBeenCalled();
   });
 });
