@@ -67,7 +67,7 @@ async function main() {
         isActive: true,
         categoryId,
       },
-      create: { ...productData, categoryId },
+      create: { ...productData, categoryId, normalizedName: normalizeCategoryName(productData.name) },
     });
   }
 

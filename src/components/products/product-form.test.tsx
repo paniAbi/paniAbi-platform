@@ -84,4 +84,21 @@ describe("ProductForm", () => {
       categoryId: null,
     });
   });
+
+  it("shows the duplicate warning under the name and keeps the entered values", async () => {
+    const message = "Ya hay un producto con ese nombre en Budines. Elegí otro nombre o buscá el que ya cargaste.";
+    createProduct.mockResolvedValue({ success: false, message, field: "name" });
+    render(<ProductForm categoryId={null} categoryName="Sin categoría" />);
+    fillAndSubmit("budin de limon", "850");
+    expect(await screen.findByText(message)).toHaveAttribute("id", "product-name-error");
+    expect(screen.getByLabelText("Nombre del producto")).toHaveValue("budin de limon");
+    expect(screen.getByLabelText("Precio en pesos")).toHaveValue(850);
+  });
+
+  it("rejects a name made only of signs as empty", async () => {
+    render(<ProductForm categoryId={null} categoryName="Sin categoría" />);
+    fillAndSubmit("---", "850");
+    expect(await screen.findByText("Escribí el nombre del producto.")).toBeInTheDocument();
+    expect(createProduct).not.toHaveBeenCalled();
+  });
 });
