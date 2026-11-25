@@ -1,7 +1,9 @@
 import { z } from "zod";
+import { normalizeCategoryName } from "@/lib/category-schema";
 
 export const productFormSchema = z.object({
-  name: z.string().trim().min(1, "Escribí el nombre del producto."),
+  name: z.string().trim().min(1, "Escribí el nombre del producto.")
+    .refine((name) => Boolean(normalizeCategoryName(name)), "Escribí el nombre del producto."),
   pricePesos: z
     // An empty number field arrives as NaN, which is not a number to Zod.
     .number({ error: "Escribí el precio del producto." })

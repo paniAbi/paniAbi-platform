@@ -11,7 +11,7 @@ import { normalizeCategoryName } from "@/lib/category-schema";
 import { Prisma } from "@prisma/client";
 
 export type CreateProductResult =
-  { success: true } | { success: false; message: string };
+  { success: true } | { success: false; message: string; field?: "name" };
 
 export async function createProduct(
   values: ProductFormValues,
@@ -35,13 +35,19 @@ export async function createProduct(
   }
 
   const normalizedName = normalizeCategoryName(parsedValues.data.name);
-  const products = await prisma.product.findMany({ select: { name: true } });
-  if (
-    !normalizedName ||
-    products.some((product) => normalizeCategoryName(product.name) === normalizedName)
-  ) {
-    return { success: false, message: "Revisá el nombre del producto." };
+  async function findDuplicate() {
+    const products = await prisma.product.findMany({
+      select: { name: true, category: { select: { name: true } } },
+      orderBy: { createdAt: "asc" },
+    });
+    return products.find((product) => normalizeCategoryName(product.name) === normalizedName);
   }
+  function duplicateResult(categoryName: string | undefined) {
+    return { success: false as const, field: "name" as const,
+      message: `Ya hay un producto con ese nombre en ${categoryName ?? "Sin categoría"}. Elegí otro nombre o buscá el que ya cargaste.` };
+  }
+  const duplicate = await findDuplicate();
+  if (duplicate) return duplicateResult(duplicate.category?.name);
 
   try {
     await prisma.product.create({
@@ -58,7 +64,8 @@ export async function createProduct(
       error instanceof Prisma.PrismaClientKnownRequestError &&
       error.code === "P2002"
     ) {
-      return { success: false, message: "Revisá el nombre del producto." };
+      const existing = await findDuplicate();
+      if (existing) return duplicateResult(existing.category?.name);
     }
     return { success: false, message: "No se pudo guardar el producto. Probá de nuevo." };
   }

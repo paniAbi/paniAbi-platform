@@ -77,4 +77,17 @@ describe("createProduct", () => {
       expect(mocks.create).not.toHaveBeenCalled();
     },
   );
+
+  it.each([
+    [{ name: "Budines" }, "Budines"],
+    [null, "Sin categoría"],
+  ])("identifies the existing product category", async (category, label) => {
+    mocks.findMany.mockResolvedValue([{ name: "Budín de limón", category }]);
+    await expect(createProduct({ ...product, name: "budin de limon" })).resolves.toEqual({
+      success: false,
+      field: "name",
+      message: `Ya hay un producto con ese nombre en ${label}. Elegí otro nombre o buscá el que ya cargaste.`,
+    });
+    expect(mocks.create).not.toHaveBeenCalled();
+  });
 });
