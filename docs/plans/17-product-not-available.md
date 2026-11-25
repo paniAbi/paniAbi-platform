@@ -122,9 +122,9 @@ computadoras del equipo, para poder verlo.
   disponible en la web va a volver a verse, marcado. Importa para la #33
   (sacar los productos de ejemplo): si esos productos se ocultan, hay que
   resolver qué pasa con ellos antes de publicar esta tarjeta.
-- **Choque con otras tarjetas.** La #24 (nombre repetido) y la #22 (editar)
-  también cambian los productos. No conviene construirlas al mismo tiempo:
-  Mauricio decide el orden. Hoy la #24 está primera.
+- **Choque con otras tarjetas.** La #22 (editar) también cambia los productos.
+  No conviene construirlas al mismo tiempo: Mauricio decide el orden. La #24
+  (nombre repetido) ya está incorporada y no frena a esta tarjeta.
 
 ## 10. Preguntas abiertas para Abril
 
