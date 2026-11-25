@@ -7,6 +7,8 @@ import {
   type ProductFormValues,
 } from "@/lib/product-schema";
 import { prisma } from "@/lib/prisma";
+import { normalizeCategoryName } from "@/lib/category-schema";
+import { Prisma } from "@prisma/client";
 
 export type CreateProductResult =
   { success: true } | { success: false; message: string };
@@ -32,14 +34,34 @@ export async function createProduct(
     };
   }
 
-  await prisma.product.create({
-    data: {
-      name: parsedValues.data.name,
-      // Convert the form's pesos to integer cents at the database boundary.
-      priceCents: Math.round(parsedValues.data.pricePesos * 100),
-      categoryId: parsedValues.data.categoryId ?? null,
-    },
-  });
+  const normalizedName = normalizeCategoryName(parsedValues.data.name);
+  const products = await prisma.product.findMany({ select: { name: true } });
+  if (
+    !normalizedName ||
+    products.some((product) => normalizeCategoryName(product.name) === normalizedName)
+  ) {
+    return { success: false, message: "Revisá el nombre del producto." };
+  }
+
+  try {
+    await prisma.product.create({
+      data: {
+        name: parsedValues.data.name,
+        normalizedName,
+        // Convert the form's pesos to integer cents at the database boundary.
+        priceCents: Math.round(parsedValues.data.pricePesos * 100),
+        categoryId: parsedValues.data.categoryId ?? null,
+      },
+    });
+  } catch (error) {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2002"
+    ) {
+      return { success: false, message: "Revisá el nombre del producto." };
+    }
+    return { success: false, message: "No se pudo guardar el producto. Probá de nuevo." };
+  }
 
   revalidatePath("/admin/productos");
   // The public view on the home page lists the same products.

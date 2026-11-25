@@ -4,6 +4,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const mocks = vi.hoisted(() => ({
   getCurrentUser: vi.fn(),
   create: vi.fn(),
+  findMany: vi.fn(),
   revalidatePath: vi.fn(),
 }));
 
@@ -11,7 +12,7 @@ vi.mock("@/lib/auth/session", () => ({
   getCurrentUser: mocks.getCurrentUser,
 }));
 vi.mock("@/lib/prisma", () => ({
-  prisma: { product: { create: mocks.create } },
+  prisma: { product: { create: mocks.create, findMany: mocks.findMany } },
 }));
 vi.mock("next/cache", () => ({ revalidatePath: mocks.revalidatePath }));
 
@@ -27,6 +28,7 @@ describe("createProduct", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mocks.getCurrentUser.mockResolvedValue({ id: "u1", username: "abril" });
+    mocks.findMany.mockResolvedValue([]);
   });
 
   // Calls the server action directly, as anyone could with a hand-made
@@ -47,6 +49,7 @@ describe("createProduct", () => {
     expect(mocks.create).toHaveBeenCalledWith({
       data: {
         name: "TEST - Budín de prueba",
+        normalizedName: "test budin de prueba",
         priceCents: 85000,
         categoryId: "c123456789012345678901234",
       },
@@ -64,4 +67,14 @@ describe("createProduct", () => {
     );
     expect(mocks.create).not.toHaveBeenCalled();
   });
+
+  it.each(["budin de limon", "BUDÍN-DE-LIMÓN", " Budín   de limón "])(
+    "does not save an existing product name written as %s",
+    async (name) => {
+      mocks.findMany.mockResolvedValue([{ name: "Budín de limón" }]);
+      const result = await createProduct({ ...product, name });
+      expect(result.success).toBe(false);
+      expect(mocks.create).not.toHaveBeenCalled();
+    },
+  );
 });
